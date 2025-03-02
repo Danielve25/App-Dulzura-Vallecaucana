@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "packageManager": "pnpm@10.5.2",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
