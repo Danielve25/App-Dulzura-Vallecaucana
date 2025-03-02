@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import CreateAccessToken from "../../libs/jwt.js";
+import CreateAccessToken from "../libs/jwt.js";
 
 export const register = async (req, res) => {
   const { NameStudent, PhoneNumber } = req.body;
