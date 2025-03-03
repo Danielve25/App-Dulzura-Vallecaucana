@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { Temporal } from "temporal-polyfill";
 
 const userSchema = new mongoose.Schema(
   {
