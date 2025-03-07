@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "packageManager": "pnpm@10.5.2",
+  "packageManager": "pnpm@10.6.0",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
@@ -20,6 +20,7 @@
     "mongoose": "^8.11.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.9",
+    "twilio": "^5.4.5",
     "zod": "^3.24.2"
   }
 }
