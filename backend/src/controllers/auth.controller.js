@@ -7,7 +7,10 @@ export const register = async (req, res) => {
 
   try {
     const userFound = await User.findOne({ NameStudent });
-    if (userFound) return res.status(400).json(["el usuario ya esta en uso"]);
+    if (userFound)
+      return res
+        .status(400)
+        .json(["no no no, ese ya existe intentalo con otro"]);
 
     const phoneNumberhash = await bcrypt.hash(PhoneNumber, 10);
 
@@ -40,11 +43,16 @@ export const login = async (req, res) => {
     const userFound = await User.findOne({ NameStudent });
 
     if (!userFound)
-      return res.status(400).json({ message: "Usuario no encontrado" });
+      return res
+        .status(400)
+        .json({ message: "ah! te equivocaste intentalo nuevamente" });
 
     const isMatch = await bcrypt.compare(PhoneNumber, userFound.PhoneNumber);
 
-    if (!isMatch) return res.status(400).json({ message: "numero incorrecto" });
+    if (!isMatch)
+      return res.status(400).json({
+        message: "ah! te equivocaste intentalo con el numero correcto",
+      });
 
     const token = await CreateAccessToken({ id: userFound._id });
 
