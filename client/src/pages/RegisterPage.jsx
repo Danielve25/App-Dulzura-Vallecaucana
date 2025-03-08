@@ -35,6 +35,7 @@ function RegisterPage() {
             Nombre
           </label>
           <input
+            id="NameStudent"
             name="NameStudent"
             type="text"
             placeholder="Nombre"
@@ -51,6 +52,7 @@ function RegisterPage() {
           </label>
           <input
             type="text"
+            id="PhoneNumber"
             name="PhoneNumber"
             placeholder="Phone Number"
             {...register("PhoneNumber", {
