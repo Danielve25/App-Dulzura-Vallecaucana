@@ -2,26 +2,26 @@ import { z } from "zod";
 
 export const registerSchema = z.object({
   NameStudent: z.string({
-    required_error: "Name is required",
+    required_error: "nombre es requerido",
   }),
   PhoneNumber: z
     .string({
-      required_error: "Phone number is required",
+      required_error: "numero de telefono es requerido",
     })
     .min(6, {
-      message: "Phone Number must be at least 6 characters",
+      message: "el numero de telefono debe tener almenos 6 caracteres",
     }),
 });
 
 export const loginSchema = z.object({
   PhoneNumber: z
     .string({
-      required_error: "Phone number is required",
+      required_error: "numero de telefono es requerido",
     })
     .min(6, {
-      message: "Phone Number must be at least 6 characters",
+      message: "el numero de telefono debe tener almenos 6 caracteres",
     }),
   NameStudent: z.string({
-    required_error: "Name is required",
+    required_error: "nombre es requerido",
   }),
 });
