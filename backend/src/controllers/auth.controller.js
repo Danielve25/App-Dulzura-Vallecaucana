@@ -6,6 +6,10 @@ export const register = async (req, res) => {
   const { NameStudent, PhoneNumber } = req.body;
 
   try {
+    const userFound = await User.findOne({ NameStudent });
+    if (userFound)
+      return res.status(400).json({ message: ["el usuario ya esta en uso"] });
+
     const phoneNumberhash = await bcrypt.hash(PhoneNumber, 10);
 
     const NewUser = new User({
