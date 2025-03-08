@@ -3,3 +3,10 @@ body {
   background: #202020;
   color: white;
 }
+.label::after {
+  content: " *";
+  color: #de2c34;
+}
+.label {
+  margin-top: 3px;
+}
