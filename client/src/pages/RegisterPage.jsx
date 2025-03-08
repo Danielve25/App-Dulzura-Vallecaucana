@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router";
 
 function RegisterPage() {
   const {
@@ -27,6 +28,7 @@ function RegisterPage() {
           {error}
         </div>
       ))}
+      <h1 className="text-2xl font-bold">register</h1>
       <form onSubmit={onSubmit}>
         <div className="mb-[3px]">
           <label htmlFor="NameStudent" className="label">
@@ -69,6 +71,12 @@ function RegisterPage() {
           Register
         </button>
       </form>
+      <p className="flex gap-x-2 justify-between">
+        ya tienes una cuenta?
+        <Link to="/login" className="text-sky-500">
+          inicia sesion
+        </Link>
+      </p>
     </div>
   );
 }
