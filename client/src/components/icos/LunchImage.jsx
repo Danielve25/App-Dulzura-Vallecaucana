@@ -1,6 +1,6 @@
 import React from "react";
 import { Image } from "@unpic/react";
-import lunchImage from "../assets/img/lunch.png";
+import lunchImage from "../../assets/img/lunch.png";
 
 const LunchImage = () => {
   return (

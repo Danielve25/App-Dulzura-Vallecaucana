@@ -10,7 +10,7 @@ const LunchFormPage = () => {
   });
 
   return (
-    <div className="flex h-[calc(100vh-100px)] items-center justify-center">
+    <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
       <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
         <h1 className="text-2xl font-bold">Pedir Almuerzo</h1>
         <form onSubmit={onSubmit}>

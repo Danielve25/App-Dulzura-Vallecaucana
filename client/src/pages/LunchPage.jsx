@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLunch } from "../context/LunchContext";
-import LunchImage from "../components/LunchImage";
+import LunchImage from "../components/icos/LunchImage";
 const LunchPage = () => {
   const { getLunchs, lunchs } = useLunch();
 
