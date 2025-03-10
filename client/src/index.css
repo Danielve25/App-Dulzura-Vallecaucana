@@ -1,25 +1,16 @@
 @import "tailwindcss";
 body {
-  background: #202020;
-  color: white;
+  background-color: white;
+  color: black;
 }
 .label::after {
   content: " *";
-  color: f76905;
+  color: red;
 }
 .label {
   margin-top: 3px;
 }
-a::after {
-  content: "";
-  position: absolute;
-  background-color: #008000;
-  height: 3px;
-  width: 0%;
-  left: 0;
-  bottom: 0px;
-  transition: 0.3s;
-}
+
 /*
   Based on TailwindCSS recommendations,
   consider using classes instead of the `@apply` directive
@@ -47,9 +38,7 @@ a.active {
   @apply transition-[0.5s];
   background: #008000;
 }
-a:hover:after {
-  width: 100%;
-}
+
 .checkbtn {
   @apply text-[22px] text-[white] float-right leading-[80px] cursor-pointer hidden mr-[30px];
 }
@@ -73,8 +62,7 @@ a:hover:after {
     @apply text-[22px];
   }
   ul {
-    @apply fixed w-[80%] h-screen text-center transition-all duration-[0.5s] -left-full top-20;
-    background: #2c3e50;
+    @apply fixed w-[80%] h-screen bg-[#f76905] text-center transition-all duration-[0.5s] -left-full top-20;
   }
   nav ul li {
     @apply block leading-[30px] mx-0 my-[50px];
@@ -82,16 +70,11 @@ a:hover:after {
   nav ul li a {
     @apply text-xl;
   }
-  a:hover,
-  a.active {
-    @apply text-[#0082e6];
-    background: none;
+  .hipervinculo:hover,
+  .hipervinculo.active {
+    @apply text-[#008000] font-bold bg-[#f76d0b] rounded-2xl;
   }
   #check:checked ~ ul {
     @apply left-0;
   }
-}
-section {
-  @apply bg-cover h-[calc(100vh_-_80px)];
-  background: url("bg.jpg") no-repeat;
 }

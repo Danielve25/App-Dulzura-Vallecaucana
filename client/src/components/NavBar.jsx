@@ -16,7 +16,7 @@ function NavBar() {
         <Menu />
       </label>
       {/* Site logo */}
-      <button className="bg-white rounded-t-lg  p-1 ml-3 mt-[9px] hover:scale-110 transition-all duration-[0.3s] ease-[ease] delay-[0s]">
+      <button className="bg-white hipervinculo rounded-t-lg  p-1 ml-3 mt-[9px] hover:scale-110 transition-all duration-[0.3s] ease-[ease] delay-[0s]">
         <Link to="/">
           <Logo />
         </Link>
@@ -30,7 +30,9 @@ function NavBar() {
             </li>
             <li className="resaltado">
               <Link
-                className={location.pathname === "/lunch/new" ? "active" : ""}
+                className={
+                  location.pathname === "/lunch/new" ? "active" : "hipervinculo"
+                }
                 to="/lunch/new"
               >
                 Pedir almuerzo
@@ -38,7 +40,9 @@ function NavBar() {
             </li>
             <li>
               <Link
-                className={location.pathname === "/lunch" ? "active" : ""}
+                className={
+                  location.pathname === "/lunch" ? "active" : "hipervinculo"
+                }
                 to="/lunch"
               >
                 Almuerzos
@@ -46,7 +50,9 @@ function NavBar() {
             </li>
             <li>
               <Link
-                className={location.pathname === "/lunch/pay" ? "active" : ""}
+                className={
+                  location.pathname === "/lunch/pay" ? "active" : "hipervinculo"
+                }
                 to="/lunch/pay"
               >
                 pagar almuerzo
@@ -62,7 +68,9 @@ function NavBar() {
           <>
             <li>
               <Link
-                className={location.pathname === "/" ? "active" : ""}
+                className={
+                  location.pathname === "/" ? "active" : "hipervinculo"
+                }
                 to="/"
               >
                 inicio
@@ -70,7 +78,9 @@ function NavBar() {
             </li>
             <li>
               <Link
-                className={location.pathname === "/login" ? "active" : ""}
+                className={
+                  location.pathname === "/login" ? "active " : "hipervinculo"
+                }
                 to="/login"
               >
                 Inicio de Sesion
@@ -78,7 +88,9 @@ function NavBar() {
             </li>
             <li>
               <Link
-                className={location.pathname === "/register" ? "active" : ""}
+                className={
+                  location.pathname === "/register" ? "active" : "hipervinculo"
+                }
                 to="/register"
               >
                 Registrar

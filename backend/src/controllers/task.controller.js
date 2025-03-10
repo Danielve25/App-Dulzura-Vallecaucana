@@ -10,11 +10,37 @@ export const getTasks = async (req, res) => {
 
 export const createTask = async (req, res) => {
   // lógica para crear una nueva tarea
-  const { title, description, date } = req.body;
+  const {
+    title,
+    description,
+    date,
+    pay,
+    userneedscomplete,
+    userneedstray,
+    portionOfProtein,
+    portionOfSalad,
+    userneedsextrajuice,
+  } = req.body;
+
+  // Calcular el valor de userNeedsPay
+  let userNeedsPay = 0;
+  if (portionOfProtein) userNeedsPay += 6000;
+  if (portionOfSalad) userNeedsPay += 3000;
+  if (userneedscomplete) userNeedsPay += 14000;
+  if (userneedstray) userNeedsPay += 13000;
+  if (userneedsextrajuice) userNeedsPay += 1000;
+
   const newTask = new Task({
     title,
     description,
     date,
+    userneedscomplete,
+    userneedstray,
+    userneedsextrajuice,
+    portionOfProtein,
+    portionOfSalad,
+    pay,
+    userNeedsPay, // Guardar el valor calculado
     user: req.user.id,
   });
   const savedTask = await newTask.save();
