@@ -1,11 +1,18 @@
 import Task from "../models/task.model.js";
+import User from "../models/user.model.js";
 
 export const getTasks = async (req, res) => {
   // lógica para obtener todas las tareas
-  const task = await Task.find({
+  const tasks = await Task.find({
     user: req.user.id,
   }).populate("user");
-  res.json(task);
+  res.json(tasks);
+};
+
+export const getAllTasks = async (req, res) => {
+  // lógica para obtener todas las tareas para el administrador
+  const tasks = await Task.find().populate("user");
+  res.json(tasks);
 };
 
 export const createTask = async (req, res) => {

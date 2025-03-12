@@ -3,8 +3,9 @@ import bcrypt from "bcryptjs";
 import CreateAccessToken from "../libs/jwt.js";
 import jwt from "jsonwebtoken";
 import { TOKEN_SECRET } from "../config.js";
+
 export const register = async (req, res) => {
-  const { NameStudent, PhoneNumber } = req.body;
+  const { NameStudent, PhoneNumber, isAdmin } = req.body;
 
   try {
     const userFound = await User.findOne({ NameStudent });
@@ -18,6 +19,7 @@ export const register = async (req, res) => {
     const NewUser = new User({
       NameStudent,
       PhoneNumber: phoneNumberhash,
+      isAdmin: isAdmin || false, // Asegurarse de que isAdmin sea false si no se proporciona
     });
 
     const userSaved = await NewUser.save();
@@ -29,6 +31,7 @@ export const register = async (req, res) => {
       _id: userSaved._id,
       NameStudent: userSaved.NameStudent,
       PhoneNumber: userSaved.PhoneNumber,
+      isAdmin: userSaved.isAdmin,
       creastedAt: userSaved.createdAt,
       updatedAt: userSaved.updatedAt,
     });

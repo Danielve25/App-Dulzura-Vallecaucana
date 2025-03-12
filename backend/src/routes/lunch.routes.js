@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { authRequired } from "../middlewares/validateToken.js";
+import { authRequired, adminRequired } from "../middlewares/validateToken.js";
 import {
   getTasks,
   getTask,
   createTask,
   updateTask,
   deleteTask,
+  getAllTasks,
 } from "../controllers/task.controller.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { createTaskSchema } from "../schemas/task.schema.js";
@@ -25,5 +26,8 @@ router.post(
 router.delete("/lunch/:id", authRequired, deleteTask);
 
 router.put("/lunch/:id", authRequired, updateTask);
+
+// Ruta para que el administrador obtenga todas las tareas
+router.get("/admin/lunchs", authRequired, adminRequired, getAllTasks);
 
 export default router;
