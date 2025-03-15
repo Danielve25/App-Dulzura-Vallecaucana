@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLunch } from "../context/LunchContext";
 import LunchImage from "../components/icos/LunchImage";
-
+import LunchPaymentButton from "../components/LunchPaymentButton";
 const LunchPage = () => {
   const { getLunchs, lunchs } = useLunch();
 
@@ -9,7 +9,12 @@ const LunchPage = () => {
     getLunchs();
   }, []); // Asegurarse de que el array de dependencias esté vacío para que solo se ejecute una vez
 
-  if (lunchs.length === 0) return <h1> NO TIENES PEDIDOS</h1>;
+  if (lunchs.length === 0)
+    return (
+      <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
+        <h1> NO TIENES PEDIDOS</h1>
+      </div>
+    );
 
   return (
     <div className="w-full p-4">
@@ -21,31 +26,32 @@ const LunchPage = () => {
               {new Date(lunch.date).toLocaleDateString()}
             </p>
             <p className="mt-2">{lunch.description}</p>
-            {lunch.userneedscomplete && (
+
+            {lunch.userneedscomplete ? (
               <p className="mt-2">
                 <strong>Almuerzo completo:</strong> Sí
               </p>
-            )}
-            {lunch.userneedstray && (
+            ) : null}
+            {lunch.userneedstray ? (
               <p>
                 <strong>Bandeja:</strong> Sí
               </p>
-            )}
-            {lunch.userneedsextrajuice && (
+            ) : null}
+            {lunch.userneedsextrajuice ? (
               <p>
                 <strong>Jugo extra:</strong> Sí
               </p>
-            )}
-            {lunch.portionOfProtein && (
+            ) : null}
+            {lunch.portionOfProtein ? (
               <p>
                 <strong>Porción de Proteína:</strong> Sí
               </p>
-            )}
-            {lunch.portionOfSalad && (
+            ) : null}
+            {lunch.portionOfSalad ? (
               <p>
                 <strong>Porción de Ensalada:</strong> Sí
               </p>
-            )}
+            ) : null}
             <p className="mt-2">
               <strong>Pago:</strong> {lunch.pay ? "Sí" : "No"}
             </p>
@@ -55,6 +61,7 @@ const LunchPage = () => {
             <small className="text-gray-500">
               Actualizado: {new Date(lunch.updatedAt).toLocaleString()}
             </small>
+            <LunchPaymentButton price={lunch.userNeedsPay} />
           </div>
         ))}
       </div>
