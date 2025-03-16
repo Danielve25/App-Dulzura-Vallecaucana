@@ -78,3 +78,7 @@ a.active {
     @apply left-0;
   }
 }
+
+.filter-green {
+  filter: hue-rotate(120deg) saturate(200%) brightness(90%); /* Ajusta el matiz, saturación y brillo para obtener #00B301 */
+}

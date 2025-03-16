@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useLunch } from "../context/LunchContext";
-import LunchImage from "../components/icos/LunchImage";
-import LunchPaymentButton from "../components/LunchPaymentButton";
+import SelloImagen from "../components/icos/CanceladoSello";
 const LunchPage = () => {
   const { getLunchs, lunchs } = useLunch();
 
@@ -20,7 +19,16 @@ const LunchPage = () => {
     <div className="w-full p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {lunchs.map((lunch) => (
-          <div key={lunch._id} className="p-4 border rounded-lg shadow-md">
+          <div
+            key={lunch._id}
+            className="p-4 border rounded-lg shadow-md relative"
+          >
+            {lunch.pay && (
+              <div className="">
+                <SelloImagen />
+                {/* Asegúrate de que `className` sea una cadena válida */}
+              </div>
+            )}
             <h1 className="text-xl font-bold">{lunch.title}</h1>
             <p className="text-gray-600">
               {new Date(lunch.date).toLocaleDateString()}
@@ -61,7 +69,7 @@ const LunchPage = () => {
             <small className="text-gray-500">
               Actualizado: {new Date(lunch.updatedAt).toLocaleString()}
             </small>
-            <LunchPaymentButton price={lunch.userNeedsPay} />
+            {/*<LunchPaymentButton price={lunch.userNeedsPay} />*/}
           </div>
         ))}
       </div>
