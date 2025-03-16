@@ -1,11 +1,13 @@
 import twilio from "twilio";
-import { accountSid, authToken, twilioNumber } from "../config.js";
+import { EnvConfig } from "../config.js";
 import WhatsappMessage from "../models/whatsapp.model.js"; // Importa el modelo
+
+const config = EnvConfig();
 
 export const sendWhatsappMessage = async (req, res) => {
   let { to, body } = req.body;
 
-  const client = twilio(accountSid, authToken);
+  const client = twilio(config.accountSid, config.authToken);
 
   // Concatena 'whatsapp:+57' al número recibido
   to = `whatsapp:+57${to}`;

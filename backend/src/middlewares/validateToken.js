@@ -1,13 +1,15 @@
 import jwt from "jsonwebtoken";
-import { TOKEN_SECRET } from "../config.js";
+import { EnvConfig } from "../config.js";
 import User from "../models/user.model.js";
+
+const config = EnvConfig();
 
 export const authRequired = (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) return res.status(401).json({ message: "No autorizado" });
 
-  jwt.verify(token, TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, config.TOKEN_SECRET, (err, user) => {
     if (err) return res.status(401).json({ message: "token no valido" });
     req.user = user;
     next();
