@@ -22,7 +22,7 @@ function NavBar() {
         </Link>
       </button>
       {/* Navigation links */}
-      <ul>
+      <ul className="z-50">
         {isAuthenticated ? (
           <>
             <li className="text-xl uppercase">
