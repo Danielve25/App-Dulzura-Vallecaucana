@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 const {
-  TOKEN_SECRET = "",
+  SECRET_KEY = "",
   PORT = "3000",
   MONGO_URI = "",
   TWILIO_ACCOUNT_SID = "",
@@ -14,7 +14,7 @@ const {
   PAYU_API_URL = "",
 } = process.env;
 export const EnvConfig = () => ({
-  TOKEN_SECRET: TOKEN_SECRET,
+  TOKEN_SECRET: SECRET_KEY,
   PORT: PORT,
   MONGO_URI: MONGO_URI,
   accountSid: TWILIO_ACCOUNT_SID,
