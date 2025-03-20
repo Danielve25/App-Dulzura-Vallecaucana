@@ -23,7 +23,6 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/lunch" element={<LunchPage />} />
               <Route path="/lunch/new" element={<LunchFormPage />} />
-              <Route path="/lunch/pay" element={<LunchFormPage />} />
               <Route path="/profile" element={<ProfilePage />} />
             </Route>
           </Routes>

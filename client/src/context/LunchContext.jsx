@@ -1,5 +1,10 @@
 import { createContext, useContext, useState } from "react";
-import { createLunchRequest, getLunchsRequest } from "../api/lunch";
+import {
+  createLunchRequest,
+  getLunchsRequest,
+  updateLunchRequest,
+} from "../api/lunch";
+import { PayLunch, verifyPayment } from "../api/payment";
 const LunchContext = createContext();
 
 export const useLunch = () => {
@@ -24,8 +29,39 @@ export function LunchProvider({ children }) {
   };
 
   const createLunch = async (lunch) => {
-    const res = await createLunchRequest(lunch);
-    console.log(res);
+    try {
+      const res = await createLunchRequest(lunch);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const payLunch = async (lunchPayment) => {
+    try {
+      const res = await PayLunch(lunchPayment);
+      return res;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+  const putLunch = async (DataPutLunch, lunchID) => {
+    try {
+      const res = await updateLunchRequest(DataPutLunch, lunchID);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const verifyPaymentNequi = async (VerifyData) => {
+    try {
+      const res = await verifyPayment(VerifyData);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -34,6 +70,9 @@ export function LunchProvider({ children }) {
         lunchs,
         createLunch,
         getLunchs,
+        payLunch,
+        putLunch,
+        verifyPaymentNequi,
       }}
     >
       {children}

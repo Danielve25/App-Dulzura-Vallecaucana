@@ -1,12 +1,43 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLunch } from "../context/LunchContext";
 import SelloImagen from "../components/icos/CanceladoSello";
+
+import Modal from "../components/modal";
+
 const LunchPage = () => {
-  const { getLunchs, lunchs } = useLunch();
+  const { getLunchs, lunchs, verifyPaymentNequi } = useLunch();
+  const [responsePayment, setResponsePayment] = useState(null);
 
   useEffect(() => {
     getLunchs();
   }, []); // Asegurarse de que el array de dependencias esté vacío para que solo se ejecute una vez
+
+  useEffect(() => {
+    const verifyPayments = async () => {
+      for (const lunch of lunchs) {
+        if (lunch.orderId) {
+          const paymentData = { orderId: lunch.orderId };
+          const response = await verifyPaymentNequi(paymentData); // Usar el nombre correcto de la función
+          if (response) {
+            setResponsePayment(response);
+            console.log(response);
+          }
+        }
+      }
+    };
+    verifyPayments();
+  }, [lunchs]); // Ejecutar cuando cambie la lista de lunchs
+
+  useEffect(() => {
+    if (responsePayment) {
+      if (
+        responsePayment.data.result.payload.transactions[0].transactionResponse
+          .state === "APPROVED"
+      ) {
+        console.log("pago aprovado");
+      }
+    }
+  }, [responsePayment]); // Se ejecuta cada vez que responsePayment cambia
 
   if (lunchs.length === 0)
     return (
@@ -63,12 +94,24 @@ const LunchPage = () => {
             <p className="mt-2">
               <strong>Pago:</strong> {lunch.pay ? "Sí" : "No"}
             </p>
+
+            {lunch.orderId ? (
+              <p className="rounded-xl bg-[#f5f5f5] px-4 py-3">
+                <strong>numero de transaccion: </strong>
+                {lunch.orderId}
+              </p>
+            ) : null}
+
             <p>
               <strong>total a pagar:</strong> {lunch.userNeedsPay}
             </p>
             <small className="text-gray-500">
               Actualizado: {new Date(lunch.updatedAt).toLocaleString()}
             </small>
+
+            {!lunch.pay && (
+              <Modal id_task={lunch._id} payAmount={lunch.userNeedsPay} />
+            )}
             {/*<LunchPaymentButton price={lunch.userNeedsPay} />*/}
           </div>
         ))}

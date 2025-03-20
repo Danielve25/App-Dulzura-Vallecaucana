@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router";
 import { useEffect } from "react";
+import { useLunch } from "../context/LunchContext";
 
 function LoginPage() {
   const {
