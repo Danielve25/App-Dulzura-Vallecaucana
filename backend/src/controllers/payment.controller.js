@@ -107,3 +107,30 @@ export const NequiPayment = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
+export const verifyNequiPaymentLunch = async (req, res) => {
+  const { orderId } = req.body;
+
+  const jsonNequiVerify = {
+    test: false,
+    language: "en",
+    command: "ORDER_DETAIL",
+    merchant: {
+      apiLogin: configPayU.payUapiLogin,
+      apiKey: configPayU.payUapiKey,
+    },
+    details: {
+      orderId: orderId,
+    },
+  };
+
+  try {
+    const response = await axios.post(
+      "https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi",
+      jsonNequiVerify
+    );
+    res.send(response.data); // Enviar solo los datos relevantes de la respuesta
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error interno del servidor" }); // Agregar un mensaje de error consistente
+  }
+};

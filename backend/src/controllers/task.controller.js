@@ -23,6 +23,7 @@ export const createTask = async (req, res) => {
     date,
     pay,
     userneedscomplete,
+    orderId,
     userneedstray,
     portionOfProtein,
     portionOfSalad,
@@ -39,6 +40,7 @@ export const createTask = async (req, res) => {
 
   const newTask = new Task({
     title,
+    orderId,
     description,
     date,
     userneedscomplete,

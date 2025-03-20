@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { authRequired } from "../middlewares/validateToken.js";
-import { NequiPayment } from "../controllers/payment.controller.js";
+import {
+  NequiPayment,
+  verifyNequiPaymentLunch,
+} from "../controllers/payment.controller.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { numberNequiValidateSchema } from "../schemas/payment.schema.js";
 
@@ -12,5 +15,7 @@ router.post(
   validateSchema(numberNequiValidateSchema),
   NequiPayment
 );
+
+router.post("/nequi-verify", authRequired, verifyNequiPaymentLunch);
 
 export default router;

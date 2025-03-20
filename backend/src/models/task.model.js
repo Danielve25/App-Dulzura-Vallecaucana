@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { boolean } from "zod";
+import { boolean, string } from "zod";
 
 const taskSchema = new mongoose.Schema(
   {
@@ -45,6 +45,10 @@ const taskSchema = new mongoose.Schema(
     pay: {
       type: Boolean,
       default: false,
+    },
+    orderId: {
+      type: String,
+      required: false,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
