@@ -63,6 +63,15 @@ export const getTask = async (req, res) => {
   return res.json(task);
 };
 
+export const getTaskByOrderId = async (req, res) => {
+  // lógica para obtener una tarea por orderId
+  const task = await Task.findOne({ orderId: req.params.orderId }).populate(
+    "user"
+  );
+  if (!task) return res.status(404).json({ message: "Task not found" });
+  return res.json(task);
+};
+
 export const deleteTask = async (req, res) => {
   // lógica para eliminar una tarea por ID
   const task = await Task.findByIdAndDelete(req.params.id);

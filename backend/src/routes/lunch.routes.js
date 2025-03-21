@@ -7,6 +7,7 @@ import {
   updateTask,
   deleteTask,
   getAllTasks,
+  getTaskByOrderId,
 } from "../controllers/task.controller.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { createTaskSchema } from "../schemas/task.schema.js";
@@ -29,5 +30,7 @@ router.put("/lunch/:id", authRequired, updateTask);
 
 // Ruta para que el administrador obtenga todas las tareas
 router.get("/admin/lunchs", authRequired, adminRequired, getAllTasks);
+
+router.get("/lunch/order/:orderId", authRequired, getTaskByOrderId);
 
 export default router;
