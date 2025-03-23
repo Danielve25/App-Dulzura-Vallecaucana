@@ -46,24 +46,35 @@ const LunchPage = () => {
           .state;
       const currentOrder = responsePayment.currentOrder; // Usar el orderId guardado
 
-      if (transactionState === "APPROVED") {
-        setOrderId(responsePayment.data.result.payload.id);
-        setPendingOrders((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(currentOrder);
-          return newSet;
-        });
-      } else if (transactionState === "DECLINED" && currentLunchId) {
-        const updateData = { orderId: null };
-        putLunch(updateData, currentLunchId);
-        setCurrentLunchId(null);
-        setPendingOrders((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(currentOrder);
-          return newSet;
-        });
-      } else if (transactionState === "PENDING") {
-        setPendingOrders((prev) => new Set([...prev, currentOrder]));
+      switch (transactionState) {
+        case "APPROVED":
+          setOrderId(responsePayment.data.result.payload.id);
+          setPendingOrders((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(currentOrder);
+            return newSet;
+          });
+          break;
+
+        case "DECLINED":
+          if (currentLunchId) {
+            const updateData = { orderId: null };
+            putLunch(updateData, currentLunchId);
+            setCurrentLunchId(null);
+            setPendingOrders((prev) => {
+              const newSet = new Set(prev);
+              newSet.delete(currentOrder);
+              return newSet;
+            });
+          }
+          break;
+
+        case "PENDING":
+          setPendingOrders((prev) => new Set([...prev, currentOrder]));
+          break;
+
+        default:
+          break;
       }
     }
   }, [responsePayment, currentLunchId, putLunch]);
