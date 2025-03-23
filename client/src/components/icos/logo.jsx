@@ -1,5 +1,5 @@
 import { Image } from "@unpic/react";
-import logo from "../../assets/img/logo-Dulzura.png";
+import logo from "../../assets/img/logo-Dulzura.webp";
 
 const Logo = () => {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { Image } from "@unpic/react";
-import selloImage from "../../assets/img/cancelado-image.png";
+import selloImage from "../../assets/img/cancelado-image.webp";
 
 const SelloImagen = () => {
   return (
