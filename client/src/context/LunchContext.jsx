@@ -1,21 +1,13 @@
-import { createContext, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import {
   createLunchRequest,
   getLunchsRequest,
   updateLunchRequest,
-  obteinLunchByOrderID,
 } from "../api/lunch";
 import { PayLunch, verifyPayment } from "../api/payment";
-const LunchContext = createContext();
+import { LunchContext, useLunch as baseUseLunch } from "../utils/lunchUtils";
 
-export const useLunch = () => {
-  const context = useContext(LunchContext);
-
-  if (!context) {
-    throw new Error("useLunch must be used with a LunchProvider");
-  }
-  return context;
-};
+export const useLunch = () => baseUseLunch(useContext(LunchContext));
 
 export function LunchProvider({ children }) {
   const [lunchs, setLunch] = useState([]);

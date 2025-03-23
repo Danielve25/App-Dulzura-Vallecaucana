@@ -14,7 +14,7 @@ const LunchPage = () => {
 
   useEffect(() => {
     getLunchs();
-  }, []); // Asegurarse de que el array de dependencias esté vacío para que solo se ejecute una vez
+  }, []);
 
   //verificar pago, solo para meter la repuesta en un arreglo
   useEffect(() => {
@@ -34,7 +34,7 @@ const LunchPage = () => {
       }
     };
     verifyPayments();
-  }, [lunchs]);
+  }, [lunchs, verifyPaymentNequi]);
 
   useEffect(() => {
     if (
@@ -66,7 +66,7 @@ const LunchPage = () => {
         setPendingOrders((prev) => new Set([...prev, currentOrder]));
       }
     }
-  }, [responsePayment]);
+  }, [responsePayment, currentLunchId, putLunch]);
 
   useEffect(() => {
     if (orderId) {
@@ -80,9 +80,8 @@ const LunchPage = () => {
         }
       };
       obtainID();
-      getLunchs();
     }
-  }, [orderId]);
+  }, [orderId, getLunchs]);
 
   useEffect(() => {
     if (responseLunchBack) {
@@ -98,9 +97,8 @@ const LunchPage = () => {
         }
       };
       updateLunchStatus();
-      getLunchs();
     }
-  }, [responseLunchBack]);
+  }, [responseLunchBack, getLunchs, putLunch]);
 
   if (lunchs.length === 0)
     return (

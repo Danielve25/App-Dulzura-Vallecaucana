@@ -15,7 +15,7 @@ function RegisterPage() {
 
   useEffect(() => {
     if (isAuthenticated) navigate("/lunch");
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
   const onSubmit = handleSubmit(async (values) => {
     signup(values);
