@@ -15,6 +15,7 @@ const LunchFormPage = () => {
     const formattedData = {
       userneedscomplete: !!data.userneedscomplete,
       userneedstray: !!data.userneedstray,
+      EspecialStray: !!data.EspecialStray,
       userneedsextrajuice: !!data.userneedsextrajuice,
       portionOfProtein: !!data.portionOfProtein,
       portionOfSalad: !!data.portionOfSalad,
@@ -23,6 +24,7 @@ const LunchFormPage = () => {
     if (
       !formattedData.userneedscomplete &&
       !formattedData.userneedstray &&
+      !formattedData.EspecialStray &&
       !formattedData.userneedsextrajuice &&
       !formattedData.portionOfProtein &&
       !formattedData.portionOfSalad
@@ -31,8 +33,14 @@ const LunchFormPage = () => {
       return;
     }
 
-    if (formattedData.userneedscomplete && formattedData.userneedstray) {
-      alert("No puede seleccionar Almuerzo completo y Bandeja al mismo tiempo");
+    if (
+      (formattedData.userneedscomplete && formattedData.userneedstray) ||
+      (formattedData.EspecialStray &&
+        (formattedData.userneedscomplete || formattedData.userneedstray))
+    ) {
+      alert(
+        "No puede seleccionar combinaciones no permitidas: Almuerzo completo y Bandeja, o Bandeja especial junto con Almuerzo completo o Bandeja"
+      );
       return;
     }
 
@@ -89,6 +97,22 @@ const LunchFormPage = () => {
                 <details className="cursor-pointer">
                   <summary>detalles</summary>
                   <p>un almuerzo sin sopa, cuesta 13.000</p>
+                </details>
+              </small>
+
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  {...register("EspecialStray")}
+                  className="mr-2"
+                />
+                bandeja especial
+              </label>
+
+              <small>
+                <details className="cursor-pointer">
+                  <summary>detalles</summary>
+                  <p>bandeja normal con una carne y media</p>
                 </details>
               </small>
 

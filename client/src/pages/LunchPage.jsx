@@ -149,6 +149,12 @@ const LunchPage = () => {
                 <strong>Bandeja:</strong> Sí
               </p>
             ) : null}
+            {lunch.EspecialStray ? (
+              <p>
+                <strong>Bandeja Especial: </strong>si
+              </p>
+            ) : null}
+
             {lunch.userneedsextrajuice ? (
               <p>
                 <strong>Jugo extra:</strong> Sí

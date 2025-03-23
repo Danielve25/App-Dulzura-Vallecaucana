@@ -60,6 +60,11 @@ const taskSchema = new mongoose.Schema(
       required: false,
       default: "",
     },
+    EspecialStray: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   {
     timestamps: true,
