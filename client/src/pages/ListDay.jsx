@@ -56,6 +56,7 @@ const ListDay = () => {
                 {lunch.userneedsextrajuice && "Jugo extra, "}
                 {lunch.portionOfProtein && "Porción de Proteína, "}
                 {lunch.portionOfSalad && "Porción de Ensalada"}
+                {lunch.EspecialStray && "bandeja especial"}
               </td>
             </tr>
           ))}
