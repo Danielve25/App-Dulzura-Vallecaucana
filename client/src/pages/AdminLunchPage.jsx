@@ -10,6 +10,10 @@ function AdminLunchPage() {
     const loadLunchs = async () => {
       try {
         const lunches = await getAllLunchs();
+        if (lunches.data.length === 0) {
+          setGroupedLunchs({});
+          return;
+        }
         // Agrupar por nombre de estudiante
         const grouped = lunches.data.reduce((acc, lunch) => {
           const studentName = lunch.user.NameStudent;
@@ -26,6 +30,15 @@ function AdminLunchPage() {
     };
     loadLunchs();
   }, []);
+
+  // Añadir esta verificación
+  if (Object.keys(groupedLunchs).length === 0) {
+    return (
+      <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
+        <h1 className="text-2xl font-bold">NO HAY PEDIDOS REGISTRADOS</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full p-4">
