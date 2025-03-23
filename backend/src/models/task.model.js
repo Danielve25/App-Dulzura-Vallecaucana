@@ -55,6 +55,11 @@ const taskSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    statePayment: {
+      type: String,
+      required: false,
+      default: "",
+    },
   },
   {
     timestamps: true,

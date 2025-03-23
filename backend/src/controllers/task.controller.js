@@ -28,6 +28,7 @@ export const createTask = async (req, res) => {
     portionOfProtein,
     portionOfSalad,
     userneedsextrajuice,
+    statePayment,
   } = req.body;
 
   // Calcular el valor de userNeedsPay
@@ -50,6 +51,7 @@ export const createTask = async (req, res) => {
     portionOfSalad,
     pay,
     userNeedsPay, // Guardar el valor calculado
+    statePayment,
     user: req.user.id,
   });
   const savedTask = await newTask.save();
