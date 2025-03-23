@@ -9,15 +9,21 @@ function LoginPage() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signin, errors: signinErrors, isAuthenticated } = useAuth();
+  const { signin, errors: signinErrors, isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   const onSubmit = handleSubmit((data) => {
     signin(data);
   });
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/lunch");
-  }, [isAuthenticated, navigate]);
+    if (isAuthenticated) {
+      if (user.isAdmin) {
+        navigate("/admin");
+      } else {
+        navigate("/lunch");
+      }
+    }
+  }, [isAuthenticated, navigate, user]);
 
   return (
     <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
