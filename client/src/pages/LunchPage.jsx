@@ -3,6 +3,7 @@ import { useLunch } from "../context/LunchContext";
 import SelloImagen from "../components/icos/CanceladoSello";
 import { obteinLunchByOrderID } from "../api/lunch";
 import Modal from "../components/modal";
+import "@github/relative-time-element";
 
 const LunchPage = () => {
   const { getLunchs, lunchs, verifyPaymentNequi, putLunch } = useLunch();
@@ -134,7 +135,7 @@ const LunchPage = () => {
             )}
             <h1 className="text-xl font-bold">{lunch.title}</h1>
             <p className="text-gray-600">
-              {new Date(lunch.date).toLocaleDateString()}
+              <relative-time datetime={lunch.date}></relative-time>
             </p>
             <p className="mt-2">{lunch.description}</p>
 
@@ -178,7 +179,8 @@ const LunchPage = () => {
               <strong>total a pagar:</strong> {lunch.userNeedsPay}
             </p>
             <small className="text-gray-500">
-              Actualizado: {new Date(lunch.updatedAt).toLocaleString()}
+              Actualizado:{" "}
+              <relative-time datetime={lunch.updatedAt}></relative-time>
             </small>
 
             {!lunch.pay && (
