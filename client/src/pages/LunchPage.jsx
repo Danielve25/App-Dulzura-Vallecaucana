@@ -5,13 +5,15 @@ import SelloImagen from "../components/icos/CanceladoSello";
 import Modal from "../components/modal";
 
 const LunchPage = () => {
-  const { getLunchs, lunchs, verifyPaymentNequi } = useLunch();
-  const [responsePayment, setResponsePayment] = useState(null);
+  const { getLunchs, lunchs, verifyPaymentNequi, obteinByOrderID } = useLunch();
+  const [orderId, setOrderId] = useState(null);
+  const [responsePayment, setResponsePayment] = useState({});
 
   useEffect(() => {
     getLunchs();
   }, []); // Asegurarse de que el array de dependencias esté vacío para que solo se ejecute una vez
 
+  //verificar pago, solo para meter la repuesta en un arreglo
   useEffect(() => {
     const verifyPayments = async () => {
       for (const lunch of lunchs) {
@@ -29,15 +31,20 @@ const LunchPage = () => {
   }, [lunchs]); // Ejecutar cuando cambie la lista de lunchs
 
   useEffect(() => {
-    if (responsePayment) {
-      if (
-        responsePayment.data.result.payload.transactions[0].transactionResponse
-          .state === "APPROVED"
-      ) {
-        console.log("pago aprovado");
-      }
+    if (responsePayment?.data?.result?.payload?.id) {
+      setOrderId(responsePayment.data.result.payload.id);
     }
-  }, [responsePayment]); // Se ejecuta cada vez que responsePayment cambia
+  }, [responsePayment]);
+
+  useEffect(() => {
+    if (orderId) {
+      const ObtainIDbyOrderID = async (params) => {
+        const res = await obteinByOrderID(params);
+        console.log("respuesta del  back", res);
+      };
+      ObtainIDbyOrderID(orderId);
+    }
+  }, [orderId]);
 
   if (lunchs.length === 0)
     return (

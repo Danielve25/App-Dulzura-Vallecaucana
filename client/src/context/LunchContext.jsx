@@ -3,6 +3,7 @@ import {
   createLunchRequest,
   getLunchsRequest,
   updateLunchRequest,
+  obteinLunchByOrderID,
 } from "../api/lunch";
 import { PayLunch, verifyPayment } from "../api/payment";
 const LunchContext = createContext();
@@ -64,6 +65,15 @@ export function LunchProvider({ children }) {
     }
   };
 
+  const obteinByOrderID = async () => {
+    try {
+      const res = await obteinLunchByOrderID();
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <LunchContext.Provider
       value={{
@@ -73,6 +83,7 @@ export function LunchProvider({ children }) {
         payLunch,
         putLunch,
         verifyPaymentNequi,
+        obteinByOrderID,
       }}
     >
       {children}
