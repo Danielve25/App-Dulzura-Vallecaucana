@@ -5,6 +5,7 @@ import SelloImagen from "../components/icos/CanceladoSello";
 function AdminLunchPage() {
   const { getAllLunchs, putLunch } = useLunch();
   const [groupedLunchs, setGroupedLunchs] = useState({});
+  const [loadingPay, setLoadingPay] = useState(null);
 
   const loadLunchs = async () => {
     try {
@@ -103,16 +104,24 @@ function AdminLunchPage() {
                   {!lunch.pay && (
                     <button
                       onClick={async () => {
+                        setLoadingPay(lunch._id);
                         try {
                           await putLunch({ pay: true }, lunch._id);
-                          await loadLunchs(); // Recargar los almuerzos
+                          await loadLunchs();
                         } catch (error) {
                           console.log(error);
+                        } finally {
+                          setLoadingPay(null);
                         }
                       }}
-                      className="w-full cursor-pointer my-4 px-4 py-2 bg-[#008000] text-white rounded transition-transform duration-300 hover:scale-110"
+                      className="w-full my-4 px-4 py-2 bg-[#008000] text-white rounded transition-transform duration-300 hover:scale-110 disabled:bg-[#338000] disabled:cursor-not-allowed"
+                      disabled={loadingPay === lunch._id}
                     >
-                      Pagar Almuerzo
+                      {loadingPay === lunch._id ? (
+                        <span className="loader"></span>
+                      ) : (
+                        "Pagar Almuerzo"
+                      )}
                     </button>
                   )}
                 </div>
