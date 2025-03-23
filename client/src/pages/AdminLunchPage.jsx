@@ -3,35 +3,34 @@ import { useLunch } from "../context/LunchContext";
 import SelloImagen from "../components/icos/CanceladoSello";
 
 function AdminLunchPage() {
-  const { getAllLunchs } = useLunch();
+  const { getAllLunchs, putLunch } = useLunch();
   const [groupedLunchs, setGroupedLunchs] = useState({});
 
-  useEffect(() => {
-    const loadLunchs = async () => {
-      try {
-        const lunches = await getAllLunchs();
-        if (lunches.data.length === 0) {
-          setGroupedLunchs({});
-          return;
-        }
-        // Agrupar por nombre de estudiante
-        const grouped = lunches.data.reduce((acc, lunch) => {
-          const studentName = lunch.user.NameStudent;
-          if (!acc[studentName]) {
-            acc[studentName] = [];
-          }
-          acc[studentName].push(lunch);
-          return acc;
-        }, {});
-        setGroupedLunchs(grouped);
-      } catch (error) {
-        console.error("Error cargando almuerzos:", error);
+  const loadLunchs = async () => {
+    try {
+      const lunches = await getAllLunchs();
+      if (lunches.data.length === 0) {
+        setGroupedLunchs({});
+        return;
       }
-    };
+      const grouped = lunches.data.reduce((acc, lunch) => {
+        const studentName = lunch.user.NameStudent;
+        if (!acc[studentName]) {
+          acc[studentName] = [];
+        }
+        acc[studentName].push(lunch);
+        return acc;
+      }, {});
+      setGroupedLunchs(grouped);
+    } catch (error) {
+      console.error("Error cargando almuerzos:", error);
+    }
+  };
+
+  useEffect(() => {
     loadLunchs();
   }, []);
 
-  // Añadir esta verificación
   if (Object.keys(groupedLunchs).length === 0) {
     return (
       <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
@@ -87,6 +86,7 @@ function AdminLunchPage() {
                     {lunch.userneedsextrajuice && <p>✓ Jugo extra</p>}
                     {lunch.portionOfProtein && <p>✓ Porción Proteína</p>}
                     {lunch.portionOfSalad && <p>✓ Porción Ensalada</p>}
+                    {lunch.EspecialStray && <p>✓ Bandeja Especial</p>}
                   </div>
 
                   <div className="mt-2 text-sm">
@@ -99,6 +99,22 @@ function AdminLunchPage() {
                     </p>
                     <p className="font-bold">Total: ${lunch.userNeedsPay}</p>
                   </div>
+
+                  {!lunch.pay && (
+                    <button
+                      onClick={async () => {
+                        try {
+                          await putLunch({ pay: true }, lunch._id);
+                          await loadLunchs(); // Recargar los almuerzos
+                        } catch (error) {
+                          console.log(error);
+                        }
+                      }}
+                      className="w-full cursor-pointer my-4 px-4 py-2 bg-[#008000] text-white rounded transition-transform duration-300 hover:scale-110"
+                    >
+                      Pagar Almuerzo
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
