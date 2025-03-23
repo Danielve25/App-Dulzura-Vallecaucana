@@ -70,6 +70,7 @@ export const login = async (req, res) => {
       PhoneNumber: userFound.PhoneNumber,
       creastedAt: userFound.createdAt,
       updatedAt: userFound.updatedAt,
+      isAdmin: userFound.isAdmin,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -93,6 +94,7 @@ export const profile = async (req, res) => {
     NameStudent: userFound.NameStudent,
     creastedAt: userFound.createdAt,
     updatedAt: userFound.updatedAt,
+    isAdmin: userFound.isAdmin,
   });
 };
 
