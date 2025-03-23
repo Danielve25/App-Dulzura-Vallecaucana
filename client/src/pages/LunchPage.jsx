@@ -13,11 +13,15 @@ const LunchPage = () => {
   const [currentLunchId, setCurrentLunchId] = useState(null);
   const [pendingOrders, setPendingOrders] = useState(new Set());
 
+  const totalAmount = lunchs.reduce(
+    (sum, lunch) => (!lunch.pay ? sum + (lunch.userNeedsPay || 0) : sum),
+    0
+  );
+
   useEffect(() => {
     getLunchs();
   }, []);
 
-  //verificar pago, solo para meter la repuesta en un arreglo
   useEffect(() => {
     const verifyPayments = async () => {
       for (const lunch of lunchs) {
@@ -26,10 +30,8 @@ const LunchPage = () => {
           const paymentData = { orderId: lunch.orderId };
           const response = await verifyPaymentNequi(paymentData);
           if (response) {
-            // Guardar el orderId actual antes de procesar la respuesta
             const currentOrder = lunch.orderId;
             setResponsePayment({ ...response, currentOrder });
-            console.log("respuesta del pago", response);
           }
         }
       }
@@ -45,7 +47,7 @@ const LunchPage = () => {
       const transactionState =
         responsePayment.data.result.payload.transactions[0].transactionResponse
           .state;
-      const currentOrder = responsePayment.currentOrder; // Usar el orderId guardado
+      const currentOrder = responsePayment.currentOrder;
 
       switch (transactionState) {
         case "APPROVED":
@@ -73,9 +75,6 @@ const LunchPage = () => {
         case "PENDING":
           setPendingOrders((prev) => new Set([...prev, currentOrder]));
           break;
-
-        default:
-          break;
       }
     }
   }, [responsePayment, currentLunchId, putLunch]);
@@ -86,7 +85,6 @@ const LunchPage = () => {
         try {
           const res = await obteinLunchByOrderID(orderId);
           setResponseLunchBack(res);
-          console.log("respuesta del back", res);
         } catch (error) {
           console.log(error);
         }
@@ -102,8 +100,7 @@ const LunchPage = () => {
           const updateData = {
             pay: true,
           };
-          const res = await putLunch(updateData, responseLunchBack.data._id);
-          console.log("Lunch actualizado:", res);
+          await putLunch(updateData, responseLunchBack.data._id);
         } catch (error) {
           console.log("Error actualizando lunch:", error);
         }
@@ -121,74 +118,37 @@ const LunchPage = () => {
 
   return (
     <div className="w-full p-4">
+      <h2 className="text-2xl font-bold mb-4">
+        Pendiente De Pago: {totalAmount}
+      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {lunchs.map((lunch) => (
           <div
             key={lunch._id}
             className="p-4 border rounded-lg shadow-md relative"
           >
-            {lunch.pay && (
-              <div className="">
-                <SelloImagen />
-                {/* Asegúrate de que `className` sea una cadena válida */}
-              </div>
-            )}
+            {lunch.pay && <SelloImagen />}
             <h1 className="text-xl font-bold">{lunch.title}</h1>
             <p className="text-gray-600">
               <relative-time datetime={lunch.date}></relative-time>
             </p>
             <p className="mt-2">{lunch.description}</p>
-
-            {lunch.userneedscomplete ? (
-              <p className="mt-2">
-                <strong>Almuerzo completo:</strong> Sí
-              </p>
-            ) : null}
-            {lunch.userneedstray ? (
-              <p>
-                <strong>Bandeja:</strong> Sí
-              </p>
-            ) : null}
-            {lunch.EspecialStray ? (
-              <p>
-                <strong>Bandeja Especial: </strong>si
-              </p>
-            ) : null}
-
-            {lunch.userneedsextrajuice ? (
-              <p>
-                <strong>Jugo extra:</strong> Sí
-              </p>
-            ) : null}
-            {lunch.portionOfProtein ? (
-              <p>
-                <strong>Porción de Proteína:</strong> Sí
-              </p>
-            ) : null}
-            {lunch.portionOfSalad ? (
-              <p>
-                <strong>Porción de Ensalada:</strong> Sí
-              </p>
-            ) : null}
             <p className="mt-2">
               <strong>Pago:</strong> {lunch.pay ? "Sí" : "No"}
             </p>
-
-            {lunch.orderId ? (
+            {lunch.orderId && (
               <p className="rounded-xl bg-[#f5f5f5] px-4 py-3">
-                <strong>numero de transaccion: </strong>
+                <strong>Número de transacción: </strong>
                 {lunch.orderId}
               </p>
-            ) : null}
-
+            )}
             <p>
-              <strong>total a pagar:</strong> {lunch.userNeedsPay}
+              <strong>Total a pagar:</strong> {lunch.userNeedsPay}
             </p>
             <small className="text-gray-500">
               Actualizado:{" "}
               <relative-time datetime={lunch.updatedAt}></relative-time>
             </small>
-
             {!lunch.pay && (
               <Modal
                 id_task={lunch._id}
@@ -200,7 +160,6 @@ const LunchPage = () => {
                 }
               />
             )}
-            {/*<LunchPaymentButton price={lunch.userNeedsPay} />*/}
           </div>
         ))}
       </div>
