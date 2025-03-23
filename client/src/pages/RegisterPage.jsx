@@ -22,7 +22,7 @@ function RegisterPage() {
   });
 
   return (
-    <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
+    <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full p-5">
       <div className="  max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
         {RegisterErrors.map((error, i) => (
           <div key={i} className="bg-red-500 p-2 text-white">
@@ -80,7 +80,7 @@ function RegisterPage() {
           </button>
         </form>
         <p className="flex justify-center">
-          <Link to="/login" className="text-sky-500 bg-white">
+          <Link to="/login" className="text-sky-500 ">
             ya tienes una cuenta?
           </Link>
         </p>
