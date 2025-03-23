@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useLunch } from "../context/LunchContext";
 import SelloImagen from "../components/icos/CanceladoSello";
-
+import { obteinLunchByOrderID } from "../api/lunch";
 import Modal from "../components/modal";
 
 const LunchPage = () => {
-  const { getLunchs, lunchs, verifyPaymentNequi, obteinByOrderID } = useLunch();
+  const { getLunchs, lunchs, verifyPaymentNequi, putLunch } = useLunch();
+  const [responseLunchBack, setResponseLunchBack] = useState();
   const [orderId, setOrderId] = useState(null);
   const [responsePayment, setResponsePayment] = useState({});
+  const [currentLunchId, setCurrentLunchId] = useState(null);
+  const [pendingOrders, setPendingOrders] = useState(new Set());
 
   useEffect(() => {
     getLunchs();
@@ -17,34 +20,87 @@ const LunchPage = () => {
   useEffect(() => {
     const verifyPayments = async () => {
       for (const lunch of lunchs) {
-        if (lunch.orderId) {
+        if (lunch.orderId && !lunch.pay) {
+          setCurrentLunchId(lunch._id);
           const paymentData = { orderId: lunch.orderId };
-          const response = await verifyPaymentNequi(paymentData); // Usar el nombre correcto de la función
+          const response = await verifyPaymentNequi(paymentData);
           if (response) {
-            setResponsePayment(response);
-            console.log(response);
+            // Guardar el orderId actual antes de procesar la respuesta
+            const currentOrder = lunch.orderId;
+            setResponsePayment({ ...response, currentOrder });
+            console.log("respuesta del pago", response);
           }
         }
       }
     };
     verifyPayments();
-  }, [lunchs]); // Ejecutar cuando cambie la lista de lunchs
+  }, [lunchs]);
 
   useEffect(() => {
-    if (responsePayment?.data?.result?.payload?.id) {
-      setOrderId(responsePayment.data.result.payload.id);
+    if (
+      responsePayment?.data?.result?.payload?.transactions?.[0]
+        ?.transactionResponse
+    ) {
+      const transactionState =
+        responsePayment.data.result.payload.transactions[0].transactionResponse
+          .state;
+      const currentOrder = responsePayment.currentOrder; // Usar el orderId guardado
+
+      if (transactionState === "APPROVED") {
+        setOrderId(responsePayment.data.result.payload.id);
+        setPendingOrders((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(currentOrder);
+          return newSet;
+        });
+      } else if (transactionState === "DECLINED" && currentLunchId) {
+        const updateData = { orderId: null };
+        putLunch(updateData, currentLunchId);
+        setCurrentLunchId(null);
+        setPendingOrders((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(currentOrder);
+          return newSet;
+        });
+      } else if (transactionState === "PENDING") {
+        setPendingOrders((prev) => new Set([...prev, currentOrder]));
+      }
     }
   }, [responsePayment]);
 
   useEffect(() => {
     if (orderId) {
-      const ObtainIDbyOrderID = async (params) => {
-        const res = await obteinByOrderID(params);
-        console.log("respuesta del  back", res);
+      const obtainID = async () => {
+        try {
+          const res = await obteinLunchByOrderID(orderId);
+          setResponseLunchBack(res);
+          console.log("respuesta del back", res);
+        } catch (error) {
+          console.log(error);
+        }
       };
-      ObtainIDbyOrderID(orderId);
+      obtainID();
+      getLunchs();
     }
   }, [orderId]);
+
+  useEffect(() => {
+    if (responseLunchBack) {
+      const updateLunchStatus = async () => {
+        try {
+          const updateData = {
+            pay: true,
+          };
+          const res = await putLunch(updateData, responseLunchBack.data._id);
+          console.log("Lunch actualizado:", res);
+        } catch (error) {
+          console.log("Error actualizando lunch:", error);
+        }
+      };
+      updateLunchStatus();
+      getLunchs();
+    }
+  }, [responseLunchBack]);
 
   if (lunchs.length === 0)
     return (
@@ -117,7 +173,15 @@ const LunchPage = () => {
             </small>
 
             {!lunch.pay && (
-              <Modal id_task={lunch._id} payAmount={lunch.userNeedsPay} />
+              <Modal
+                id_task={lunch._id}
+                payAmount={lunch.userNeedsPay}
+                disabled={
+                  pendingOrders.has(lunch.orderId) ||
+                  responsePayment?.data?.result?.payload?.transactions?.[0]
+                    ?.transactionResponse?.state === "APPROVED"
+                }
+              />
             )}
             {/*<LunchPaymentButton price={lunch.userNeedsPay} />*/}
           </div>

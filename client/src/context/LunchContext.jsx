@@ -50,7 +50,7 @@ export function LunchProvider({ children }) {
   const putLunch = async (DataPutLunch, lunchID) => {
     try {
       const res = await updateLunchRequest(DataPutLunch, lunchID);
-      console.log(res);
+      return res;
     } catch (error) {
       console.log(error);
     }
@@ -65,14 +65,14 @@ export function LunchProvider({ children }) {
     }
   };
 
-  const obteinByOrderID = async () => {
-    try {
-      const res = await obteinLunchByOrderID();
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const obteinByOrderID = async () => {
+  //   try {
+  //     const res = await obteinLunchByOrderID();
+  //     return res;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <LunchContext.Provider
@@ -83,7 +83,6 @@ export function LunchProvider({ children }) {
         payLunch,
         putLunch,
         verifyPaymentNequi,
-        obteinByOrderID,
       }}
     >
       {children}
