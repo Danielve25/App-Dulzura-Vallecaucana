@@ -11,7 +11,7 @@ const ListDay = () => {
     const fetchTodayLunchs = async () => {
       try {
         const response = await getAllLunchs();
-        const today = new Date().toISOString().split("T")[0]; // Obtener la fecha actual en formato YYYY-MM-DD
+        const today = new Date().toISOString().split("T")[0];
         const filteredLunchs = response.data.filter(
           (lunch) => lunch.date.split("T")[0] === today
         );
@@ -29,26 +29,26 @@ const ListDay = () => {
       "Número de Estudiante": index + 1,
       "Nombre del Estudiante": lunch.user.NameStudent,
       "Detalles del Pedido": [
-        lunch.userneedscomplete && "Almuerzo completo",
-        lunch.userneedstray && "Bandeja",
-        lunch.userneedsextrajuice && "Jugo extra",
-        lunch.portionOfProtein && "Porción de Proteína",
-        lunch.portionOfSalad && "Porción de Ensalada",
-        lunch.EspecialStray && "Bandeja especial",
+        lunch.userneedscomplete && "C",
+        lunch.userneedstray && "B",
+        lunch.userneedsextrajuice && "JJ",
+        lunch.portionOfProtein && "PT",
+        lunch.portionOfSalad && "E",
+        lunch.EspecialStray && "BE",
       ]
         .filter(Boolean)
-        .join(", "),
+        .join(","),
     }));
 
     const dateNow = Temporal.Now.plainDateISO();
     const formattedDate = `${String(dateNow.day).padStart(2, "0")}-${String(
       dateNow.month
-    ).padStart(2, "0")}-${dateNow.year}`; // Formato día/mes/año con ceros a la izquierda
+    ).padStart(2, "0")}-${dateNow.year}`;
 
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Pedidos del Día");
-    XLSX.writeFile(workbook, `pedidosDelDia_${formattedDate}.xlsx`); // Nombre del archivo con la fecha
+    XLSX.writeFile(workbook, `pedidosDelDia_${formattedDate}.xlsx`);
   };
 
   if (todayLunchs.length === 0) {
@@ -87,12 +87,16 @@ const ListDay = () => {
                 {lunch.user.NameStudent}
               </td>
               <td className="border border-gray-300 px-4 py-2">
-                {lunch.userneedscomplete && "Almuerzo completo, "}
-                {lunch.userneedstray && "Bandeja, "}
-                {lunch.userneedsextrajuice && "Jugo extra, "}
-                {lunch.portionOfProtein && "Porción de Proteína, "}
-                {lunch.portionOfSalad && "Porción de Ensalada"}
-                {lunch.EspecialStray && "bandeja especial"}
+                {[
+                  lunch.userneedscomplete && "C",
+                  lunch.userneedstray && "B",
+                  lunch.userneedsextrajuice && "JJ",
+                  lunch.portionOfProtein && "PT",
+                  lunch.portionOfSalad && "E",
+                  lunch.EspecialStray && "BE",
+                ]
+                  .filter(Boolean)
+                  .join(", ")}
               </td>
             </tr>
           ))}
