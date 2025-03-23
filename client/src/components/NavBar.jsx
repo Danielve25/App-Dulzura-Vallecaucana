@@ -49,16 +49,6 @@ function NavBar() {
               </Link>
             </li>
             <li>
-              <Link
-                className={
-                  location.pathname === "/lunch/pay" ? "active" : "hipervinculo"
-                }
-                to="/lunch/pay"
-              >
-                pagar almuerzo
-              </Link>
-            </li>
-            <li>
               <Link to="/" onClick={() => logout()}>
                 Cerrar sesión
               </Link>
