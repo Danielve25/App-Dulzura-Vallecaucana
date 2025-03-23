@@ -98,7 +98,7 @@ const LunchFormPage = () => {
                   {...register("userneedsextrajuice")}
                   className="mr-2"
                 />
-                Jugo extra
+                Jugo adicional
               </label>
 
               <label className="flex items-center">
