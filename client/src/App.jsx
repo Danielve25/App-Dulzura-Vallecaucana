@@ -9,6 +9,8 @@ import ProfilePage from "./pages/ProfilePage";
 import ProtectedRoute from "./ProtectedRoute";
 import { LunchProvider } from "./context/LunchContext";
 import NavBar from "./components/NavBar";
+import AdminLunchPage from "./pages/AdminLunchPage";
+
 function App() {
   return (
     <AuthProvider>
@@ -24,6 +26,7 @@ function App() {
               <Route path="/lunch" element={<LunchPage />} />
               <Route path="/lunch/new" element={<LunchFormPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/admin" element={<AdminLunchPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

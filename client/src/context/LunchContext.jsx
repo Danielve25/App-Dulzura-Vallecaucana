@@ -3,6 +3,7 @@ import {
   createLunchRequest,
   getLunchsRequest,
   updateLunchRequest,
+  getAllLunchsRequest,
 } from "../api/lunch";
 import { PayLunch, verifyPayment } from "../api/payment";
 import { LunchContext, useLunch as baseUseLunch } from "../utils/lunchUtils";
@@ -57,6 +58,16 @@ export function LunchProvider({ children }) {
     }
   };
 
+  const getAllLunchs = async () => {
+    try {
+      const res = await getAllLunchsRequest();
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   // const obteinByOrderID = async () => {
   //   try {
   //     const res = await obteinLunchByOrderID();
@@ -75,6 +86,7 @@ export function LunchProvider({ children }) {
         payLunch,
         putLunch,
         verifyPaymentNequi,
+        getAllLunchs,
       }}
     >
       {children}

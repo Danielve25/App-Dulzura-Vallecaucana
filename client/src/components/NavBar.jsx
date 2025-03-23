@@ -28,26 +28,48 @@ function NavBar() {
             <li className="text-xl uppercase">
               bienvenido: {user.NameStudent}
             </li>
-            <li className="resaltado">
-              <Link
-                className={
-                  location.pathname === "/lunch/new" ? "active" : "hipervinculo"
-                }
-                to="/lunch/new"
-              >
-                Pedir almuerzo
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={
-                  location.pathname === "/lunch" ? "active" : "hipervinculo"
-                }
-                to="/lunch"
-              >
-                Almuerzos
-              </Link>
-            </li>
+            {user.isAdmin ? (
+              <>
+                <li>
+                  <Link
+                    className={
+                      location.pathname === "/admin" ? "active" : "hipervinculo"
+                    }
+                    to="/admin"
+                  >
+                    Panel Admin
+                  </Link>
+                </li>
+                <li>
+                  <Link></Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="resaltado">
+                  <Link
+                    className={
+                      location.pathname === "/lunch/new"
+                        ? "active"
+                        : "hipervinculo"
+                    }
+                    to="/lunch/new"
+                  >
+                    Pedir almuerzo
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={
+                      location.pathname === "/lunch" ? "active" : "hipervinculo"
+                    }
+                    to="/lunch"
+                  >
+                    Almuerzos
+                  </Link>
+                </li>
+              </>
+            )}
             <li>
               <Link to="/" onClick={() => logout()}>
                 Cerrar sesión

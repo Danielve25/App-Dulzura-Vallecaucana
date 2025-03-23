@@ -34,7 +34,7 @@ const LunchPage = () => {
       }
     };
     verifyPayments();
-  }, [lunchs, verifyPaymentNequi]);
+  }, [lunchs]);
 
   useEffect(() => {
     if (
@@ -97,6 +97,7 @@ const LunchPage = () => {
         }
       };
       updateLunchStatus();
+      getLunchs();
     }
   }, [responseLunchBack, getLunchs, putLunch]);
 

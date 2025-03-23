@@ -15,3 +15,5 @@ export const obteinLunchByOrderID = (orderId) => {
   console.log("dato al enviar", orderId); // Mover el console.log dentro de la función
   return axios.get(`/lunch/order/${orderId}`);
 };
+
+export const getAllLunchsRequest = () => axios.get("/admin/lunchs");
