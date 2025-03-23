@@ -10,6 +10,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { LunchProvider } from "./context/LunchContext";
 import NavBar from "./components/NavBar";
 import AdminLunchPage from "./pages/AdminLunchPage";
+import ListDay from "./pages/ListDay";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
               <Route path="/lunch/new" element={<LunchFormPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/admin" element={<AdminLunchPage />} />
+              <Route path="/admin/listDay" element={<ListDay />} />
             </Route>
           </Routes>
         </BrowserRouter>
