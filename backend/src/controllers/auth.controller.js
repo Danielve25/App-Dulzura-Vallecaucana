@@ -10,7 +10,8 @@ export const register = async (req, res) => {
   const { NameStudent, PhoneNumber, isAdmin } = req.body;
 
   try {
-    const userFound = await User.findOne({ NameStudent });
+    const upperCaseName = NameStudent.toUpperCase();
+    const userFound = await User.findOne({ NameStudent: upperCaseName });
     if (userFound)
       return res
         .status(400)
@@ -19,7 +20,7 @@ export const register = async (req, res) => {
     const phoneNumberhash = await bcrypt.hash(PhoneNumber, 10);
 
     const NewUser = new User({
-      NameStudent,
+      NameStudent: upperCaseName,
       PhoneNumber: phoneNumberhash,
       isAdmin: isAdmin || false, // Asegurarse de que isAdmin sea false si no se proporciona
     });
@@ -46,7 +47,8 @@ export const login = async (req, res) => {
   const { NameStudent, PhoneNumber } = req.body;
 
   try {
-    const userFound = await User.findOne({ NameStudent });
+    const upperCaseName = NameStudent.toUpperCase();
+    const userFound = await User.findOne({ NameStudent: upperCaseName });
 
     if (!userFound)
       return res
