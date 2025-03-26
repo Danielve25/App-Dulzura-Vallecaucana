@@ -73,6 +73,7 @@ export const login = async (req, res) => {
       creastedAt: userFound.createdAt,
       updatedAt: userFound.updatedAt,
       isAdmin: userFound.isAdmin,
+      token: token,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
