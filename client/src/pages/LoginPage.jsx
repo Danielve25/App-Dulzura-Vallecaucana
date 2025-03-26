@@ -11,7 +11,9 @@ function LoginPage() {
   } = useForm();
   const { signin, errors: signinErrors, isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
+
   const onSubmit = handleSubmit((data) => {
+    data.NameStudent = data.NameStudent.toUpperCase(); // Convertir a mayúsculas antes de enviar
     signin(data);
   });
 

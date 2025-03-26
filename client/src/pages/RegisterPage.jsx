@@ -18,6 +18,7 @@ function RegisterPage() {
   }, [isAuthenticated, navigate]);
 
   const onSubmit = handleSubmit(async (values) => {
+    values.NameStudent = values.NameStudent.toUpperCase(); // Convierte el nombre a mayúsculas antes de enviarlo
     signup(values);
   });
 
@@ -40,7 +41,9 @@ function RegisterPage() {
               name="NameStudent"
               type="text"
               placeholder="Nombre"
-              {...register("NameStudent", { required: true })}
+              {...register("NameStudent", {
+                required: true,
+              })}
               className="w-full bg-white text-black h-14 mt-2 rounded-2xl px-4 text-[16px]"
             />
             {errors.NameStudent && (
