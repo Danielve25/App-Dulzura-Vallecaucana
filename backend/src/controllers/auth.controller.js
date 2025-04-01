@@ -15,7 +15,7 @@ export const register = async (req, res) => {
     if (userFound)
       return res
         .status(400)
-        .json(["no no no, ese ya existe intentalo con otro"]);
+        .json({ message: "no no no, ese ya existe intentalo con otro" });
 
     const phoneNumberhash = await bcrypt.hash(PhoneNumber, 10);
 
