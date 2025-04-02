@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
+import Login from "../Pages/Login";
+import Register from "../Pages/Register";
 
 const Stack = createStackNavigator();
 
