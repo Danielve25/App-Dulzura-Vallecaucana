@@ -37,6 +37,7 @@ export const register = async (req, res) => {
       isAdmin: userSaved.isAdmin,
       creastedAt: userSaved.createdAt,
       updatedAt: userSaved.updatedAt,
+      token: token,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
