@@ -1,5 +1,6 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import { useAuth } from "../context/AuthContext";
 import React from "react";
 import Label from "../components/Label";
 import { useNavigation } from "@react-navigation/native";
@@ -15,6 +16,7 @@ const Register = () => {
       PhoneNumber: "",
     },
   });
+  const { signup, errors: registerErrors } = useAuth();
 
   const navigator = useNavigation();
 
@@ -23,12 +25,21 @@ const Register = () => {
       NameStudent: data.NameStudent.toUpperCase(),
       PhoneNumber: data.PhoneNumber,
     };
-    console.log("Datos enviados:", formattedData);
+    signup(formattedData);
   };
 
   return (
     <View className="flex-1 justify-center items-center p-5 bg-white">
       <View className="w-full">
+        {registerErrors.length > 0 && (
+          <View className="mb-4 bg-red-500 flex justify-center items-center h-16">
+            {registerErrors.map((error, i) => (
+              <Text key={i} className="text-white text-lg text-center">
+                {error}
+              </Text>
+            ))}
+          </View>
+        )}
         <Text className="text-2xl font-bold mb-3">Registrarse</Text>
         <View className="mb-7">
           <Controller
