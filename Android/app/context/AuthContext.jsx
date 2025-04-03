@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext } from "react";
-import { registerRequest } from "../api/auth";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { registerRequest, loginRequest } from "../api/auth";
 
 const AuthContext = createContext();
 
@@ -16,6 +16,15 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
 
+  useEffect(() => {
+    if (errors.length > 0) {
+      const timer = setTimeout(() => {
+        setErrors([]);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errors]);
+
   const signup = async (user) => {
     try {
       setErrors([]); // Limpia los errores antes de intentar registrar
@@ -29,6 +38,17 @@ export const AuthProvider = ({ children }) => {
       console.log(errorMessage);
     }
   };
+  const signin = async (user) => {
+    try {
+      setErrors([]);
+      const res = await loginRequest(user);
+      console.log(res.data);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message;
+      setErrors(Array.isArray(errorMessage) ? errorMessage : [errorMessage]);
+      console.log(errorMessage);
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -36,6 +56,7 @@ export const AuthProvider = ({ children }) => {
         user,
         isAuthenticated,
         signup,
+        signin,
         errors,
       }}
     >

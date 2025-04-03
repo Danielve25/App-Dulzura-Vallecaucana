@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import React from "react";
 import Label from "../components/Label";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const {
@@ -18,16 +19,28 @@ const Login = () => {
 
   const navigator = useNavigation(); // Mover aquí la llamada a useNavigation
 
+  const { signin, errors: signinErrors } = useAuth();
+
   const onSubmit = (data) => {
     const formattedData = {
       NameStudent: data.NameStudent.toUpperCase(),
       PhoneNumber: data.PhoneNumber,
     };
-    console.log("Datos enviados:", formattedData);
+    signin(formattedData);
   };
   return (
     <View className="flex-1 justify-center items-center p-5 bg-white">
       <View className="w-full">
+        {signinErrors.length > 0 && (
+          <View className="mb-4 bg-red-500 flex justify-center items-center h-16">
+            {signinErrors.map((error, i) => (
+              <Text key={i} className="text-white text-lg text-center">
+                {error}
+              </Text>
+            ))}
+          </View>
+        )}
+
         <Text className="text-2xl font-bold mb-3">Iniciar Sesion</Text>
         <Controller
           control={control}
