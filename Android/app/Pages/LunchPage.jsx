@@ -2,6 +2,8 @@ import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native"; // Importar useFocusEffect
 import { getLunches } from "../api/lunch";
+import { formatDistanceToNow } from "date-fns";
+import { es } from "date-fns/locale"; // Importar el idioma español
 
 const LunchPage = () => {
   const [lunches, setLunches] = useState([]);
@@ -48,21 +50,27 @@ const LunchPage = () => {
         data={lunches}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
-          <View className="p-4 border my-2">
+          <View className="p-4 border-2 my-2 rounded-2xl">
             <Text className="font-bold text-[21px]">{item.title}</Text>
-
+            <Text className="text-[14px] mb-4 text-gray-600">
+              Creado{" "}
+              {formatDistanceToNow(new Date(item.createdAt), {
+                addSuffix: true,
+                locale: es, // Configurar el idioma español
+              })}
+            </Text>
             {item.EspecialStray && (
-              <Text className="text-[17px]">
+              <Text className="text-[17px] mb-4 font-bold">
                 Bandeja especial: {item.EspecialStray ? "Si" : null}
               </Text>
             )}
             {item.userneedscomplete && (
-              <Text className="text-[17px]">
+              <Text className="text-[17px] mb-4 font-bold">
                 Almuerzo Completo {item.userneedscomplete ? "Si" : null}
               </Text>
             )}
             {item.userneedstray && (
-              <Text className="text-[17px]">
+              <Text className="text-[17px] mb-4 font-bold">
                 Bandeja: {item.userneedstray ? "Si" : null}
               </Text>
             )}
@@ -84,6 +92,13 @@ const LunchPage = () => {
             <Text className="text-[17px]">pago: {item.pay ? "Si" : "No"}</Text>
             <Text className="text-[17px]">
               Valor a pagar: {item.userNeedsPay}
+            </Text>
+            <Text className="text-[14px] mb-4 text-gray-600">
+              Actualizado{" "}
+              {formatDistanceToNow(new Date(item.updatedAt), {
+                addSuffix: true,
+                locale: es, // Configurar el idioma español
+              })}
             </Text>
           </View>
         )}
