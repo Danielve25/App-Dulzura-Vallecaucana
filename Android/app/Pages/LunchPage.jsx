@@ -24,6 +24,10 @@ const LunchPage = () => {
     }, [])
   );
 
+  const calculateTotal = () => {
+    return lunches.reduce((total, item) => total + (item.userNeedsPay || 0), 0);
+  };
+
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center">
@@ -34,16 +38,56 @@ const LunchPage = () => {
   }
 
   return (
-    <View>
+    <View className="px-3">
+      <View className="p-4">
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+          Total a pagar: {calculateTotal()}
+        </Text>
+      </View>
       <FlatList
         data={lunches}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
-          <View>
-            <Text>{item.title}</Text>
-            <Text>{item.description}</Text>
+          <View className="p-4 border my-2">
+            <Text className="font-bold text-[21px]">{item.title}</Text>
+
+            {item.EspecialStray && (
+              <Text className="text-[17px]">
+                Bandeja especial: {item.EspecialStray ? "Si" : null}
+              </Text>
+            )}
+            {item.userneedscomplete && (
+              <Text className="text-[17px]">
+                Almuerzo Completo {item.userneedscomplete ? "Si" : null}
+              </Text>
+            )}
+            {item.userneedstray && (
+              <Text className="text-[17px]">
+                Bandeja: {item.userneedstray ? "Si" : null}
+              </Text>
+            )}
+            {item.userneedsextrajuice && (
+              <Text className="text-[17px]">
+                Jugo extra: {item.userneedsextrajuice ? "Si" : null}
+              </Text>
+            )}
+            {item.portionOfSalad && (
+              <Text className="text-[17px]">
+                Porcion de proteina: {item.portionOfProtein ? "Si" : null}
+              </Text>
+            )}
+            {item.portionOfSalad && (
+              <Text className="text-[17px]">
+                Porcion de ensalada: {item.portionOfSalad ? "Si" : null}
+              </Text>
+            )}
+            <Text className="text-[17px]">pago: {item.pay ? "Si" : "No"}</Text>
+            <Text className="text-[17px]">
+              Valor a pagar: {item.userNeedsPay}
+            </Text>
           </View>
         )}
+        contentContainerStyle={{ paddingBottom: 50 }}
       />
     </View>
   );
