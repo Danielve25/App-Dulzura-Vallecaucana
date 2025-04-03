@@ -133,6 +133,47 @@ const LunchPage = () => {
               <relative-time datetime={lunch.date}></relative-time>
             </p>
             <p className="mt-2">{lunch.description}</p>
+            {lunch.userneedscomplete && (
+              <p className="rounded-xl ">
+                <strong>
+                  Almuerzo Completo: {lunch.userneedscomplete ? "Si" : null}
+                </strong>
+              </p>
+            )}
+
+            {lunch.userneedstray && (
+              <p className="rounded-xl ">
+                <strong>
+                  Bandeja Normal: {lunch.userneedstray ? "Si" : null}
+                </strong>
+              </p>
+            )}
+            {lunch.EspecialStray && (
+              <p className="rounded-xl ">
+                <strong>
+                  Bandeja Especial: {lunch.EspecialStray ? "Si" : null}
+                </strong>
+              </p>
+            )}
+            {lunch.portionOfProtein && (
+              <p className="rounded-xl ">
+                <strong>
+                  porcion de proteina: {lunch.portionOfProtein ? "Si" : null}
+                </strong>
+              </p>
+            )}
+            {lunch.portionOfSalad && (
+              <p className="rounded-xl ">
+                <strong>
+                  porcion de ensalada: {lunch.portionOfSalad ? "Si" : null}
+                </strong>
+              </p>
+            )}
+            {lunch.userNeedsExtra && (
+              <p className="rounded-xl ">
+                <strong>Extra: {lunch.userNeedsExtra ? "Si" : null}</strong>
+              </p>
+            )}
             <p className="mt-2">
               <strong>Pago:</strong> {lunch.pay ? "Sí" : "No"}
             </p>
