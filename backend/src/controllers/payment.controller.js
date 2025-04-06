@@ -14,6 +14,18 @@ const dateGenrated = Temporal.Now.zonedDateTimeISO()
   .toPlainDateTime()
   .toString();
 
+const generatePayUSignature = (
+  apiKey,
+  merchantId,
+  referenceCode,
+  txValue,
+  currency
+) => {
+  const formattedValue = parseFloat(txValue).toFixed(2);
+  const signatureString = `${apiKey}~${merchantId}~${referenceCode}~${formattedValue}~${currency}`;
+  return crypto.createHash("md5").update(signatureString).digest("hex");
+};
+
 export const NequiPayment = async (req, res) => {
   const { phoneNumber, payAmount, payerName, CCnumber } = req.body;
 
@@ -30,18 +42,19 @@ export const NequiPayment = async (req, res) => {
     const decoded = jwt.verify(token, configPayU.TOKEN_SECRET); // Usar la clave secreta correcta
     const userId = decoded.id;
 
-    const apiKey = configPayU.payUapiKey;
-    const merchantId = configPayU.payUmerchatId;
-    const referenceCode = `PRODUCT_TEST_${dateGenrated}`;
-    const txValue = payAmount;
     const currency = "COP";
+    const apiKey = configPayU.payUapiKey; // Obtener apiKey desde configPayU
+    const merchantId = configPayU.payUmerchatId; // Obtener merchantId desde configPayU
+    const referenceCode = `PRODUCT_TEST_${dateGenrated}`; // Generar referenceCode dinámicamente
+    const txValue = payAmount; // Usar el valor de payAmount como txValue
 
-    const formattedValue = parseFloat(txValue).toFixed(2);
-    const signatureString = `${apiKey}~${merchantId}~${referenceCode}~${formattedValue}~${currency}`;
-    const signatureGenrated = crypto
-      .createHash("md5")
-      .update(signatureString)
-      .digest("hex");
+    const signatureGenrated = generatePayUSignature(
+      apiKey,
+      merchantId,
+      referenceCode,
+      txValue,
+      currency
+    );
 
     const jsonNequi = {
       language: "es",
@@ -53,15 +66,15 @@ export const NequiPayment = async (req, res) => {
       transaction: {
         order: {
           accountId: configPayU.payUaccountId,
-          referenceCode: `PRODUCT_TEST_${dateGenrated}`,
+          referenceCode: referenceCode, // Usar referenceCode generado
           description: "Payment test description",
           language: "es",
           signature: signatureGenrated,
           notifyUrl: "http://www.payu.com/notify",
           additionalValues: {
             TX_VALUE: {
-              value: payAmount,
-              currency: "COP",
+              value: txValue, // Usar txValue definido
+              currency: currency,
             },
           },
           buyer: {
