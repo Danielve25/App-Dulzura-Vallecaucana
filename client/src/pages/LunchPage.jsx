@@ -169,9 +169,11 @@ const LunchPage = () => {
                 </strong>
               </p>
             )}
-            {lunch.userNeedsExtra && (
+            {lunch.userneedsextrajuice && (
               <p className="rounded-xl ">
-                <strong>Extra: {lunch.userNeedsExtra ? "Si" : null}</strong>
+                <strong>
+                  Jugo Extra: {lunch.userneedsextrajuice ? "Si" : null}
+                </strong>
               </p>
             )}
             <p className="mt-2">
