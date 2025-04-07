@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { obteinLunchByOrderID } from "../api/lunch";
-
+import { editPaymentStatus } from "../api/payment";
 const usePayment = (lunchs, verifyPaymentNequi, putLunch) => {
   const [responsePayment, setResponsePayment] = useState({});
   const [currentLunchId, setCurrentLunchId] = useState(null);
@@ -44,6 +44,27 @@ const usePayment = (lunchs, verifyPaymentNequi, putLunch) => {
             newSet.delete(currentOrder);
             return newSet;
           });
+
+          const upDateNewData = async () => {
+            try {
+              const editData = {
+                OrderId: currentOrder,
+                payment: {
+                  status: transactionState,
+                },
+              };
+
+              const res = await editPaymentStatus(editData);
+              console.log("Respuesta de actualización de estado de pago:", res);
+
+              // Recargar la ventana después de actualizar el estado de pago
+            } catch (error) {
+              console.log("Error actualizando estado de pago:", error);
+            }
+          };
+
+          upDateNewData();
+
           break;
 
         case "DECLINED":
@@ -56,6 +77,19 @@ const usePayment = (lunchs, verifyPaymentNequi, putLunch) => {
               newSet.delete(currentOrder);
               return newSet;
             });
+
+            const upDateNewData = async () => {
+              try {
+                await editPaymentStatus({
+                  OrderId: currentOrder,
+                  status: transactionState,
+                });
+              } catch (error) {
+                console.log("Error actualizando estado de pago:", error);
+              }
+            };
+
+            upDateNewData(); // Ahora está dentro del bloque if
           }
           break;
 
@@ -93,6 +127,8 @@ const usePayment = (lunchs, verifyPaymentNequi, putLunch) => {
         }
       };
       updateLunchStatus();
+
+      window.location.reload();
     }
   }, [responseLunchBack, putLunch]);
 

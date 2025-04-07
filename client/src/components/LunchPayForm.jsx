@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useLunch } from "../context/LunchContext";
 import CloseIcon from "./icos/CloseIcon";
+import { savePayment } from "../api/payment";
 const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
   const {
     register,
@@ -30,6 +31,16 @@ const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
         orderId: response.data.transactionResponse.orderId,
       };
       console.log(jsonPut);
+
+      const jsonSave = {
+        orderId: response.data.transactionResponse.orderId.toString(),
+        status: response.data.transactionResponse.state,
+      };
+
+      console.log(jsonSave);
+      const saveResponse = await savePayment(jsonSave);
+      console.log(saveResponse);
+
       const putResponse = await putLunch(jsonPut, id_task);
       console.log(putResponse);
     } catch (error) {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import crypto from "crypto";
 import User from "../models/user.model.js";
+import Transaction from "../models/transaction.model.js"; // Asegúrate de importar el modelo correctamente
 import { EnvConfig } from "../config.js";
 import { Temporal } from "temporal-polyfill";
 import { v4 as uuidv4 } from "uuid"; // Importar la librería para generar UUID
@@ -145,5 +146,56 @@ export const verifyNequiPaymentLunch = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error interno del servidor" }); // Agregar un mensaje de error consistente
+  }
+};
+
+export const saveTransaction = async (req, res) => {
+  try {
+    const { orderId, status } = req.body;
+
+    const transaction = new Transaction({
+      orderId,
+      status,
+    });
+
+    await transaction.save();
+    res.status(201).json({ message: "Transacción guardada exitosamente." });
+  } catch (error) {
+    console.error("Error al guardar la transacción:", error);
+    res
+      .status(500)
+      .json({ message: "Error al guardar la transacción.", error });
+  }
+};
+
+export const updateTransaccion = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    // Validar que se proporcione el estado
+    if (!status) {
+      return res
+        .status(400)
+        .json({ message: "El campo 'status' es obligatorio." });
+    }
+
+    const updatedTransaccion = await Transaction.findOneAndUpdate(
+      { orderId },
+      { status },
+      { new: true } // Retorna el documento actualizado
+    );
+
+    if (!updatedTransaccion) {
+      return res.status(404).json({ message: "Transacción no encontrada." });
+    }
+
+    res.status(200).json({
+      message: "Transacción actualizada exitosamente.",
+      updatedTransaccion,
+    });
+  } catch (error) {
+    console.error("Error al actualizar la transacción:", error);
+    res.status(500).json({ message: "Error interno del servidor.", error });
   }
 };
