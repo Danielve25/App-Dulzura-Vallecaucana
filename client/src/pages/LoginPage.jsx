@@ -35,7 +35,7 @@ function LoginPage() {
             {error}
           </div>
         ))}
-        <h1 className="text-2xl font-bold">Login</h1>
+        <h1 className="text-2xl font-bold">Iniciar Sesión</h1>
 
         <form onSubmit={onSubmit}>
           <div className="mb-[16px]">
@@ -51,18 +51,18 @@ function LoginPage() {
               className="w-full bg-white text-black h-14 mt-2 rounded-2xl px-4 text-[16px]"
             />
             {errors.NameStudent && (
-              <p className="text-red-500 text-[14px]">Nombre es requerido</p>
+              <p className="text-red-500 text-[14px]">El nombre es requerido</p>
             )}
           </div>
           <div className=" mt-4">
             <label htmlFor="PhoneNumber" className="label text-[14px]">
-              Numero de telefono
+              Número de Teléfono
             </label>
             <input
               id="PhoneNumber"
               type="text"
               name="PhoneNumber"
-              placeholder="Phone Number"
+              placeholder="Número de Teléfono"
               {...register("PhoneNumber", {
                 required: true,
                 pattern: /^[0-9]*$/, // Solo permite números
@@ -74,7 +74,7 @@ function LoginPage() {
             />
             {errors.PhoneNumber && (
               <p className="text-red-500 text-[14px]">
-                numero de telefono es requerido
+                El número de teléfono es requerido
               </p>
             )}
           </div>
@@ -83,12 +83,12 @@ function LoginPage() {
             className="cursor-pointer w-full h-14 my-6 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[16px] "
             type="submit"
           >
-            Login
+            Iniciar Sesión
           </button>
         </form>
         <p className="flex justify-center">
           <Link to="/register" className="text-sky-500 ">
-            no tienes una cuenta?
+            ¿No tienes una cuenta?
           </Link>
         </p>
       </div>

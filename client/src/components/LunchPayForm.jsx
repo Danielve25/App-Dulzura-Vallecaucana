@@ -71,11 +71,12 @@ const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
         <form onSubmit={onSubmit}>
           <div className="mb-[16px]">
             <label htmlFor="payerName" className="label text-[14px]">
-              nombre
+              Nombre
             </label>
             <input
               id="payerName"
               type="text"
+              placeholder="Nombre"
               className="w-full bg-white text-black h-14 mt-2 rounded-2xl px-4 text-[16px]"
               {...register("payerName", {
                 required: "El nombre es obligatorio",
@@ -89,11 +90,12 @@ const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
           </div>
           <div className="mb-[16px]">
             <label htmlFor="PhoneNumber" className="label">
-              numero de telefono
+              Número de Teléfono
             </label>
             <input
               id="PhoneNumber"
               type="text"
+              placeholder="Número de Teléfono"
               className="w-full bg-white text-black h-14 mt-2 rounded-2xl px-4 text-[16px]"
               {...register("phoneNumber", {
                 required: "El número de teléfono es obligatorio",
@@ -107,11 +109,12 @@ const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
           </div>
           <div className="mb-[16px]">
             <label htmlFor="CCnumber" className="label">
-              numero de cedula
+              Número de Cédula
             </label>
             <input
               id="CCnumber"
               type="text"
+              placeholder="Número de Cédula"
               className="w-full bg-white text-black h-14 mt-2 rounded-2xl px-4 text-[16px]"
               {...register("CCnumber", {
                 required: "El número de cédula es obligatorio",
@@ -129,7 +132,7 @@ const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
             className="cursor-pointer w-full h-14 my-6 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[16px]"
             disabled={isProcessing} // Deshabilitar botón si está procesando
           >
-            pagar almuerzos <small>(nequi)</small>
+            Pagar Almuerzos <small>(Nequi)</small>
           </button>
         </form>
       </div>

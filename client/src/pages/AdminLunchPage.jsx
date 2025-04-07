@@ -61,7 +61,7 @@ function AdminLunchPage() {
             <summary className="text-xl p-4 cursor-pointer hover:bg-gray-50">
               <span className="font-bold">{studentName}</span>
               <span className="ml-4 text-sm">
-                Total: ${totalAmount} - Pendiente de pago: {pendingPayments}
+                Total: ${totalAmount} - Pendiente de Pago: {pendingPayments}
               </span>
             </summary>
 

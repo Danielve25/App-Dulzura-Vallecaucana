@@ -96,7 +96,7 @@ const LunchFormPage = () => {
               <small>
                 <details className="cursor-pointer">
                   <summary>detalles</summary>
-                  <p>un almuerzo sin sopa, cuesta 13.000</p>
+                  <p>Un almuerzo sin sopa, cuesta 13.000</p>
                 </details>
               </small>
 
@@ -106,13 +106,13 @@ const LunchFormPage = () => {
                   {...register("EspecialStray")}
                   className="mr-2"
                 />
-                bandeja especial
+                Bandeja especial
               </label>
 
               <small>
                 <details className="cursor-pointer">
                   <summary>detalles</summary>
-                  <p>bandeja normal con una carne y media</p>
+                  <p>Bandeja normal con una carne y media</p>
                 </details>
               </small>
 
@@ -131,7 +131,7 @@ const LunchFormPage = () => {
                   {...register("portionOfProtein")}
                   className="mr-2"
                 />
-                Porcion de Proteina
+                Porción de Proteína
               </label>
 
               <label className="flex items-center">
@@ -140,7 +140,7 @@ const LunchFormPage = () => {
                   {...register("portionOfSalad")}
                   className="mr-2"
                 />
-                Porcion de Ensalada
+                Porción de Ensalada
               </label>
             </div>
             {errors.options && (
@@ -151,7 +151,7 @@ const LunchFormPage = () => {
           </div>
 
           <button className="cursor-pointer w-full bg-green-500 font-bold p-2 rounded-2xl">
-            pedir
+            Pedir
           </button>
         </form>
         {submitted && (

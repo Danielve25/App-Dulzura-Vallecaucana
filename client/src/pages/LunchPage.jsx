@@ -25,14 +25,14 @@ const LunchPage = () => {
   if (lunchs.length === 0)
     return (
       <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
-        <h1> NO TIENES PEDIDOS</h1>
+        <h1>NO TIENES PEDIDOS</h1>
       </div>
     );
 
   return (
     <div className="w-full p-4">
       <h2 className="text-2xl font-bold mb-4">
-        Pendiente De Pago: {totalAmount}
+        Pendiente de Pago: {totalAmount}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {lunchs.map((lunch) => (
@@ -49,7 +49,7 @@ const LunchPage = () => {
             {lunch.userneedscomplete && (
               <p className="rounded-xl ">
                 <strong>
-                  Almuerzo Completo: {lunch.userneedscomplete ? "Si" : null}
+                  Almuerzo Completo: {lunch.userneedscomplete ? "Sí" : null}
                 </strong>
               </p>
             )}
@@ -57,35 +57,35 @@ const LunchPage = () => {
             {lunch.userneedstray && (
               <p className="rounded-xl ">
                 <strong>
-                  Bandeja Normal: {lunch.userneedstray ? "Si" : null}
+                  Bandeja Normal: {lunch.userneedstray ? "Sí" : null}
                 </strong>
               </p>
             )}
             {lunch.EspecialStray && (
               <p className="rounded-xl ">
                 <strong>
-                  Bandeja Especial: {lunch.EspecialStray ? "Si" : null}
+                  Bandeja Especial: {lunch.EspecialStray ? "Sí" : null}
                 </strong>
               </p>
             )}
             {lunch.portionOfProtein && (
               <p className="rounded-xl ">
                 <strong>
-                  porcion de proteina: {lunch.portionOfProtein ? "Si" : null}
+                  Porción de Proteína: {lunch.portionOfProtein ? "Sí" : null}
                 </strong>
               </p>
             )}
             {lunch.portionOfSalad && (
               <p className="rounded-xl ">
                 <strong>
-                  porcion de ensalada: {lunch.portionOfSalad ? "Si" : null}
+                  Porción de Ensalada: {lunch.portionOfSalad ? "Sí" : null}
                 </strong>
               </p>
             )}
             {lunch.userneedsextrajuice && (
               <p className="rounded-xl ">
                 <strong>
-                  Jugo Extra: {lunch.userneedsextrajuice ? "Si" : null}
+                  Jugo Extra: {lunch.userneedsextrajuice ? "Sí" : null}
                 </strong>
               </p>
             )}
@@ -94,12 +94,12 @@ const LunchPage = () => {
             </p>
             {lunch.orderId && (
               <p className="rounded-xl bg-[#f5f5f5] px-4 py-3">
-                <strong>Número de transacción: </strong>
+                <strong>Número de Transacción: </strong>
                 {lunch.orderId}
               </p>
             )}
             <p>
-              <strong>Total a pagar:</strong> {lunch.userNeedsPay}
+              <strong>Total a Pagar:</strong> {lunch.userNeedsPay}
             </p>
             <small className="text-gray-500">
               Actualizado:{" "}

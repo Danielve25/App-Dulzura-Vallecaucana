@@ -26,7 +26,7 @@ function NavBar() {
         {isAuthenticated ? (
           <>
             <li className="text-xl uppercase">
-              bienvenido: {user.NameStudent}
+              Bienvenido: {user.NameStudent}
             </li>
             {user.isAdmin ? (
               <>
@@ -49,7 +49,7 @@ function NavBar() {
                     }
                     to="/admin/listDay"
                   >
-                    lista del dia
+                    Lista del Día
                   </Link>
                 </li>
               </>
@@ -64,7 +64,7 @@ function NavBar() {
                     }
                     to="/lunch/new"
                   >
-                    Pedir almuerzo
+                    Pedir Almuerzo
                   </Link>
                 </li>
                 <li>
@@ -81,7 +81,7 @@ function NavBar() {
             )}
             <li>
               <Link to="/" onClick={() => logout()}>
-                Cerrar sesión
+                Cerrar Sesión
               </Link>
             </li>
           </>
@@ -94,7 +94,7 @@ function NavBar() {
                 }
                 to="/"
               >
-                inicio
+                Inicio
               </Link>
             </li>
             <li>
@@ -104,7 +104,7 @@ function NavBar() {
                 }
                 to="/login"
               >
-                Inicio de Sesion
+                Iniciar Sesión
               </Link>
             </li>
             <li>
