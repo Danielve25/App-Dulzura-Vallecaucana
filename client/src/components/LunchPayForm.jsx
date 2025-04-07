@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLunch } from "../context/LunchContext";
 import CloseIcon from "./icos/CloseIcon";
 import { savePayment } from "../api/payment";
+
 const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
+  const [isProcessing, setIsProcessing] = useState(false); // Estado para manejar el procesamiento
   const {
     register,
     handleSubmit,
@@ -13,6 +15,7 @@ const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
   const { payLunch, putLunch } = useLunch(); // Añadir los paréntesis para llamar al hook
 
   const onSubmit = handleSubmit(async (data) => {
+    setIsProcessing(true); // Activar estado de procesamiento
     const stringifiedData = {
       payerName: String(data.payerName),
       phoneNumber: String(data.phoneNumber),
@@ -45,6 +48,8 @@ const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
       console.log(putResponse);
     } catch (error) {
       console.error("Error al procesar el pago:", error);
+    } finally {
+      setIsProcessing(false); // Desactivar estado de procesamiento
     }
   });
 
@@ -58,6 +63,11 @@ const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
           <CloseIcon className="mb-2" />
         </button>
         <h1 className="text-2xl font-bold">Pagar Almuerzo</h1>
+        {isProcessing && (
+          <div className="mb-4 text-center text-blue-500 font-bold">
+            El pago se está procesando...
+          </div>
+        )}
         <form onSubmit={onSubmit}>
           <div className="mb-[16px]">
             <label htmlFor="payerName" className="label text-[14px]">
@@ -116,7 +126,8 @@ const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
           <input type="hidden" value={payAmount} {...register("payAmount")} />
           <button
             type="submit"
-            className="cursor-pointer w-full h-14 my-6 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[16px] "
+            className="cursor-pointer w-full h-14 my-6 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[16px]"
+            disabled={isProcessing} // Deshabilitar botón si está procesando
           >
             pagar almuerzos <small>(nequi)</small>
           </button>

@@ -82,8 +82,11 @@ const usePayment = (lunchs, verifyPaymentNequi, putLunch) => {
               try {
                 await editPaymentStatus({
                   OrderId: currentOrder,
-                  status: transactionState,
+                  payment: {
+                    status: transactionState,
+                  },
                 });
+                // Recargar la ventana después del put
               } catch (error) {
                 console.log("Error actualizando estado de pago:", error);
               }
