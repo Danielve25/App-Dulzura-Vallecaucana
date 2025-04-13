@@ -48,7 +48,7 @@ function AdminLunchPage() {
 
       {Object.entries(groupedLunchs).map(([studentName, lunchs]) => {
         const totalAmount = lunchs.reduce(
-          (sum, lunch) => sum + lunch.userNeedsPay,
+          (sum, lunch) => (!lunch.pay ? sum + lunch.userNeedsPay : sum),
           0
         );
         const pendingPayments = lunchs.filter((lunch) => !lunch.pay).length;
@@ -61,7 +61,8 @@ function AdminLunchPage() {
             <summary className="text-xl p-4 cursor-pointer hover:bg-gray-50">
               <span className="font-bold">{studentName}</span>
               <span className="ml-4 text-sm">
-                Total: ${totalAmount} - Pendiente de Pago: {pendingPayments}
+                Total A Pagar: ${totalAmount} - Pendiente de Pago:{" "}
+                {pendingPayments}
               </span>
             </summary>
 
