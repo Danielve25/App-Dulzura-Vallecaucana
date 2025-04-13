@@ -3,6 +3,7 @@ import { useLunch } from "../context/LunchContext";
 import SelloImagen from "../components/icos/CanceladoSello";
 import Modal from "../components/modal";
 import usePayment from "../hooks/usePayment";
+import Menu from "../components/Menu";
 import "@github/relative-time-element";
 
 const LunchPage = () => {
@@ -31,6 +32,7 @@ const LunchPage = () => {
 
   return (
     <div className="w-full p-4">
+      <Menu />
       <h2 className="text-2xl font-bold mb-4">
         Pendiente de Pago: {totalAmount}
       </h2>

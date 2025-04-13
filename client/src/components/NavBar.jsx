@@ -52,6 +52,18 @@ function NavBar() {
                     Lista del Día
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    className={
+                      location.pathname === "/admin/create/menu"
+                        ? "active"
+                        : "hipervinculo"
+                    }
+                    to="/admin/create/menu"
+                  >
+                    Crear Menu
+                  </Link>
+                </li>
               </>
             ) : (
               <>
