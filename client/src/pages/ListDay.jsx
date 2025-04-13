@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLunch } from "../context/LunchContext";
-import ExcelJS from "exceljs";
+import * as XLSX from "xlsx";
 import { Temporal } from "temporal-polyfill";
 
 const ListDay = () => {
@@ -24,7 +24,7 @@ const ListDay = () => {
     fetchTodayLunchs();
   }, []);
 
-  const downloadExcel = async () => {
+  const downloadExcel = () => {
     const data = todayLunchs.map((lunch, index) => ({
       "Número de Estudiante": index + 1,
       "Nombre del Estudiante": lunch.user.NameStudent,
@@ -45,32 +45,10 @@ const ListDay = () => {
       dateNow.month
     ).padStart(2, "0")}-${dateNow.year}`;
 
-    // Crear un libro de trabajo con ExcelJS
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Pedidos del Día");
-
-    // Definir las columnas
-    worksheet.columns = [
-      { header: "Número de Estudiante", key: "numero_estudiante", width: 20 },
-      { header: "Nombre del Estudiante", key: "nombre_estudiante", width: 30 },
-      { header: "Detalles del Pedido", key: "detalles_pedido", width: 50 },
-    ];
-
-    // Agregar filas de datos
-    data.forEach((row) => {
-      worksheet.addRow(row);
-    });
-
-    // Generar el archivo Excel
-    workbook.xlsx.writeBuffer().then((buffer) => {
-      const blob = new Blob([buffer], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `pedidosDelDia_${formattedDate}.xlsx`;
-      link.click();
-    });
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Pedidos del Día");
+    XLSX.writeFile(workbook, `pedidosDelDia_${formattedDate}.xlsx`);
   };
 
   if (todayLunchs.length === 0) {
