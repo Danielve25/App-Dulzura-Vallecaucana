@@ -28,15 +28,16 @@ function LoginPage() {
   }, [isAuthenticated, navigate, user]);
 
   return (
-    <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full p-5">
-      <div className="max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
+    <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full p-5">
+      <section className="max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
         {signinErrors.map((error, i) => (
           <div key={i} className="bg-red-500 p-2 text-white text">
             {error}
           </div>
         ))}
-        <h1 className="text-2xl font-bold">Iniciar Sesión</h1>
-
+        <header>
+          <h1 className="text-2xl font-bold">Iniciar Sesión</h1>
+        </header>
         <form onSubmit={onSubmit}>
           <div className="mb-[16px]">
             <label htmlFor="NameStudent" className="label text-[14px]">
@@ -86,13 +87,13 @@ function LoginPage() {
             Iniciar Sesión
           </button>
         </form>
-        <p className="flex justify-center">
-          <Link to="/register" className="text-sky-500 ">
+        <footer className="flex justify-center">
+          <Link to="/register" className="text-sky-500">
             ¿No tienes una cuenta?
           </Link>
-        </p>
-      </div>
-    </div>
+        </footer>
+      </section>
+    </main>
   );
 }
 

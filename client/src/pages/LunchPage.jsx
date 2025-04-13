@@ -25,20 +25,22 @@ const LunchPage = () => {
 
   if (lunchs.length === 0)
     return (
-      <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
+      <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
         <h1>NO TIENES PEDIDOS</h1>
-      </div>
+      </main>
     );
 
   return (
-    <div className="w-full p-4">
+    <main className="w-full p-4">
       <Menu />
-      <h2 className="text-2xl font-bold mb-4">
-        Pendiente de Pago: {totalAmount}
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <header>
+        <h2 className="text-2xl font-bold mb-4">
+          Pendiente de Pago: {totalAmount}
+        </h2>
+      </header>
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {lunchs.map((lunch) => (
-          <div
+          <article
             key={lunch._id}
             className="p-4 border rounded-lg shadow-md relative"
           >
@@ -118,10 +120,10 @@ const LunchPage = () => {
                 }
               />
             )}
-          </div>
+          </article>
         ))}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

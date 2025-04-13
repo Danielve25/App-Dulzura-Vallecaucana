@@ -25,15 +25,18 @@ const CreateNewMenu = () => {
       alert(`Error al crear el menu: ${err.message}`);
     }
   });
-  return (
-    <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
-      <div className="max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
-        <h1 className="text-2xl font-bold">Crear Menu</h1>
-        <form action="submit" onSubmit={onSubmit}>
-          <label htmlFor=""></label>
 
+  return (
+    <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
+      <section className="max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
+        <header>
+          <h1 className="text-2xl font-bold">Crear Menu</h1>
+        </header>
+        <form action="submit" onSubmit={onSubmit}>
+          <label htmlFor="Descripcion" className="sr-only">
+            Descripción del almuerzo
+          </label>
           <textarea
-            name=""
             className="w-full bg-white focus:outline-black p-2 h-44 rounded-md my-3"
             id="Descripcion"
             placeholder="Descripcion del almuerzo"
@@ -51,8 +54,9 @@ const CreateNewMenu = () => {
             Crear
           </button>
         </form>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
+
 export default CreateNewMenu;

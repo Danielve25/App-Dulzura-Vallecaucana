@@ -59,9 +59,11 @@ const LunchFormPage = () => {
   }, [submitted]);
 
   return (
-    <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
-      <div className="max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
-        <h1 className="text-2xl font-bold">Pedir Almuerzo</h1>
+    <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
+      <section className="max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
+        <header>
+          <h1 className="text-2xl font-bold">Pedir Almuerzo</h1>
+        </header>
         <form onSubmit={onSubmit}>
           <div className="mt-4">
             <label className="label" htmlFor="opciones">
@@ -159,8 +161,8 @@ const LunchFormPage = () => {
             Se pidió el almuerzo
           </div>
         )}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

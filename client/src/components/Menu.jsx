@@ -40,28 +40,26 @@ const Menu = () => {
 
   if (menu.length === 0) {
     return (
-      <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
+      <section className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
         <h1 className="text-2xl font-bold">NO HAY MENÚ DISPONIBLE</h1>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div>
-      <div>
-        <div
-          className="bg-[#E9E9E9] p-5 rounded-md outline-1 outline-black justify-self-center max-w-[400px]"
-          key={menu[0].id}
-        >
-          <h1 className="text-2xl font-bold">Menú del Día</h1>
-          <h2 className="text-lg">
-            Menú Del Día - {new Date(menu[0].date).toLocaleDateString()}
-          </h2>
-          descripcion del almuerzo
-          <p>{menu[0].Descripcion}</p>
-        </div>
-      </div>
-    </div>
+    <section>
+      <article
+        className="bg-[#E9E9E9] p-5 rounded-md outline-1 outline-black justify-self-center max-w-[400px]"
+        key={menu[0].id}
+      >
+        <h1 className="text-2xl font-bold">Menú del Día</h1>
+        <h2 className="text-lg">
+          Menú Del Día - {new Date(menu[0].date).toLocaleDateString()}
+        </h2>
+        <p className="mt-2">Descripción del almuerzo:</p>
+        <p>{menu[0].Descripcion}</p>
+      </article>
+    </section>
   );
 };
 
