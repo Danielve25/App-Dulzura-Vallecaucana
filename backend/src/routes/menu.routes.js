@@ -10,7 +10,7 @@ const router = Router();
 router.get("/menu", getAllMenus);
 
 router.post(
-  "/create-menu",
+  "/menu",
   validateSchema(menuValidate),
   authRequired,
   adminRequired,
