@@ -102,19 +102,9 @@ function NavBar() {
             <li>
               <Link
                 className={
-                  location.pathname === "/" ? "active" : "hipervinculo"
+                  location.pathname === "/" ? "active " : "hipervinculo"
                 }
                 to="/"
-              >
-                Inicio
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={
-                  location.pathname === "/login" ? "active " : "hipervinculo"
-                }
-                to="/login"
               >
                 Iniciar Sesión
               </Link>

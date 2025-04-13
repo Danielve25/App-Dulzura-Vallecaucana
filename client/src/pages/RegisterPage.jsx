@@ -83,7 +83,7 @@ function RegisterPage() {
           </button>
         </form>
         <p className="flex justify-center">
-          <Link to="/login" className="text-sky-500 ">
+          <Link to="/" className="text-sky-500 ">
             ya tienes una cuenta?
           </Link>
         </p>
