@@ -23,7 +23,7 @@ const ListDay = () => {
     };
 
     fetchTodayLunchs();
-  }, [getAllLunchs]); // Agregado getAllLunchs como dependencia
+  }, []);
 
   const downloadExcel = () => {
     const data = todayLunchs.map((lunch, index) => ({

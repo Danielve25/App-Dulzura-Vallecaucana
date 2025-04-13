@@ -30,7 +30,7 @@ function AdminLunchPage() {
 
   useEffect(() => {
     loadLunchs();
-  }, [loadLunchs]);
+  }, []);
 
   if (Object.keys(groupedLunchs).length === 0) {
     return (
