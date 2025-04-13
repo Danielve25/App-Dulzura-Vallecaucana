@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { createMenu } from "../api/menu";
 
-export const CreateNewMenu = () => {
+const CreateNewMenu = () => {
   const {
     register,
     handleSubmit,
@@ -55,3 +55,4 @@ export const CreateNewMenu = () => {
     </div>
   );
 };
+export default CreateNewMenu;

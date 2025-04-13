@@ -10,7 +10,7 @@ import { LunchProvider } from "./context/LunchContext";
 import NavBar from "./components/NavBar";
 import AdminLunchPage from "./pages/AdminLunchPage";
 import ListDay from "./pages/ListDay";
-import { CreateNewMenu } from "./pages/CreateMenu";
+import CreateNewMenu from "./pages/CreateMenu";
 
 function App() {
   return (
