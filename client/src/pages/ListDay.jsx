@@ -11,10 +11,11 @@ const ListDay = () => {
     const fetchTodayLunchs = async () => {
       try {
         const response = await getAllLunchs();
-        const today = new Date().toISOString().split("T")[0];
-        const filteredLunchs = response.data.filter(
-          (lunch) => lunch.date.split("T")[0] === today
-        );
+        const today = Temporal.Now.plainDateISO(); // Obtén la fecha actual como Temporal.PlainDate
+        const filteredLunchs = response.data.filter((lunch) => {
+          const lunchDate = Temporal.PlainDate.from(lunch.date.split("T")[0]); // Convierte la fecha del almuerzo
+          return lunchDate.equals(today); // Compara solo día, mes y año
+        });
         setTodayLunchs(filteredLunchs);
       } catch (error) {
         console.error("Error al obtener los almuerzos del día:", error);
