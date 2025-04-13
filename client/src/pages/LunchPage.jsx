@@ -21,7 +21,7 @@ const LunchPage = () => {
 
   useEffect(() => {
     getLunchs();
-  }, []);
+  }, [getLunchs]);
 
   if (lunchs.length === 0)
     return (
