@@ -1,4 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 @import "tailwindcss";
+
+* {
+  font-family: "Open Sans", sans-serif;
+}
 
 body {
   background-color: white;
@@ -33,7 +38,7 @@ nav ul li {
 }
 
 nav ul li a {
-  @apply text-[white] relative text-[17px] uppercase px-[13px] py-[7px] rounded-[3px];
+  @apply text-[white] relative text-[17px]  px-[13px] py-[7px] rounded-[3px];
 }
 
 a.active {
@@ -70,7 +75,7 @@ a.active {
   }
 
   ul {
-    @apply fixed w-[80%] h-screen bg-[#f76905] text-center transition-all duration-[0.5s] -left-full top-20;
+    @apply fixed w-[80%] h-screen bg-[#f76905] px-3 text-center transition-all duration-[0.5s] -left-full top-20;
   }
 
   nav ul li {
@@ -88,6 +93,12 @@ a.active {
 
   #check:checked ~ ul {
     @apply left-0;
+  }
+}
+@media (max-width: 211px) {
+  /* Estilos aquí */
+  .checkbtn {
+    @apply mr-4;
   }
 }
 

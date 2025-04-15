@@ -16,7 +16,7 @@ function NavBar() {
         <Menu />
       </label>
       {/* Site logo */}
-      <button className="bg-white rounded-t-lg  p-1 ml-3 mt-[9px] hover:scale-110 transition-all duration-[0.3s] ease-[ease] delay-[0s]">
+      <button className="btnLogo bg-white rounded-t-lg  p-1 ml-3 mt-[9px] hover:scale-110 transition-all duration-[0.3s] ease-[ease] delay-[0s]">
         <Link to="/">
           <Logo />
         </Link>
@@ -25,15 +25,15 @@ function NavBar() {
       <ul className="z-50">
         {isAuthenticated ? (
           <>
-            <li className="text-xl uppercase">
-              Bienvenido: {user.NameStudent}
-            </li>
+            <li className="text-xl ">Bienvenido: {user.NameStudent}</li>
             {user.isAdmin ? (
               <>
                 <li>
                   <Link
                     className={
-                      location.pathname === "/admin" ? "active" : "hipervinculo"
+                      location.pathname === "/admin"
+                        ? "active font-medium"
+                        : "hipervinculo font-medium"
                     }
                     to="/admin"
                   >
@@ -44,8 +44,8 @@ function NavBar() {
                   <Link
                     className={
                       location.pathname === "/admin/listDay"
-                        ? "active"
-                        : "hipervinculo"
+                        ? "active font-medium"
+                        : "hipervinculo font-medium"
                     }
                     to="/admin/listDay"
                   >
@@ -56,8 +56,8 @@ function NavBar() {
                   <Link
                     className={
                       location.pathname === "/admin/create/menu"
-                        ? "active"
-                        : "hipervinculo"
+                        ? "active font-medium"
+                        : "hipervinculo font-medium"
                     }
                     to="/admin/create/menu"
                   >
@@ -71,8 +71,8 @@ function NavBar() {
                   <Link
                     className={
                       location.pathname === "/lunch/new"
-                        ? "active"
-                        : "hipervinculo"
+                        ? "active font-medium"
+                        : "hipervinculo font-medium"
                     }
                     to="/lunch/new"
                   >
@@ -82,7 +82,9 @@ function NavBar() {
                 <li>
                   <Link
                     className={
-                      location.pathname === "/lunch" ? "active" : "hipervinculo"
+                      location.pathname === "/lunch"
+                        ? "active font-medium"
+                        : "hipervinculo font-medium"
                     }
                     to="/lunch"
                   >
@@ -102,7 +104,9 @@ function NavBar() {
             <li>
               <Link
                 className={
-                  location.pathname === "/" ? "active " : "hipervinculo"
+                  location.pathname === "/"
+                    ? "active font-medium"
+                    : "hipervinculo font-medium"
                 }
                 to="/"
               >
@@ -112,7 +116,9 @@ function NavBar() {
             <li>
               <Link
                 className={
-                  location.pathname === "/register" ? "active" : "hipervinculo"
+                  location.pathname === "/register"
+                    ? "active font-medium"
+                    : "hipervinculo font-medium"
                 }
                 to="/register"
               >
