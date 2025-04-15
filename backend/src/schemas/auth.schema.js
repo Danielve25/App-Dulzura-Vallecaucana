@@ -11,6 +11,9 @@ export const registerSchema = z.object({
     .min(6, {
       message: "el numero de telefono debe tener almenos 6 caracteres",
     }),
+  grade: z.string({
+    required_error: "grado es requerido",
+  }),
 });
 
 export const loginSchema = z.object({

@@ -7,7 +7,7 @@ import { EnvConfig } from "../config.js";
 const config = EnvConfig();
 
 export const register = async (req, res) => {
-  const { NameStudent, PhoneNumber, isAdmin } = req.body;
+  const { NameStudent, PhoneNumber, isAdmin, grade } = req.body;
 
   try {
     const upperCaseName = NameStudent.toUpperCase();
@@ -21,6 +21,7 @@ export const register = async (req, res) => {
 
     const NewUser = new User({
       NameStudent: upperCaseName,
+      grade: grade,
       PhoneNumber: phoneNumberhash,
       isAdmin: isAdmin || false, // Asegurarse de que isAdmin sea false si no se proporciona
     });
@@ -33,6 +34,7 @@ export const register = async (req, res) => {
       message: "Usuario creado",
       _id: userSaved._id,
       NameStudent: userSaved.NameStudent,
+      grade: userSaved.grade,
       PhoneNumber: userSaved.PhoneNumber,
       isAdmin: userSaved.isAdmin,
       creastedAt: userSaved.createdAt,
@@ -69,6 +71,7 @@ export const login = async (req, res) => {
     res.json({
       message: "iniciaste sesion",
       _id: userFound._id,
+      grade: userFound.grade,
       NameStudent: userFound.NameStudent,
       PhoneNumber: userFound.PhoneNumber,
       creastedAt: userFound.createdAt,
