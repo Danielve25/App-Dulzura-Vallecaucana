@@ -1,39 +1,41 @@
 @import "tailwindcss";
+
 body {
   background-color: white;
   color: black;
 }
+
 .label::after {
   content: " *";
   color: red;
 }
+
 .label {
   margin-top: 3px;
 }
 
-/*
-  Based on TailwindCSS recommendations,
-  consider using classes instead of the `@apply` directive
-  @see https://tailwindcss.com/docs/reusing-styles#avoiding-premature-abstraction
-*/
-
-/* navabar */
+/* navbar */
 nav {
   @apply h-20 w-full;
   background: #f76905;
 }
+
 label.logo {
   @apply text-[white] px-3 py-0 text-[25px] leading-[80px] font-[bold];
 }
+
 nav ul {
   @apply float-right mr-5;
 }
+
 nav ul li {
   @apply inline-block leading-[80px] mx-[5px] my-0;
 }
+
 nav ul li a {
   @apply text-[white] relative text-[17px] uppercase px-[13px] py-[7px] rounded-[3px];
 }
+
 a.active {
   @apply transition-[0.5s];
   background: #008000;
@@ -42,48 +44,59 @@ a.active {
 .checkbtn {
   @apply text-[22px] text-[white] float-right leading-[80px] cursor-pointer hidden mr-[30px];
 }
+
 #check {
   @apply hidden;
 }
+
 @media (max-width: 1050px) {
   label.logo {
     @apply pl-[30px];
   }
+
   nav ul li a {
     @apply text-base;
   }
 }
+
 /* Responsive media query code for small screen */
 @media (max-width: 1200px) {
   .checkbtn {
     @apply block;
   }
+
   label.logo {
     @apply text-[22px];
   }
+
   ul {
     @apply fixed w-[80%] h-screen bg-[#f76905] text-center transition-all duration-[0.5s] -left-full top-20;
   }
+
   nav ul li {
     @apply block leading-[30px] mx-0 my-[50px];
   }
+
   nav ul li a {
     @apply text-xl;
   }
+
   .hipervinculo:hover,
   .hipervinculo.active {
     @apply text-[#008000] font-bold bg-[#f76d0b] rounded-2xl;
   }
+
   #check:checked ~ ul {
     @apply left-0;
   }
 }
 
 .filter-green {
-  filter: hue-rotate(120deg) saturate(200%) brightness(90%); /* Ajusta el matiz, saturación y brillo para obtener #00B301 */
+  filter: hue-rotate(120deg) saturate(200%) brightness(90%);
+  /* Ajusta el matiz, saturación y brillo para obtener #00B301 */
 }
 
-/*loader*/
+/* loader */
 .loader {
   width: 28px;
   height: 28px;
@@ -99,6 +112,7 @@ a.active {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
