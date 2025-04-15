@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
 
 function RegisterPage() {
+  const [formErrors, setFormErrors] = useState({});
   const {
     register,
     handleSubmit,
@@ -18,9 +19,20 @@ function RegisterPage() {
   }, [isAuthenticated, navigate]);
 
   const onSubmit = handleSubmit(async (values) => {
+    setFormErrors({}); // Limpia los errores al enviar el formulario
     values.NameStudent = values.NameStudent.toUpperCase(); // Convierte el nombre a mayúsculas antes de enviarlo
+    values.grade = `${values.Grade}-${values.Subgroup}`; // Concatena grado y subgrupo
+    delete values.Grade; // Elimina el campo Grade
+    delete values.Subgroup; // Elimina el campo Subgroup
     signup(values);
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFormErrors({});
+    }, 5000); // Limpia los errores después de 5 segundos
+    return () => clearTimeout(timer);
+  }, [formErrors]);
 
   return (
     <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full p-5">
@@ -33,7 +45,12 @@ function RegisterPage() {
         <header>
           <h1 className="text-2xl font-bold">register</h1>
         </header>
-        <form onSubmit={onSubmit}>
+        <form
+          onSubmit={(e) => {
+            setFormErrors(errors); // Actualiza los errores al intentar enviar
+            onSubmit(e);
+          }}
+        >
           <div className="mb-[16px]">
             <label htmlFor="NameStudent" className="label">
               Nombre
@@ -48,7 +65,7 @@ function RegisterPage() {
               })}
               className="w-full bg-white text-black h-14 mt-2 rounded-2xl px-4 text-[16px]"
             />
-            {errors.NameStudent && (
+            {formErrors.NameStudent && (
               <p className="text-red-500 text-[14px]">Nombre es requerido</p>
             )}
           </div>
@@ -70,13 +87,56 @@ function RegisterPage() {
               }}
               className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] "
             />
-            {errors.PhoneNumber && (
+            {formErrors.PhoneNumber && (
               <p className="text-red-500 text-[14px]">
                 numero de telefono es requerido
               </p>
             )}
           </div>
-
+          <div className="mt-4">
+            <label htmlFor="Grade" className="label">
+              Grado
+            </label>
+            <select
+              id="Grade"
+              {...register("Grade", { required: true })}
+              className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px]"
+            >
+              <option value="">Seleccione un grado</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+            </select>
+            {formErrors.Grade && (
+              <p className="text-red-500 text-[14px]">Grado es requerido</p>
+            )}
+          </div>
+          <div className="mt-4">
+            <label htmlFor="Subgroup" className="label">
+              Subgrupo
+            </label>
+            <select
+              id="Subgroup"
+              {...register("Subgroup", { required: true })}
+              className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px]"
+            >
+              <option value="">Seleccione un subgrupo</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+            {formErrors.Subgroup && (
+              <p className="text-red-500 text-[14px]">Subgrupo es requerido</p>
+            )}
+          </div>
           <button
             className="cursor-pointer w-full h-14 my-6 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[16px] "
             type="submit"
