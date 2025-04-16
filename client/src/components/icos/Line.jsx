@@ -15,7 +15,7 @@ function Line(props) {
       className="icon icon-tabler icons-tabler-outline icon-tabler-menu-2"
       {...props}
     >
-      <path d="M4 12h16M4" />
+      <path d="M4 12h16" />
     </svg>
   );
 }
