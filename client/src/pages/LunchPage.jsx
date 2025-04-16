@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { lazy, useEffect } from "react";
 import { useLunch } from "../context/LunchContext";
-import SelloImagen from "../components/icos/CanceladoSello";
 import Modal from "../components/modal";
 import usePayment from "../hooks/usePayment";
-import Menu from "../components/Menu";
 import "@github/relative-time-element";
+
+const Menu = lazy(() => import("../components/Menu"));
+const SelloImagen = lazy(() => import("../components/icos/CanceladoSello"));
 
 const LunchPage = () => {
   const { getLunchs, lunchs, verifyPaymentNequi, putLunch } = useLunch();

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { useLunch } from "../context/LunchContext";
-import SelloImagen from "../components/icos/CanceladoSello";
+
+const SelloImagen = lazy(() => import("../components/icos/CanceladoSello"));
 
 function AdminLunchPage() {
   const { getAllLunchs, putLunch } = useLunch();

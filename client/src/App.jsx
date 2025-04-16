@@ -1,16 +1,18 @@
+import { lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { AuthProvider } from "./context/AuthContext";
-import RegisterPage from "./pages/RegisterPage";
-import LoginPage from "./pages/LoginPage";
-import LunchFormPage from "./pages/LunchFormPage";
-import LunchPage from "./pages/LunchPage";
 import ProfilePage from "./pages/ProfilePage";
-import ProtectedRoute from "./ProtectedRoute";
 import { LunchProvider } from "./context/LunchContext";
 import NavBar from "./components/NavBar";
-import AdminLunchPage from "./pages/AdminLunchPage";
-import ListDay from "./pages/ListDay";
-import CreateNewMenu from "./pages/CreateMenu";
+
+const ProtectedRoute = lazy(() => import("./ProtectedRoute"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const LunchFormPage = lazy(() => import("./pages/LunchFormPage"));
+const LunchPage = lazy(() => import("./pages/LunchPage"));
+const ListDay = lazy(() => import("./pages/ListDay"));
+const CreateNewMenu = lazy(() => import("./pages/CreateMenu"));
+const AdminLunchPage = lazy(() => import("./pages/AdminLunchPage"));
 
 function App() {
   return (
