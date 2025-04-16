@@ -1,7 +1,7 @@
 import { lazy, useEffect, useState } from "react";
 import { useLunch } from "../context/LunchContext";
 
-const SelloImagen = lazy(() => import("../components/icos/CanceladoSello"));
+import SelloImagen from "../components/icos/CanceladoSello";
 
 function AdminLunchPage() {
   const { getAllLunchs, putLunch } = useLunch();
@@ -16,7 +16,11 @@ function AdminLunchPage() {
         return;
       }
       const grouped = lunches.data.reduce((acc, lunch) => {
-        const studentName = lunch.user.NameStudent;
+        const studentName = lunch.user?.NameStudent; // Verificar si lunch.user no es null o undefined
+        if (!studentName) {
+          console.warn("Lunch sin usuario asociado:", lunch);
+          return acc; // Saltar este almuerzo si no tiene usuario
+        }
         if (!acc[studentName]) {
           acc[studentName] = [];
         }
@@ -74,11 +78,7 @@ function AdminLunchPage() {
                     key={lunch._id}
                     className="p-4 border rounded-lg shadow-sm relative bg-gray-50"
                   >
-                    {lunch.pay && (
-                      <div className="absolute top-2 right-2">
-                        <SelloImagen />
-                      </div>
-                    )}
+                    {lunch.pay && <SelloImagen />}
 
                     <p className="text-gray-600">
                       {new Date(lunch.date).toLocaleDateString()}
