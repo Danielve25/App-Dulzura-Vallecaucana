@@ -127,9 +127,7 @@ function RegisterPage() {
                   <option value="10">10</option>
                   <option value="11">11</option>
                 </select>
-                {formErrors.Grade && (
-                  <p className="text-red-500 text-[14px]">Grado es requerido</p>
-                )}
+
                 <div className="self-center">
                   <Line />
                 </div>
@@ -145,12 +143,15 @@ function RegisterPage() {
                   <option value="2">2</option>
                   <option value="3">3</option>
                 </select>
-                {formErrors.Subgroup && (
-                  <p className="text-red-500 text-[14px]">
-                    Subgrupo es requerido
-                  </p>
-                )}
               </section>
+              {formErrors.Subgroup && (
+                <p className="text-red-500 text-[14px]">
+                  Subgrupo es requerido
+                </p>
+              )}
+              {formErrors.Grade && (
+                <p className="text-red-500 text-[14px]">Grado es requerido</p>
+              )}
             </section>
             <button
               className="cursor-pointer w-full h-14 my-6 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[16px] "
