@@ -1,10 +1,11 @@
 import { lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { AuthProvider } from "./context/AuthContext";
-import ProfilePage from "./pages/ProfilePage";
+
 import { LunchProvider } from "./context/LunchContext";
 import NavBar from "./components/NavBar";
 
+const ProfilePage = import("./pages/ProfilePage");
 const ProtectedRoute = lazy(() => import("./ProtectedRoute"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
