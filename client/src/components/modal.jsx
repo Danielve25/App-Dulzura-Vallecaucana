@@ -1,6 +1,7 @@
-import React from "react";
+import React, { lazy } from "react";
 import { useState } from "react";
-import LunchPayForm from "./LunchPayForm";
+
+const LunchPayForm = lazy(() => import("./LunchPayForm"));
 
 const Modal = ({ id_task, payAmount, disabled }) => {
   const [isOpen, setIsOpen] = useState(false);

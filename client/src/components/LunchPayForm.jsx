@@ -1,9 +1,8 @@
-import React, { lazy, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLunch } from "../context/LunchContext";
 import { savePayment } from "../api/payment";
-
-const CloseIcon = lazy(import("./icos/CloseIcon"));
+import CloseIcon from "./icos/CloseIcon";
 
 const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
   const [isProcessing, setIsProcessing] = useState(false); // Estado para manejar el procesamiento
