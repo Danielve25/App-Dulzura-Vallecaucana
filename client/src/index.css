@@ -102,6 +102,17 @@ a.active {
   }
 }
 
+@media (max-width: 373px) {
+  table {
+    font-size: 12px; /* Ajusta el tamaño de la letra de la tabla */
+  }
+
+  table th,
+  table td {
+    padding: 4px; /* Opcional: ajusta el padding para que se vea mejor */
+  }
+}
+
 .filter-green {
   filter: hue-rotate(120deg) saturate(200%) brightness(90%);
   /* Ajusta el matiz, saturación y brillo para obtener #00B301 */
