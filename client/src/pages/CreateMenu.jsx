@@ -1,6 +1,8 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { createMenu } from "../api/menu";
+
+const AddIcon = lazy(() => import("../components/icos/AddIcon"));
 
 const CreateNewMenu = () => {
   const {
@@ -28,33 +30,42 @@ const CreateNewMenu = () => {
 
   return (
     <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
-      <section className="max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
-        <header>
-          <h1 className="text-2xl font-bold">Crear Menu</h1>
-        </header>
-        <form action="submit" onSubmit={onSubmit}>
-          <label htmlFor="Descripcion" className="sr-only">
-            Descripción del almuerzo
-          </label>
-          <textarea
-            className="w-full bg-white focus:outline-black p-2 h-44 rounded-md my-3"
-            id="Descripcion"
-            placeholder="Descripcion del almuerzo"
-            {...register("Descripcion", { required: true })}
-          />
-          {errors.Descripcion && (
-            <p className="text-red-500 text-[14px]">
-              La descripcion es requerida
-            </p>
-          )}
-          <button
-            type="submit"
-            className="w-full cursor-pointer h-14 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[17px] hover:scale-110 transition-all duration-[0.3s] ease-[ease] delay-[0s]"
-          >
-            Crear
-          </button>
-        </form>
-      </section>
+      <Suspense
+        fallback={
+          <div className="h-[100vh] w-full flex justify-center items-center">
+            <div className="loader"></div>
+          </div>
+        }
+      >
+        <section className="max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
+          <header>
+            <h1 className="text-2xl font-bold">Crear Menu</h1>
+          </header>
+          <form action="submit" onSubmit={onSubmit}>
+            <label htmlFor="Descripcion" className="sr-only">
+              Descripción del almuerzo
+            </label>
+            <textarea
+              className="w-full bg-white focus:outline-black p-2 h-44 rounded-md my-3"
+              id="Descripcion"
+              placeholder="Descripcion del almuerzo"
+              {...register("Descripcion", { required: true })}
+            />
+            {errors.Descripcion && (
+              <p className="text-red-500 text-[14px]">
+                La descripcion es requerida
+              </p>
+            )}
+            <button
+              type="submit"
+              className="w-full cursor-pointer flex justify-center items-center h-14 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[17px] hover:scale-110 transition-all duration-[0.3s] ease-[ease] delay-[0s]"
+            >
+              <AddIcon className="mr-1" />
+              Crear
+            </button>
+          </form>
+        </section>
+      </Suspense>
     </main>
   );
 };

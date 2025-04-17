@@ -5,6 +5,7 @@ import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable"; // Asegúrate de importar autoTable de esta manera
 
+const EyeIcon = lazy(() => import("../components/icos/EyeIcon"));
 const PrintIcon = lazy(() => import("../components/icos/PrintIcon"));
 const DownloadIcon = lazy(() => import("../components/icos/Download"));
 
@@ -210,7 +211,7 @@ const ListDay = () => {
             onClick={generatePDF}
             className="px-4 py-2 flex bg-[#dc2626] text-white rounded hover:scale-110 transition-all"
           >
-            <DownloadIcon className="mr-1" />
+            <EyeIcon className="mr-1" />
             Ver PDF
           </button>
 
