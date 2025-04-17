@@ -89,7 +89,10 @@ function RegisterPage() {
                 placeholder="Phone Number"
                 {...register("PhoneNumber", {
                   required: true,
-                  pattern: /^[0-9]*$/, // Solo permite números
+                  pattern: /^[0-9]*$/,
+                  validate: (value) =>
+                    value.length >= 6 ||
+                    "El número debe tener al menos 6 dígitos",
                 })}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
@@ -98,7 +101,8 @@ function RegisterPage() {
               />
               {formErrors.PhoneNumber && (
                 <p className="text-red-500 text-[14px]">
-                  numero de telefono es requerido
+                  {formErrors.PhoneNumber.message ||
+                    "Número de teléfono es requerido"}
                 </p>
               )}
             </div>
@@ -110,9 +114,10 @@ function RegisterPage() {
                 <select
                   id="Grade"
                   {...register("Grade", { required: true })}
+                  defaultValue=""
                   className="w-6/12 h-14 bg-white text-black px-4 rounded-2xl text-[16px]"
                 >
-                  <option value="" selected disabled>
+                  <option value="" disabled>
                     grado
                   </option>
                   <option value="1">1</option>
@@ -134,9 +139,10 @@ function RegisterPage() {
                 <select
                   id="Subgroup"
                   {...register("Subgroup", { required: true })}
+                  defaultValue=""
                   className="w-6/12 h-14 bg-white text-black px-4 rounded-2xl text-[16px]"
                 >
-                  <option value="" selected disabled>
+                  <option value="" disabled>
                     subgrupo
                   </option>
                   <option value="1">1</option>
