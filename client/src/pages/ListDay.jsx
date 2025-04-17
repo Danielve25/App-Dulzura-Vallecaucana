@@ -1,131 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { useLunch } from "../context/LunchContext";
-import * as XLSX from "xlsx";
 import { Temporal } from "temporal-polyfill";
-import {
-  PDFViewer,
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-} from "@react-pdf/renderer";
+import * as XLSX from "xlsx"; // Importar la biblioteca xlsx
 
-// Estilos para el PDF
-const pdfStyles = StyleSheet.create({
-  page: { padding: 30 },
-  title: { fontSize: 20, marginBottom: 20, textAlign: "center" },
-  table: {
-    display: "table",
-    width: "auto",
-    borderStyle: "solid",
-    borderWidth: 1,
-    margin: 0, // Eliminado el margen
-    borderSpacing: 0, // Eliminado el gap entre celdas
-  },
-  row: { flexDirection: "row" },
-  cellHeader: {
-    width: "33.33%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    backgroundColor: "#eee",
-    padding: 5,
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-  cell: {
-    width: "33.33%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    padding: 5,
-    fontSize: 10,
-  },
-});
-
-// Componente PDF
-const PDFDocument = ({ todayLunchs }) => (
-  <Document>
-    <Page size="LETTER" style={pdfStyles.page}>
-      <Text style={pdfStyles.title}>Pedidos del Día</Text>
-      <View style={pdfStyles.table}>
-        <View style={pdfStyles.row}>
-          <Text style={pdfStyles.cellHeader}>Número de Estudiante</Text>
-          <Text style={pdfStyles.cellHeader}>Nombre del Estudiante</Text>
-          <Text style={pdfStyles.cellHeader}>Detalles del Pedido</Text>
-        </View>
-        {todayLunchs.map((lunch, index) => (
-          <View style={pdfStyles.row} key={lunch._id}>
-            <Text style={pdfStyles.cell}>{index + 1}</Text>
-            <Text style={pdfStyles.cell}>
-              {lunch.user.grade} {lunch.user.NameStudent}
-            </Text>
-            <Text style={pdfStyles.cell}>
-              {[
-                lunch.userneedscomplete && "C",
-                lunch.userneedstray && "B",
-                lunch.userneedsextrajuice && "JJ",
-                lunch.portionOfProtein && "PT",
-                lunch.portionOfSalad && "E",
-                lunch.EspecialStray && "BE",
-              ]
-                .filter(Boolean)
-                .join(", ")}
-            </Text>
-          </View>
-        ))}
-      </View>
-    </Page>
-  </Document>
-);
-
-// Componente principal
 const ListDay = () => {
   const { getAllLunchs } = useLunch();
   const [todayLunchs, setTodayLunchs] = useState([]);
+  const [DayToday, setdayToday] = useState(null);
 
   useEffect(() => {
     const fetchTodayLunchs = async () => {
       try {
         const response = await getAllLunchs();
-        const today = Temporal.Now.plainDateISO();
-        const filteredLunchs = response.data.filter((lunch) => {
-          const lunchDate = Temporal.PlainDate.from(lunch.date.split("T")[0]);
-          return lunchDate.equals(today);
-        });
+        const today = new Date().toISOString().split("T")[0]; // Obtener la fecha actual en formato YYYY-MM-DD
+        const filteredLunchs = response.data.filter(
+          (lunch) => lunch.date.split("T")[0] === today
+        );
         setTodayLunchs(filteredLunchs);
       } catch (error) {
         console.error("Error al obtener los almuerzos del día:", error);
       }
     };
 
+    const todayFormatted = Temporal.Now.zonedDateTimeISO()
+      .toLocaleString("es-ES", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      })
+      .replace(/\s/g, "-")
+      .toLowerCase(); // Formato: "ene-16-2023"
+    setdayToday(todayFormatted);
+
     fetchTodayLunchs();
   }, []);
 
   const downloadExcel = () => {
     const data = todayLunchs.map((lunch, index) => ({
-      "Número de Estudiante": index + 1,
+      "#": index + 1,
       "Nombre del Estudiante": lunch.user.NameStudent,
-      "Detalles del Pedido": [
-        lunch.userneedscomplete && "C",
-        lunch.userneedstray && "B",
-        lunch.userneedsextrajuice && "JJ",
-        lunch.portionOfProtein && "PT",
-        lunch.portionOfSalad && "E",
+      [DayToday]: [
+        lunch.userneedscomplete && "C, ",
+        lunch.userneedstray && "B, ",
         lunch.EspecialStray && "BE",
+        lunch.userneedsextrajuice && "J, ",
+        lunch.portionOfProtein && "P, ",
+        lunch.portionOfSalad && "PE",
       ]
         .filter(Boolean)
-        .join(","),
+        .join(", "), // Usar la fecha formateada como encabezado de columna
     }));
-
-    const dateNow = Temporal.Now.plainDateISO();
-    const formattedDate = `${String(dateNow.day).padStart(2, "0")}-${String(
-      dateNow.month
-    ).padStart(2, "0")}-${dateNow.year}`;
 
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Pedidos del Día");
-    XLSX.writeFile(workbook, `pedidosDelDia_${formattedDate}.xlsx`);
+
+    XLSX.writeFile(workbook, `Pedidos_${DayToday}.xlsx`);
   };
 
   if (todayLunchs.length === 0) {
@@ -137,62 +67,44 @@ const ListDay = () => {
   }
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full p-8">
       <h2 className="text-2xl font-bold mb-4">Pedidos del Día</h2>
 
-      <table className="w-full border-collapse border border-gray-300 mb-4">
+      <table className="w-full border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
-            <th className="border border-gray-300 px-4 py-2">
-              Número de Estudiante
-            </th>
+            <th className="border border-gray-300 px-4 py-2">#</th>
             <th className="border border-gray-300 px-4 py-2">
               Nombre del Estudiante
             </th>
-            <th className="border border-gray-300 px-4 py-2">
-              Detalles del Pedido
-            </th>
+            <th className="border border-gray-300 px-4 py-2">{DayToday}</th>
           </tr>
         </thead>
         <tbody>
           {todayLunchs.map((lunch, index) => (
             <tr key={lunch._id} className="text-center">
-              <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
-                {index + 1}.
+              <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
+              <td className="border border-gray-300 px-4 py-2">
+                {lunch.user.NameStudent}
               </td>
               <td className="border border-gray-300 px-4 py-2">
-                {lunch.user.grade} {lunch.user.NameStudent}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {[
-                  lunch.userneedscomplete && "C",
-                  lunch.userneedstray && "B",
-                  lunch.userneedsextrajuice && "JJ",
-                  lunch.portionOfProtein && "PT",
-                  lunch.portionOfSalad && "E",
-                  lunch.EspecialStray && "BE",
-                ]
-                  .filter(Boolean)
-                  .join(", ")}
+                {lunch.userneedscomplete && "C, "}
+                {lunch.userneedstray && "B, "}
+                {lunch.EspecialStray && "BE"}
+                {lunch.userneedsextrajuice && "J, "}
+                {lunch.portionOfProtein && "P, "}
+                {lunch.portionOfSalad && "PE"}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
       <button
         onClick={downloadExcel}
-        className="my-4 px-4 py-2 bg-[#008000] text-white rounded transition-transform duration-300 hover:scale-110"
+        className="my-4 px-4 py-2 bg-[#008000] text-white rounded hover:scale-110 transition-all"
       >
-        Descargar como Excel
+        Descargar Excel
       </button>
-
-      <h2 className="text-xl font-semibold mt-8 mb-2">Vista previa PDF:</h2>
-      <div className="border h-[600px]">
-        <PDFViewer width="100%" height="100%">
-          <PDFDocument todayLunchs={todayLunchs} />
-        </PDFViewer>
-      </div>
     </div>
   );
 };
