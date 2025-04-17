@@ -1,10 +1,11 @@
-import React, { useEffect, useState, lazy, useRef } from "react";
+import React, { useEffect, useState, lazy, useRef, Suspense } from "react";
 import { useLunch } from "../context/LunchContext";
 import { Temporal } from "temporal-polyfill";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable"; // Asegúrate de importar autoTable de esta manera
 
+const PrintIcon = lazy(() => import("../components/icos/PrintIcon"));
 const DownloadIcon = lazy(() => import("../components/icos/Download"));
 
 const ListDay = () => {
@@ -153,80 +154,88 @@ const ListDay = () => {
 
   return (
     <div className="w-full p-8">
-      <h2 className="text-2xl font-bold mb-4">Pedidos del Día</h2>
+      <Suspense
+        fallback={
+          <div className="h-[100vh] w-full flex justify-center items-center">
+            <div className="loader"></div>
+          </div>
+        }
+      >
+        <h2 className="text-2xl font-bold mb-4">Pedidos del Día</h2>
 
-      <div ref={tableRef}>
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border border-gray-300 px-4 py-2">#</th>
-              <th className="border border-gray-300 px-4 py-2">
-                Nombre del Estudiante
-              </th>
-              <th className="border border-gray-300 px-4 py-2">{DayToday}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {todayLunchs.map((lunch, index) => (
-              <tr key={lunch._id} className="text-center">
-                <td className="border border-gray-300 px-4 py-2">
-                  {index + 1}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {lunch.user.NameStudent}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {lunch.userneedscomplete && "C, "}
-                  {lunch.userneedstray && "B, "}
-                  {lunch.EspecialStray && "BE"}
-                  {lunch.userneedsextrajuice && "J, "}
-                  {lunch.portionOfProtein && "P, "}
-                  {lunch.portionOfSalad && "PE"}
-                </td>
+        <div ref={tableRef}>
+          <table className="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border border-gray-300 px-4 py-2">#</th>
+                <th className="border border-gray-300 px-4 py-2">
+                  Nombre del Estudiante
+                </th>
+                <th className="border border-gray-300 px-4 py-2">{DayToday}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="flex gap-4 mt-4">
-        <button
-          onClick={downloadExcel}
-          className="px-4 py-2 flex bg-[#008000] text-white rounded hover:scale-110 transition-all"
-        >
-          <DownloadIcon className="mr-1" />
-          Descargar Excel
-        </button>
-
-        <button
-          onClick={generatePDF}
-          className="px-4 py-2 flex bg-[#dc2626] text-white rounded hover:scale-110 transition-all"
-        >
-          <DownloadIcon className="mr-1" />
-          Ver PDF
-        </button>
-
-        <button
-          onClick={handlePrint}
-          className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-110 transition-all"
-        >
-          <DownloadIcon className="mr-1" />
-          Imprimir Tabla
-        </button>
-      </div>
-
-      {pdfUrl && (
-        <div className="mt-8">
-          <h3 className="text-xl font-bold mb-4">Vista Previa del PDF:</h3>
-          <iframe
-            src={pdfUrl}
-            width="100%"
-            height="500px"
-            style={{ border: "none" }}
-            title="Vista Previa PDF"
-          ></iframe>
+            </thead>
+            <tbody>
+              {todayLunchs.map((lunch, index) => (
+                <tr key={lunch._id} className="text-center">
+                  <td className="border border-gray-300 px-4 py-2">
+                    {index + 1}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {lunch.user.NameStudent}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {lunch.userneedscomplete && "C, "}
+                    {lunch.userneedstray && "B, "}
+                    {lunch.EspecialStray && "BE"}
+                    {lunch.userneedsextrajuice && "J, "}
+                    {lunch.portionOfProtein && "P, "}
+                    {lunch.portionOfSalad && "PE"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      )}
+
+        <div className="flex gap-4 mt-4">
+          <button
+            onClick={downloadExcel}
+            className="px-4 py-2 flex bg-[#008000] text-white rounded hover:scale-110 transition-all"
+          >
+            <DownloadIcon className="mr-1" />
+            Descargar Excel
+          </button>
+
+          <button
+            onClick={generatePDF}
+            className="px-4 py-2 flex bg-[#dc2626] text-white rounded hover:scale-110 transition-all"
+          >
+            <DownloadIcon className="mr-1" />
+            Ver PDF
+          </button>
+
+          <button
+            onClick={handlePrint}
+            className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-110 transition-all"
+          >
+            <PrintIcon className="mr-1" />
+            Imprimir Tabla
+          </button>
+        </div>
+
+        {pdfUrl && (
+          <div className="mt-8">
+            <h3 className="text-xl font-bold mb-4">Vista Previa del PDF:</h3>
+            <iframe
+              src={pdfUrl}
+              width="100%"
+              height="500px"
+              style={{ border: "none" }}
+              title="Vista Previa PDF"
+            ></iframe>
+          </div>
+        )}
+      </Suspense>
     </div>
   );
 };
