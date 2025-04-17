@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy } from "react";
 import { useLunch } from "../context/LunchContext";
 import { Temporal } from "temporal-polyfill";
 import * as XLSX from "xlsx"; // Importar la biblioteca xlsx
+
+const DownloadIcon = lazy(() => import("../components/icos/Download"));
 
 const ListDay = () => {
   const { getAllLunchs } = useLunch();
@@ -99,10 +101,12 @@ const ListDay = () => {
           ))}
         </tbody>
       </table>
+
       <button
         onClick={downloadExcel}
-        className="my-4 px-4 py-2 bg-[#008000] text-white rounded hover:scale-110 transition-all"
+        className="my-4 px-4 py-2 flex bg-[#008000] text-white rounded hover:scale-110 transition-all"
       >
+        <DownloadIcon className="mr-1" />
         Descargar Excel
       </button>
     </div>
