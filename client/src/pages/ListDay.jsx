@@ -4,6 +4,7 @@ import { Temporal } from "temporal-polyfill";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable"; // Asegúrate de importar autoTable de esta manera
+import Loader from "../components/icos/Loader";
 
 const EyeIcon = lazy(() => import("../components/icos/EyeIcon"));
 const PrintIcon = lazy(() => import("../components/icos/PrintIcon"));
@@ -155,13 +156,7 @@ const ListDay = () => {
 
   return (
     <div className="w-full p-8">
-      <Suspense
-        fallback={
-          <div className="h-[100vh] w-full flex justify-center items-center">
-            <div className="loader"></div>
-          </div>
-        }
-      >
+      <Suspense fallback={<Loader />}>
         <h2 className="text-2xl font-bold mb-4">Pedidos del Día</h2>
 
         <div ref={tableRef}>

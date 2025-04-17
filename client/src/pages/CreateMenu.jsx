@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { createMenu } from "../api/menu";
+import Loader from "../components/icos/Loader";
 
 const AddIcon = lazy(() => import("../components/icos/AddIcon"));
 
@@ -30,13 +31,7 @@ const CreateNewMenu = () => {
 
   return (
     <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
-      <Suspense
-        fallback={
-          <div className="h-[100vh] w-full flex justify-center items-center">
-            <div className="loader"></div>
-          </div>
-        }
-      >
+      <Suspense fallback={<Loader />}>
         <section className="max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
           <header>
             <h1 className="text-2xl font-bold">Crear Menu</h1>
