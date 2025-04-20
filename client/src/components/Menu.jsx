@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getMenu } from "../api/menu";
+import Loader from "@/components/icos/Loader";
 
 const isValidDate = (date) => {
   const d = new Date(date);
@@ -31,11 +32,7 @@ const Menu = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="w-full flex justify-center">
-        <div className="loader"></div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (menu.length === 0) {

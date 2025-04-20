@@ -1,6 +1,6 @@
 import { useEffect, useState, Suspense } from "react";
 import { useLunch } from "../context/LunchContext";
-import Loader from "../components/icos/Loader";
+import Loader from "@/components/icos/Loader";
 
 import SelloImagen from "../components/icos/CanceladoSello";
 

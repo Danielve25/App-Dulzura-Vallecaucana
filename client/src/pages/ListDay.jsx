@@ -4,7 +4,7 @@ import { Temporal } from "temporal-polyfill";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable"; // Asegúrate de importar autoTable de esta manera
-import Loader from "../components/icos/Loader";
+import Loader from "@/components/icos/Loader";
 
 const EyeIcon = lazy(() => import("../components/icos/EyeIcon"));
 const PrintIcon = lazy(() => import("../components/icos/PrintIcon"));

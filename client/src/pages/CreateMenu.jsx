@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { createMenu } from "../api/menu";
-import Loader from "../components/icos/Loader";
+import Loader from "@/components/icos/Loader";
 
 const AddIcon = lazy(() => import("../components/icos/AddIcon"));
 
