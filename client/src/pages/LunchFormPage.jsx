@@ -19,7 +19,7 @@ const LunchFormPage = () => {
     let today; // Declarar la variable fuera del bloque if
 
     if (Temporal.PlainDate.compare(hoy, seleccionada) === 0) {
-      // Asignar valor si la fecha es hoy
+      today = new Date(); // Asignar valor si la fecha es hoy
     } else {
       today = new Date(data.date); // Asignar valor si es otra fecha
     }
