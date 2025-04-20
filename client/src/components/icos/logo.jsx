@@ -6,7 +6,7 @@ const Logo = () => {
     <Image
       className="logoPage mx-5 h-13 aspect-[222/125]"
       src={logo}
-      layout="intrinsic"
+      layout="fixed"
       alt="Descripción de la imagen"
     />
   );
