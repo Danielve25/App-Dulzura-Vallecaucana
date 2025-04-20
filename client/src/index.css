@@ -73,7 +73,12 @@
 @custom-variant dark (&:is(.dark *));
 
 * {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Roboto", arial, sans-serif;
+}
+
+.open-sans {
+  font-family: "Open Sans";
+  font-weight: 600;
 }
 
 body {

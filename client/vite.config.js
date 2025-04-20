@@ -16,7 +16,10 @@ export default defineConfig({
             name: "Roboto",
             styles: "wght@400;700",
           },
-          "Open Sans",
+          {
+            name: "Open Sans",
+            styles: "wght@400;600",
+          },
         ],
       },
     }),
