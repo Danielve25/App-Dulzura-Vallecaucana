@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useLunch } from "../context/LunchContext";
+import { Temporal } from "temporal-polyfill";
 
 const LunchFormPage = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -12,12 +13,15 @@ const LunchFormPage = () => {
   const { createLunch } = useLunch();
 
   const onSubmit = handleSubmit((data) => {
-    const today = new Date();
-    const selectedDate = new Date(data.date);
+    const hoy = Temporal.Now.plainDateISO();
+    const seleccionada = Temporal.PlainDate.from(data.date);
 
-    if (selectedDate < today.setHours(0, 0, 0, 0)) {
-      alert("No puede seleccionar una fecha anterior a hoy");
-      return;
+    let today; // Declarar la variable fuera del bloque if
+
+    if (Temporal.PlainDate.compare(hoy, seleccionada) === 0) {
+      // Asignar valor si la fecha es hoy
+    } else {
+      today = new Date(data.date); // Asignar valor si es otra fecha
     }
 
     const formattedData = {
@@ -27,7 +31,7 @@ const LunchFormPage = () => {
       userneedsextrajuice: !!data.userneedsextrajuice,
       portionOfProtein: !!data.portionOfProtein,
       portionOfSalad: !!data.portionOfSalad,
-      date: new Date(data.date).toISOString(),
+      date: today.toISOString(), // Usar la variable today
     };
 
     if (
@@ -66,6 +70,8 @@ const LunchFormPage = () => {
       return () => clearTimeout(timer);
     }
   }, [submitted]);
+
+  const minDate = new Date().toISOString().split("T")[0]; // Fecha mínima (hoy)
 
   return (
     <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
@@ -165,7 +171,7 @@ const LunchFormPage = () => {
               type="date"
               id="date"
               name="date"
-              min={new Date().toISOString().split("T")[0]} // Evita seleccionar días anteriores
+              min={minDate} // Desactivar fechas anteriores a hoy
             ></input>
           </div>
 
