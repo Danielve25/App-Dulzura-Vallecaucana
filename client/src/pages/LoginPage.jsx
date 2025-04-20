@@ -2,6 +2,10 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router";
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { NavigationMenuLink } from "@/components/ui/navigation-menu";
 
 function LoginPage() {
   const {
@@ -40,10 +44,10 @@ function LoginPage() {
         </header>
         <form onSubmit={onSubmit}>
           <div className="mb-[16px]">
-            <label htmlFor="NameStudent" className="label text-[14px]">
+            <Label htmlFor="NameStudent" className="label text-[14px]">
               Nombre
-            </label>
-            <input
+            </Label>
+            <Input
               id="NameStudent"
               name="NameStudent"
               type="text"
@@ -56,10 +60,10 @@ function LoginPage() {
             )}
           </div>
           <div className=" mt-4">
-            <label htmlFor="PhoneNumber" className="label text-[14px]">
+            <Label htmlFor="PhoneNumber" className="label text-[14px]">
               Número de Teléfono
-            </label>
-            <input
+            </Label>
+            <Input
               id="PhoneNumber"
               type="text"
               name="PhoneNumber"
@@ -80,12 +84,12 @@ function LoginPage() {
             )}
           </div>
 
-          <button
+          <Button
             className="cursor-pointer w-full h-14 my-6 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[16px] "
             type="submit"
           >
             Iniciar Sesión
-          </button>
+          </Button>
         </form>
         <footer className="flex justify-center">
           <Link to="/register" className="text-sky-500">
