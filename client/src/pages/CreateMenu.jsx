@@ -2,6 +2,9 @@ import React, { lazy, Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { createMenu } from "../api/menu";
 import Loader from "@/components/icos/Loader";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 const AddIcon = lazy(() => import("../components/icos/AddIcon"));
 
@@ -37,10 +40,10 @@ const CreateNewMenu = () => {
             <h1 className="text-2xl font-bold">Crear Menu</h1>
           </header>
           <form action="submit" onSubmit={onSubmit}>
-            <label htmlFor="Descripcion" className="sr-only">
+            <Label htmlFor="Descripcion" className="sr-only">
               Descripción del almuerzo
-            </label>
-            <textarea
+            </Label>
+            <Textarea
               className="w-full bg-white focus:outline-black p-2 h-44 rounded-md my-3"
               id="Descripcion"
               placeholder="Descripcion del almuerzo"
@@ -51,13 +54,13 @@ const CreateNewMenu = () => {
                 La descripcion es requerida
               </p>
             )}
-            <button
+            <Button
               type="submit"
               className="w-full cursor-pointer flex justify-center items-center h-14 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[17px] hover:scale-110 transition-all duration-[0.3s] ease-[ease] delay-[0s]"
             >
-              <AddIcon className="mr-1" />
+              <AddIcon className="mr-3 " />
               Crear
-            </button>
+            </Button>
           </form>
         </section>
       </Suspense>

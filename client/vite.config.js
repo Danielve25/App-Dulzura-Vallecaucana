@@ -44,4 +44,26 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Divide las dependencias grandes en chunks separados
+          react: ["react", "react-dom", "react-router"],
+          radix: [
+            "@radix-ui/react-select",
+            "@radix-ui/react-label",
+            "@radix-ui/react-slot",
+            "@radix-ui/react-accordion",
+            "@radix-ui/react-checkbox",
+            "@radix-ui/react-popover",
+            "@radix-ui/react-separator",
+          ],
+          utils: ["clsx", "tailwind-merge", "class-variance-authority"],
+          pdf: ["jspdf", "jspdf-autotable"],
+          xlsx: ["xlsx"],
+        },
+      },
+    },
+  },
 });

@@ -1,10 +1,19 @@
 import React, { useEffect, useState, lazy, useRef, Suspense } from "react";
+import { Button } from "@/components/ui/button";
 import { useLunch } from "../context/LunchContext";
 import { Temporal } from "temporal-polyfill";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable"; // Asegúrate de importar autoTable de esta manera
+import autoTable from "jspdf-autotable";
 import Loader from "@/components/icos/Loader";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
 
 const EyeIcon = lazy(() => import("../components/icos/EyeIcon"));
 const PrintIcon = lazy(() => import("../components/icos/PrintIcon"));
@@ -14,7 +23,7 @@ const ListDay = () => {
   const { getAllLunchs } = useLunch();
   const [todayLunchs, setTodayLunchs] = useState([]);
   const [DayToday, setdayToday] = useState(null);
-  const [pdfUrl, setPdfUrl] = useState(null); // Estado para almacenar la URL del PDF generado
+  const [pdfUrl, setPdfUrl] = useState(null);
   const tableRef = useRef();
 
   useEffect(() => {
@@ -160,63 +169,57 @@ const ListDay = () => {
         <h2 className="text-2xl font-bold mb-4">Pedidos del Día</h2>
 
         <div ref={tableRef}>
-          <table className="w-full border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 px-4 py-2">#</th>
-                <th className="border border-gray-300 px-4 py-2">
-                  Nombre del Estudiante
-                </th>
-                <th className="border border-gray-300 px-4 py-2">{DayToday}</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>#</TableHead>
+                <TableHead>Nombre del Estudiante</TableHead>
+                <TableHead>{DayToday}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {todayLunchs.map((lunch, index) => (
-                <tr key={lunch._id} className="text-center">
-                  <td className="border border-gray-300 px-4 py-2">
-                    {index + 1}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {lunch.user.NameStudent}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
+                <TableRow key={lunch._id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{lunch.user.NameStudent}</TableCell>
+                  <TableCell>
                     {lunch.userneedscomplete && "C, "}
                     {lunch.userneedstray && "B, "}
                     {lunch.EspecialStray && "BE"}
                     {lunch.userneedsextrajuice && "J, "}
                     {lunch.portionOfProtein && "P, "}
                     {lunch.portionOfSalad && "PE"}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
 
-        <div className="flex gap-4 mt-4">
-          <button
+        <div className="flex flex-col max-[442px]:flex-col min-[443px]:flex-row gap-4 mt-4 w-full">
+          <Button
             onClick={downloadExcel}
-            className="px-4 py-2 flex bg-[#008000] text-white rounded hover:scale-110 transition-all"
+            className="px-4 py-2 flex bg-[#008000] text-white rounded hover:scale-110 transition-all hover:!bg-[#008000]"
           >
             <DownloadIcon className="mr-1" />
             Descargar Excel
-          </button>
+          </Button>
 
-          <button
+          <Button
             onClick={generatePDF}
-            className="px-4 py-2 flex bg-[#dc2626] text-white rounded hover:scale-110 transition-all"
+            className="px-4 py-2 flex bg-[#dc2626] text-white rounded hover:scale-110 transition-all hover:!bg-[#dc2626]"
           >
             <EyeIcon className="mr-1" />
             Ver PDF
-          </button>
+          </Button>
 
-          <button
+          <Button
             onClick={handlePrint}
-            className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-110 transition-all"
+            className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-110 transition-all hover:!bg-blue-600"
           >
             <PrintIcon className="mr-1" />
             Imprimir Tabla
-          </button>
+          </Button>
         </div>
 
         {pdfUrl && (

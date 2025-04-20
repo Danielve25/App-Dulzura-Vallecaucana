@@ -1,7 +1,12 @@
 import { useEffect, useState, Suspense } from "react";
 import { useLunch } from "../context/LunchContext";
 import Loader from "@/components/icos/Loader";
-
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import SelloImagen from "../components/icos/CanceladoSello";
 
 function AdminLunchPage() {
@@ -17,14 +22,9 @@ function AdminLunchPage() {
         return;
       }
       const grouped = lunches.data.reduce((acc, lunch) => {
-        const studentName = lunch.user?.NameStudent; // Verificar si lunch.user no es null o undefined
-        if (!studentName) {
-          console.warn("Lunch sin usuario asociado:", lunch);
-          return acc; // Saltar este almuerzo si no tiene usuario
-        }
-        if (!acc[studentName]) {
-          acc[studentName] = [];
-        }
+        const studentName = lunch.user?.NameStudent;
+        if (!studentName) return acc;
+        if (!acc[studentName]) acc[studentName] = [];
         acc[studentName].push(lunch);
         return acc;
       }, {});
@@ -53,35 +53,31 @@ function AdminLunchPage() {
           Panel de Administrador - Almuerzos por Estudiante
         </h2>
 
-        {Object.entries(groupedLunchs).map(([studentName, lunchs]) => {
-          const totalAmount = lunchs.reduce(
-            (sum, lunch) => (!lunch.pay ? sum + lunch.userNeedsPay : sum),
-            0
-          );
-          const pendingPayments = lunchs.filter((lunch) => !lunch.pay).length;
+        <Accordion type="multiple" className="w-full">
+          {Object.entries(groupedLunchs).map(([studentName, lunchs]) => {
+            const totalAmount = lunchs.reduce(
+              (sum, lunch) => (!lunch.pay ? sum + lunch.userNeedsPay : sum),
+              0
+            );
+            const pendingPayments = lunchs.filter((lunch) => !lunch.pay).length;
 
-          return (
-            <section
-              key={studentName}
-              className="mb-4 bg-white rounded-lg shadow-md"
-            >
-              <details>
-                <summary className="text-xl p-4 cursor-pointer hover:bg-gray-50">
+            return (
+              <AccordionItem value={studentName} key={studentName}>
+                <AccordionTrigger className="text-left text-xl font-medium px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 flex-col items-start">
                   <span className="font-bold">{studentName}</span>
-                  <span className="ml-4 text-sm">
-                    Total A Pagar: ${totalAmount} - Pendiente de Pago:{" "}
+                  <span className="text-sm font-normal text-gray-700">
+                    Total A Pagar: ${totalAmount} - Pendientes:{" "}
                     {pendingPayments}
                   </span>
-                </summary>
+                </AccordionTrigger>
 
-                <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <AccordionContent className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-white">
                   {lunchs.map((lunch) => (
                     <article
                       key={lunch._id}
                       className="p-4 border rounded-lg shadow-sm relative bg-gray-50"
                     >
                       {lunch.pay && <SelloImagen />}
-
                       <p className="text-gray-600">
                         {new Date(lunch.date).toLocaleDateString()}
                       </p>
@@ -133,11 +129,11 @@ function AdminLunchPage() {
                       )}
                     </article>
                   ))}
-                </div>
-              </details>
-            </section>
-          );
-        })}
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
       </Suspense>
     </div>
   );

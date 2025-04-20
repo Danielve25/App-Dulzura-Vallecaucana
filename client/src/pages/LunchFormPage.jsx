@@ -2,6 +2,16 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useLunch } from "../context/LunchContext";
 import { Temporal } from "temporal-polyfill";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 const LunchFormPage = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -9,29 +19,41 @@ const LunchFormPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    setValue,
+    watch,
+  } = useForm({
+    defaultValues: {
+      userneedscomplete: false,
+      userneedstray: false,
+      EspecialStray: false,
+      userneedsextrajuice: false,
+      portionOfProtein: false,
+      portionOfSalad: false,
+    },
+  });
+
   const { createLunch } = useLunch();
 
   const onSubmit = handleSubmit((data) => {
     const hoy = Temporal.Now.plainDateISO();
     const seleccionada = Temporal.PlainDate.from(data.date);
 
-    let today; // Declarar la variable fuera del bloque if
+    let today;
 
     if (Temporal.PlainDate.compare(hoy, seleccionada) === 0) {
-      today = new Date(); // Asignar valor si la fecha es hoy
+      today = new Date();
     } else {
-      today = new Date(data.date); // Asignar valor si es otra fecha
+      today = new Date(data.date);
     }
 
     const formattedData = {
-      userneedscomplete: !!data.userneedscomplete,
-      userneedstray: !!data.userneedstray,
-      EspecialStray: !!data.EspecialStray,
-      userneedsextrajuice: !!data.userneedsextrajuice,
-      portionOfProtein: !!data.portionOfProtein,
-      portionOfSalad: !!data.portionOfSalad,
-      date: today.toISOString(), // Usar la variable today
+      userneedscomplete: data.userneedscomplete,
+      userneedstray: data.userneedstray,
+      EspecialStray: data.EspecialStray,
+      userneedsextrajuice: data.userneedsextrajuice,
+      portionOfProtein: data.portionOfProtein,
+      portionOfSalad: data.portionOfSalad,
+      date: today.toISOString(),
     };
 
     if (
@@ -57,21 +79,18 @@ const LunchFormPage = () => {
       return;
     }
 
-    console.log(formattedData);
     createLunch(formattedData);
     setSubmitted(true);
   });
 
   useEffect(() => {
     if (submitted) {
-      const timer = setTimeout(() => {
-        setSubmitted(false);
-      }, 5000); // 5 segundos
+      const timer = setTimeout(() => setSubmitted(false), 5000);
       return () => clearTimeout(timer);
     }
   }, [submitted]);
 
-  const minDate = new Date().toISOString().split("T")[0]; // Fecha mínima (hoy)
+  const minDate = new Date().toISOString().split("T")[0];
 
   return (
     <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
@@ -81,104 +100,109 @@ const LunchFormPage = () => {
         </header>
         <form onSubmit={onSubmit}>
           <div className="mt-4">
-            <label className="label" htmlFor="opciones">
-              Opciones
-            </label>
-            <div id="opciones" className="flex flex-col">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  {...register("userneedscomplete")}
-                  className="mr-2"
+            <Label className="label">Opciones</Label>
+            <div className="flex flex-col">
+              <Label className="flex items-center my-3">
+                <Checkbox
+                  checked={watch("userneedscomplete")}
+                  onCheckedChange={(val) => setValue("userneedscomplete", val)}
                 />
-                Almuerzo completo
-              </label>
+                <span className="ml-2">Almuerzo completo</span>
+              </Label>
 
-              <small>
-                <details className="cursor-pointer">
-                  <summary>detalles</summary>
-                  <p>Almuerzo con sopa, cuesta 14.000</p>
-                </details>
-              </small>
+              <Separator />
+              <Accordion type="single" collapsible>
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>Detalles</AccordionTrigger>
+                  <AccordionContent>
+                    Almuerzo con sopa, cuesta 14.000
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+              <Separator />
 
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  {...register("userneedstray")}
-                  className="mr-2"
+              <Label className="flex items-center my-3">
+                <Checkbox
+                  checked={watch("userneedstray")}
+                  onCheckedChange={(val) => setValue("userneedstray", val)}
                 />
-                Bandeja
-              </label>
+                <span className="ml-2">Bandeja</span>
+              </Label>
 
-              <small>
-                <details className="cursor-pointer">
-                  <summary>detalles</summary>
-                  <p>Un almuerzo sin sopa, cuesta 13.000</p>
-                </details>
-              </small>
+              <Separator />
+              <Accordion type="single" collapsible>
+                <AccordionItem value="item-2">
+                  <AccordionTrigger>Detalles</AccordionTrigger>
+                  <AccordionContent>
+                    Un almuerzo sin sopa, cuesta 13.000
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+              <Separator />
 
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  {...register("EspecialStray")}
-                  className="mr-2"
+              <Label className="flex items-center my-3">
+                <Checkbox
+                  checked={watch("EspecialStray")}
+                  onCheckedChange={(val) => setValue("EspecialStray", val)}
                 />
-                Bandeja especial
-              </label>
+                <span className="ml-2">Bandeja especial</span>
+              </Label>
 
-              <small>
-                <details className="cursor-pointer">
-                  <summary>detalles</summary>
-                  <p>Bandeja normal con una carne y media</p>
-                </details>
-              </small>
+              <Separator />
+              <Accordion type="single" collapsible>
+                <AccordionItem value="item-3">
+                  <AccordionTrigger>Detalles</AccordionTrigger>
+                  <AccordionContent>
+                    Bandeja normal con una carne y media
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+              <Separator />
 
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  {...register("userneedsextrajuice")}
-                  className="mr-2"
+              <Label className="flex items-center my-3">
+                <Checkbox
+                  checked={watch("userneedsextrajuice")}
+                  onCheckedChange={(val) =>
+                    setValue("userneedsextrajuice", val)
+                  }
                 />
-                Jugo adicional
-              </label>
+                <span className="ml-2">Jugo adicional</span>
+              </Label>
 
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  {...register("portionOfProtein")}
-                  className="mr-2"
+              <Label className="flex items-center my-3">
+                <Checkbox
+                  checked={watch("portionOfProtein")}
+                  onCheckedChange={(val) => setValue("portionOfProtein", val)}
                 />
-                Porción de Proteína
-              </label>
+                <span className="ml-2">Porción de Proteína</span>
+              </Label>
 
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  {...register("portionOfSalad")}
-                  className="mr-2"
+              <Label className="flex items-center my-3">
+                <Checkbox
+                  checked={watch("portionOfSalad")}
+                  onCheckedChange={(val) => setValue("portionOfSalad", val)}
                 />
-                Porción de Ensalada
-              </label>
+                <span className="ml-2">Porción de Ensalada</span>
+              </Label>
             </div>
-            {errors.options && (
-              <span className="text-red-500 text-[14px]">
-                {errors.options.message}
-              </span>
-            )}
-            <label htmlFor="date">fecha:</label>
-            <input
-              {...register("date", { required: true })}
-              type="date"
-              id="date"
-              name="date"
-              min={minDate} // Desactivar fechas anteriores a hoy
-            ></input>
+
+            <section className="my-3">
+              <Label htmlFor="date">Fecha:</Label>
+              <input
+                {...register("date", { required: true })}
+                type="date"
+                id="date"
+                name="date"
+                min={minDate}
+              />
+            </section>
           </div>
 
-          <button className="cursor-pointer w-full bg-green-500 font-bold p-2 rounded-2xl">
+          <Button className="cursor-pointer w-full h-14 mt-6 rounded-2xl bg-[#008000] font-[1000] text-[16px]">
             Pedir
-          </button>
+          </Button>
         </form>
+
         {submitted && (
           <div className="mt-4 p-4 bg-green-100 text-green-700 rounded-md">
             Se pidió el almuerzo
