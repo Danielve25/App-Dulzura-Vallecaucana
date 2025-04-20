@@ -13,6 +13,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
+import Loader from "@/components/icos/Loader";
 
 const Line = lazy(() => import("../components/icos/Line"));
 
@@ -50,13 +51,7 @@ function RegisterPage() {
   }, [formErrors]);
 
   return (
-    <Suspense
-      fallback={
-        <div className="h-screen flex justify-center items-center">
-          <div className="loader" />
-        </div>
-      }
-    >
+    <Suspense fallback={<Loader />}>
       <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full p-5">
         <section className="max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
           {RegisterErrors.map((error, i) => (
