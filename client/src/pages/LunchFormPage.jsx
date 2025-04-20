@@ -12,6 +12,14 @@ const LunchFormPage = () => {
   const { createLunch } = useLunch();
 
   const onSubmit = handleSubmit((data) => {
+    const today = new Date();
+    const selectedDate = new Date(data.date);
+
+    if (selectedDate < today.setHours(0, 0, 0, 0)) {
+      alert("No puede seleccionar una fecha anterior a hoy");
+      return;
+    }
+
     const formattedData = {
       userneedscomplete: !!data.userneedscomplete,
       userneedstray: !!data.userneedstray,
@@ -19,6 +27,7 @@ const LunchFormPage = () => {
       userneedsextrajuice: !!data.userneedsextrajuice,
       portionOfProtein: !!data.portionOfProtein,
       portionOfSalad: !!data.portionOfSalad,
+      date: new Date(data.date).toISOString(),
     };
 
     if (
@@ -150,6 +159,14 @@ const LunchFormPage = () => {
                 {errors.options.message}
               </span>
             )}
+            <label htmlFor="date">fecha:</label>
+            <input
+              {...register("date", { required: true })}
+              type="date"
+              id="date"
+              name="date"
+              min={new Date().toISOString().split("T")[0]} // Evita seleccionar días anteriores
+            ></input>
           </div>
 
           <button className="cursor-pointer w-full bg-green-500 font-bold p-2 rounded-2xl">
