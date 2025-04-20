@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { NavigationMenuLink } from "@/components/ui/navigation-menu";
 
 function LoginPage() {
   const {
@@ -53,7 +52,7 @@ function LoginPage() {
               type="text"
               placeholder="Nombre"
               {...register("NameStudent", { required: true })}
-              className="w-full bg-white text-black h-14 mt-2 rounded-2xl px-4 text-[16px]"
+              className="w-full bg-white text-black h-14 mt-2 rounded-2xl px-4 text-[16px] !border-0"
             />
             {errors.NameStudent && (
               <p className="text-red-500 text-[14px]">El nombre es requerido</p>
@@ -75,7 +74,7 @@ function LoginPage() {
               onInput={(e) => {
                 e.target.value = e.target.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
               }}
-              className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] "
+              className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] !border-0"
             />
             {errors.PhoneNumber && (
               <p className="text-red-500 text-[14px]">
