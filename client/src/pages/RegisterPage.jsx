@@ -1,10 +1,20 @@
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
 
-const Line = lazy(() => import("../components/icos/Line")); // Corrige la función lazy eliminando el bloque innecesario
+const Line = lazy(() => import("../components/icos/Line"));
 
 function RegisterPage() {
   const [formErrors, setFormErrors] = useState({});
@@ -21,26 +31,24 @@ function RegisterPage() {
   }, [isAuthenticated, navigate]);
 
   const onSubmit = handleSubmit(async (values) => {
-    setFormErrors({}); // Limpia los errores al enviar el formulario
-    values.NameStudent = values.NameStudent.toUpperCase(); // Convierte el nombre a mayúsculas antes de enviarlo
-    values.grade = `${values.Grade}-${values.Subgroup}`; // Concatena grado y subgrupo
-    delete values.Grade; // Elimina el campo Grade
-    delete values.Subgroup; // Elimina el campo Subgroup
+    setFormErrors({});
+    values.NameStudent = values.NameStudent.toUpperCase();
+    values.grade = `${values.Grade}-${values.Subgroup}`;
+    delete values.Grade;
+    delete values.Subgroup;
     signup(values);
   });
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setFormErrors({});
-    }, 5000); // Limpia los errores después de 5 segundos
+    const timer = setTimeout(() => setFormErrors({}), 5000);
     return () => clearTimeout(timer);
   }, [formErrors]);
 
   return (
     <Suspense
       fallback={
-        <div className="h-[100vh] w-full flex justify-center items-center">
-          <div className="loader"></div>
+        <div className="h-screen flex justify-center items-center">
+          <div className="loader" />
         </div>
       }
     >
@@ -51,41 +59,37 @@ function RegisterPage() {
               {error}
             </div>
           ))}
-          <header>
-            <h1 className="text-2xl font-bold">register</h1>
-          </header>
+
+          <h1 className="text-2xl font-bold mb-4">register</h1>
+
           <form
             onSubmit={(e) => {
-              setFormErrors(errors); // Actualiza los errores al intentar enviar
+              setFormErrors(errors);
               onSubmit(e);
             }}
           >
             <div className="mb-[16px]">
-              <label htmlFor="NameStudent" className="label">
+              <Label htmlFor="NameStudent" className="label">
                 Nombre
-              </label>
-              <input
+              </Label>
+              <Input
                 id="NameStudent"
-                name="NameStudent"
-                type="text"
                 placeholder="Nombre"
-                {...register("NameStudent", {
-                  required: true,
-                })}
-                className="w-full bg-white text-black h-14 mt-2 rounded-2xl px-4 text-[16px]"
+                {...register("NameStudent", { required: true })}
+                className="w-full bg-white text-black h-14 rounded-2xl px-4 text-[16px]"
               />
               {formErrors.NameStudent && (
                 <p className="text-red-500 text-[14px]">Nombre es requerido</p>
               )}
             </div>
+
             <div className="mt-4">
-              <label htmlFor="PhoneNumber" className="label">
-                Numero de telefono
-              </label>
-              <input
+              <Label htmlFor="PhoneNumber" className="label">
+                Numero de teléfono
+              </Label>
+              <Input
                 type="text"
                 id="PhoneNumber"
-                name="PhoneNumber"
                 placeholder="Phone Number"
                 {...register("PhoneNumber", {
                   required: true,
@@ -95,9 +99,9 @@ function RegisterPage() {
                     "El número debe tener al menos 6 dígitos",
                 })}
                 onInput={(e) => {
-                  e.target.value = e.target.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
+                  e.target.value = e.target.value.replace(/\D/g, "");
                 }}
-                className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] "
+                className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px]"
               />
               {formErrors.PhoneNumber && (
                 <p className="text-red-500 text-[14px]">
@@ -106,50 +110,55 @@ function RegisterPage() {
                 </p>
               )}
             </div>
-            <section className=" mt-4">
-              <label htmlFor="Grade" className="label">
+
+            <section className="mt-4">
+              <Label htmlFor="Grade" className="label">
                 Grado
-              </label>
-              <section className="flex max-h-[400px] ">
-                <select
-                  id="Grade"
-                  {...register("Grade", { required: true })}
-                  defaultValue=""
-                  className="w-6/12 h-14 bg-white text-black px-4 rounded-2xl text-[16px]"
-                >
-                  <option value="" disabled>
-                    grado
-                  </option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                </select>
+              </Label>
+              <section className="flex max-h-[400px] gap-2">
+                <Select {...register("Grade", { required: true })}>
+                  <SelectTrigger className="w-6/12 bg-white  px-4 rounded-2xl text-[16px] data-[size=default]:h-14">
+                    <SelectValue placeholder="Grado" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white ">
+                    {Array.from({ length: 11 }, (_, i) => (
+                      <SelectItem
+                        className="font-bold"
+                        key={i + 1}
+                        value={`${i + 1}`}
+                      >
+                        {i + 1}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
                 <div className="self-center">
                   <Line />
                 </div>
-                <select
+
+                <Select
                   id="Subgroup"
                   {...register("Subgroup", { required: true })}
                   defaultValue=""
-                  className="w-6/12 h-14 bg-white text-black px-4 rounded-2xl text-[16px]"
                 >
-                  <option value="" disabled>
-                    subgrupo
-                  </option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                </select>
+                  <SelectTrigger className="w-6/12 bg-white text-black px-4 rounded-2xl text-[16px] data-[size=default]:h-14">
+                    <SelectValue placeholder="SubGrupo" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white ">
+                    {Array.from({ length: 3 }, (_, i) => (
+                      <SelectItem
+                        className="font-bold"
+                        key={i + 1}
+                        value={`${i + 1}`}
+                      >
+                        {i + 1}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </section>
+
               {formErrors.Subgroup && (
                 <p className="text-red-500 text-[14px]">
                   Subgrupo es requerido
@@ -159,16 +168,18 @@ function RegisterPage() {
                 <p className="text-red-500 text-[14px]">Grado es requerido</p>
               )}
             </section>
-            <button
-              className="cursor-pointer w-full h-14 my-6 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[16px] "
+
+            <Button
               type="submit"
+              className="cursor-pointer w-full h-14 my-6 rounded-2xl bg-[#008000] font-[1000] text-[16px]"
             >
               Register
-            </button>
+            </Button>
           </form>
+
           <footer className="flex justify-center">
             <Link to="/" className="text-sky-500">
-              ya tienes una cuenta?
+              ¿Ya tienes una cuenta?
             </Link>
           </footer>
         </section>
@@ -176,4 +187,5 @@ function RegisterPage() {
     </Suspense>
   );
 }
+
 export default RegisterPage;
