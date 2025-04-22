@@ -95,7 +95,7 @@ const LunchFormPage = () => {
   const minDate = ayer.toString();
 
   return (
-    <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
+    <main className="flex h-[calc(100vh-80px)] items-center justify-center w-full">
       <section className="max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
         <header>
           <h1 className="text-2xl font-bold">Pedir Almuerzo</h1>
@@ -200,7 +200,7 @@ const LunchFormPage = () => {
             </section>
           </div>
 
-          <Button className="cursor-pointer w-full h-14 mt-6 rounded-2xl bg-[#008000] font-[1000] text-[16px]">
+          <Button className="cursor-pointer w-full h-14 rounded-2xl bg-[#008000] font-[1000] text-[16px]">
             Pedir
           </Button>
         </form>
