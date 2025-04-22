@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLunch } from "../context/LunchContext";
 import { savePayment } from "../api/payment";
-import CloseIcon from "./icos/CloseIcon";
+import { X } from "lucide-react";
 
 const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
   const [isProcessing, setIsProcessing] = useState(false); // Estado para manejar el procesamiento
@@ -61,7 +61,7 @@ const LunchPayForm = ({ setIsOpen, id_task, payAmount }) => {
             onClick={() => setIsOpen(false)}
             className="absolute top-0 right-0 mt-2 mr-2 cursor-pointer"
           >
-            <CloseIcon className="mb-2" />
+            <X className="mb-2" />
           </button>
           <h1 className="text-2xl font-bold">Pagar Almuerzo</h1>
         </header>
