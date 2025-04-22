@@ -179,6 +179,13 @@ a.active {
   }
 }
 
+@media (max-width: 480px) {
+  /* Tus estilos aquí */
+  .PedirAlmuerso {
+    @apply h-fit mt-3 p-2;
+  }
+}
+
 @media (max-width: 373px) {
   table {
     font-size: 12px; /* Ajusta el tamaño de la letra de la tabla */
