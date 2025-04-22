@@ -8,7 +8,7 @@ function NavBar() {
   const { isAuthenticated, logout, user } = useAuth();
   console.log(user);
   return (
-    <nav className="open-sans">
+    <nav className="open-sans z-10">
       {/* Checkbox for toggling menu */}
       <input type="checkbox" id="check" />
       {/* Menu icon */}
