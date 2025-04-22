@@ -15,9 +15,17 @@ import {
   TableCell,
 } from "@/components/ui/table";
 
-const EyeIcon = lazy(() => import("../components/icos/EyeIcon"));
-const PrintIcon = lazy(() => import("../components/icos/PrintIcon"));
-const DownloadIcon = lazy(() => import("../components/icos/Download"));
+const PrintIcon = lazy(() =>
+  import("lucide-react").then((module) => ({ default: module.Printer }))
+);
+
+const DownloadIcon = lazy(() =>
+  import("lucide-react").then((module) => ({ default: module.Download }))
+);
+
+const EyeIcon = lazy(() =>
+  import("lucide-react").then((module) => ({ default: module.Eye }))
+);
 
 const ListDay = () => {
   const { getAllLunchs } = useLunch();
@@ -201,7 +209,7 @@ const ListDay = () => {
             onClick={downloadExcel}
             className="px-4 py-2 flex bg-[#008000] text-white rounded hover:scale-110 transition-all hover:!bg-[#008000]"
           >
-            <DownloadIcon className="mr-1" />
+            <DownloadIcon className="" />
             Descargar Excel
           </Button>
 
@@ -209,7 +217,7 @@ const ListDay = () => {
             onClick={generatePDF}
             className="px-4 py-2 flex bg-[#dc2626] text-white rounded hover:scale-110 transition-all hover:!bg-[#dc2626]"
           >
-            <EyeIcon className="mr-1" />
+            <EyeIcon className="" />
             Ver PDF
           </Button>
 
@@ -217,7 +225,7 @@ const ListDay = () => {
             onClick={handlePrint}
             className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-110 transition-all hover:!bg-blue-600"
           >
-            <PrintIcon className="mr-1" />
+            <PrintIcon className="" />
             Imprimir Tabla
           </Button>
         </div>
