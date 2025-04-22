@@ -90,7 +90,9 @@ const LunchFormPage = () => {
     }
   }, [submitted]);
 
-  const minDate = new Date().toISOString().split("T")[0];
+  const ayer = Temporal.Now.plainDateISO();
+
+  const minDate = ayer.toString();
 
   return (
     <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
