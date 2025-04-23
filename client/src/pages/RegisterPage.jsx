@@ -69,14 +69,14 @@ function RegisterPage() {
             }}
           >
             <div className="mb-[16px]">
-              <Label htmlFor="NameStudent" className="label">
+              <Label htmlFor="NameStudent" className="label Roboto">
                 Nombre
               </Label>
               <Input
                 id="NameStudent"
                 placeholder="Nombre"
                 {...register("NameStudent", { required: true })}
-                className="w-full bg-white text-black h-14 rounded-2xl px-4 text-[16px] !border-0 "
+                className="w-full bg-white text-black h-14 rounded-2xl px-4 text-[16px] !border-0 Roboto"
               />
               {formErrors.NameStudent && (
                 <p className="text-red-500 text-[14px]">Nombre es requerido</p>
@@ -84,7 +84,7 @@ function RegisterPage() {
             </div>
 
             <div className="mt-4">
-              <Label htmlFor="PhoneNumber" className="label">
+              <Label htmlFor="PhoneNumber" className="label Roboto">
                 Numero de teléfono
               </Label>
               <Input
@@ -101,7 +101,7 @@ function RegisterPage() {
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/\D/g, "");
                 }}
-                className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] !border-0"
+                className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] !border-0 Roboto"
               />
               {formErrors.PhoneNumber && (
                 <p className="text-red-500 text-[14px]">
@@ -112,16 +112,16 @@ function RegisterPage() {
             </div>
 
             <section className="mt-4">
-              <Label htmlFor="Grade" className="label">
+              <Label htmlFor="Grade" className="label Roboto">
                 Grado
               </Label>
-              <section className="flex max-h-[400px] gap-2">
+              <section className="flex max-h-[400px] gap-2 Roboto">
                 <Select
                   value={grade}
                   onValueChange={(value) => setValue("Grade", value)}
                   {...register("Grade", { required: true })}
                 >
-                  <SelectTrigger className="w-6/12 bg-white px-4 rounded-2xl text-[16px] data-[size=default]:h-14 !border-0">
+                  <SelectTrigger className="w-6/12 bg-white px-4 rounded-2xl text-[16px] data-[size=default]:h-14 !border-0 Roboto">
                     <SelectValue placeholder="Grado" />
                   </SelectTrigger>
                   <SelectContent className="bg-white ">
@@ -147,10 +147,10 @@ function RegisterPage() {
                   id="Subgroup"
                   {...register("Subgroup", { required: true })}
                 >
-                  <SelectTrigger className="w-6/12 bg-white text-black px-4 rounded-2xl text-[16px] data-[size=default]:h-14 ">
+                  <SelectTrigger className="w-6/12 bg-white text-black px-4 rounded-2xl text-[16px] data-[size=default]:h-14 Roboto">
                     <SelectValue placeholder="SubGrupo" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white ">
+                  <SelectContent className="bg-white Roboto">
                     {Array.from({ length: 3 }, (_, i) => (
                       <SelectItem
                         className="font-bold"
