@@ -19,6 +19,10 @@ export default defineConfig({
           },
           {
             name: "Open Sans",
+            styles: "wght@400",
+          },
+          {
+            name: "Red Hat Text",
             styles: "wght@400;600",
           },
         ],
