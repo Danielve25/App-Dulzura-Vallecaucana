@@ -178,6 +178,7 @@ function AdminLunchPage() {
         </Accordion>
       </Suspense>
       <ChartComponent
+        className="bg-white border-0 shadow-md"
         chartData={chartData}
         chartConfig={chartConfig}
         lineType="line"

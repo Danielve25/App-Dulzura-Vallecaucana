@@ -29,6 +29,7 @@ function ChartComponent({
   chartTitle,
   chartDescription,
   lineType,
+  className,
 }) {
   const [timeRange, setTimeRange] = useState(defaultTimeRange);
 
@@ -55,6 +56,7 @@ function ChartComponent({
       const { color, label } = chartConfig[key];
       return (
         <Area
+          dot={true}
           key={key}
           dataKey={key}
           type={lineType}
@@ -80,7 +82,7 @@ function ChartComponent({
   };
 
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
           <CardTitle>{chartTitle}</CardTitle>
@@ -88,12 +90,12 @@ function ChartComponent({
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger
-            className="w-[160px] rounded-lg sm:ml-auto"
+            className="w-[160px] rounded-lg sm:ml-auto border-black"
             aria-label="Select a value"
           >
             <SelectValue placeholder="Last 3 months" />
           </SelectTrigger>
-          <SelectContent className="rounded-xl">
+          <SelectContent className="rounded-xl bg-white">
             <SelectItem value="90d" className="rounded-lg">
               ultimos 3 meses
             </SelectItem>
@@ -129,6 +131,7 @@ function ChartComponent({
               }}
             />
             <ChartTooltip
+              className="bg-white"
               cursor={false}
               content={
                 <ChartTooltipContent
