@@ -177,15 +177,18 @@ function AdminLunchPage() {
           })}
         </Accordion>
       </Suspense>
-      <ChartComponent
-        className="bg-white border-0 shadow-md"
-        chartData={chartData}
-        chartConfig={chartConfig}
-        lineType="line"
-        defaultTimeRange="30d"
-        chartTitle="Almuerzos Pedidos"
-        chartDescription="Monstrando todos los almuerzos pedidos"
-      />
+
+      <div className="w-full flex">
+        <ChartComponent
+          className="bg-white border-slate-300 chart shadow-md"
+          chartData={chartData}
+          chartConfig={chartConfig}
+          lineType="line"
+          defaultTimeRange="30d"
+          chartTitle="Almuerzos Pedidos"
+          chartDescription="Monstrando todos los almuerzos pedidos"
+        />
+      </div>
     </div>
   );
 }
