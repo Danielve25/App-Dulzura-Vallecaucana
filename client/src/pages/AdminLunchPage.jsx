@@ -8,8 +8,14 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import SelloImagen from "../components/icos/CanceladoSello";
+import ChartComponent from "@/components/ChartComponent";
 
 function AdminLunchPage() {
+  const chartConfig = {
+    Almuerzos: { label: "Almuerzos", color: "#6495ED" },
+  };
+
+  const [chartData, setChartData] = useState([]);
   const { getAllLunchs, putLunch } = useLunch();
   const [groupedLunchs, setGroupedLunchs] = useState({});
   const [loadingPay, setLoadingPay] = useState(null);
@@ -29,10 +35,46 @@ function AdminLunchPage() {
         return acc;
       }, {});
       setGroupedLunchs(grouped);
+      const dailyCounts = lunches.data.reduce((acc, lunch) => {
+        const date = new Date(lunch.date).toISOString().split("T")[0];
+        acc[date] = (acc[date] || 0) + 1;
+        return acc;
+      }, {});
+
+      const chartFormattedData = Object.entries(dailyCounts).map(
+        ([date, count]) => ({
+          date,
+          Almuerzos: count,
+        })
+      );
+
+      const updatedData = chartFormattedData.map((item) => {
+        const dateParts = item.date.split("-");
+        let year = parseInt(dateParts[0]);
+        let month = parseInt(dateParts[1]) - 1; // Los meses en JavaScript son 0-indexados
+        let day = parseInt(dateParts[2]);
+
+        const dateObject = new Date(year, month, day);
+        dateObject.setDate(dateObject.getDate() + 1);
+
+        const newYear = dateObject.getFullYear();
+        const newMonth = (dateObject.getMonth() + 1)
+          .toString()
+          .padStart(2, "0");
+        const newDay = dateObject.getDate().toString().padStart(2, "0");
+
+        return {
+          ...item,
+          date: `${newYear}-${newMonth}-${newDay}`,
+        };
+      });
+      setChartData(updatedData);
     } catch (error) {
       console.error("Error cargando almuerzos:", error);
     }
   };
+
+  console.log(chartData);
 
   useEffect(() => {
     loadLunchs();
@@ -135,6 +177,14 @@ function AdminLunchPage() {
           })}
         </Accordion>
       </Suspense>
+      <ChartComponent
+        chartData={chartData}
+        chartConfig={chartConfig}
+        lineType="line"
+        defaultTimeRange="30d"
+        chartTitle="Almuerzos Pedidos"
+        chartDescription="Monstrando todos los almuerzos pedidos"
+      />
     </div>
   );
 }
