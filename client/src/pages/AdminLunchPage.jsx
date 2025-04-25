@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import SelloImagen from "../components/icos/CanceladoSello";
 import ChartComponent from "@/components/ChartComponent";
+import { DataTable } from "@/components/DataTable";
 
 function AdminLunchPage() {
   const chartConfig = {
@@ -19,6 +20,7 @@ function AdminLunchPage() {
   const { getAllLunchs, putLunch } = useLunch();
   const [groupedLunchs, setGroupedLunchs] = useState({});
   const [loadingPay, setLoadingPay] = useState(null);
+  const [dataTable, setDataTable] = useState([]);
 
   const loadLunchs = async () => {
     try {
@@ -69,10 +71,25 @@ function AdminLunchPage() {
         };
       });
       setChartData(updatedData);
+      const dataTable = Object.entries(grouped).map(([studentName, lunchs]) => {
+        const totalAmount = lunchs.reduce(
+          (sum, lunch) => (!lunch.pay ? sum + lunch.userNeedsPay : sum),
+          0
+        );
+
+        const pendingPayments = lunchs.filter((lunch) => !lunch.pay).length;
+        return {
+          id: studentName,
+          amount: totalAmount,
+          Pending: pendingPayments,
+        };
+      });
+      setDataTable(dataTable);
     } catch (error) {
       console.error("Error cargando almuerzos:", error);
     }
   };
+  console.log(JSON.stringify(dataTable, null, 2));
 
   console.log(chartData);
 
@@ -95,6 +112,16 @@ function AdminLunchPage() {
           Panel de Administrador - Almuerzos por Estudiante
         </h2>
 
+        <ChartComponent
+          className="bg-white border-slate-300  shadow-md"
+          chartData={chartData}
+          chartConfig={chartConfig}
+          lineType="line"
+          defaultTimeRange="30d"
+          chartTitle="Almuerzos Pedidos"
+          chartDescription="Monstrando todos los almuerzos pedidos"
+        />
+        <DataTable data={dataTable} />
         <Accordion type="multiple" className="w-full">
           {Object.entries(groupedLunchs).map(([studentName, lunchs]) => {
             const totalAmount = lunchs.reduce(
@@ -177,16 +204,6 @@ function AdminLunchPage() {
           })}
         </Accordion>
       </Suspense>
-
-      <ChartComponent
-        className="bg-white border-slate-300  shadow-md"
-        chartData={chartData}
-        chartConfig={chartConfig}
-        lineType="line"
-        defaultTimeRange="30d"
-        chartTitle="Almuerzos Pedidos"
-        chartDescription="Monstrando todos los almuerzos pedidos"
-      />
     </div>
   );
 }
