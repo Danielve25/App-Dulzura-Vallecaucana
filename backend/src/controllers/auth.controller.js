@@ -23,6 +23,7 @@ export const register = async (req, res) => {
       NameStudent: upperCaseName,
       grade: grade,
       PhoneNumber: phoneNumberhash,
+      PhoneNumberReal: PhoneNumber,
       isAdmin: isAdmin || false, // Asegurarse de que isAdmin sea false si no se proporciona
     });
 
