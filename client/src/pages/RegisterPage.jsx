@@ -60,7 +60,7 @@ function RegisterPage() {
             </div>
           ))}
 
-          <h1 className="text-2xl font-bold mb-4">register</h1>
+          <h1 className="!text-2xl font-bold mb-4">register</h1>
 
           <form
             onSubmit={(e) => {
@@ -79,7 +79,7 @@ function RegisterPage() {
                 className="w-full bg-white text-black h-14 rounded-2xl px-4 text-[16px] !border-0 Roboto"
               />
               {formErrors.NameStudent && (
-                <p className="text-red-500 text-[14px]">Nombre es requerido</p>
+                <p className="text-red-500 text-[15px]">Nombre es requerido</p>
               )}
             </div>
 
@@ -104,7 +104,7 @@ function RegisterPage() {
                 className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] !border-0 Roboto"
               />
               {formErrors.PhoneNumber && (
-                <p className="text-red-500 text-[14px]">
+                <p className="text-red-500 text-[15px]">
                   {formErrors.PhoneNumber.message ||
                     "Número de teléfono es requerido"}
                 </p>
@@ -165,12 +165,12 @@ function RegisterPage() {
               </section>
 
               {formErrors.Subgroup && (
-                <p className="text-red-500 text-[14px]">
+                <p className="text-red-500 text-[15px]">
                   Subgrupo es requerido
                 </p>
               )}
               {formErrors.Grade && (
-                <p className="text-red-500 text-[14px]">Grado es requerido</p>
+                <p className="text-red-500 text-[15px]">Grado es requerido</p>
               )}
             </section>
 

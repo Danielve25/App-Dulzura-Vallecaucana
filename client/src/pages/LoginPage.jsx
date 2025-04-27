@@ -39,7 +39,7 @@ function LoginPage() {
           </div>
         ))}
         <header>
-          <h1 className="text-2xl font-bold">Iniciar Sesión</h1>
+          <h1 className="!text-2xl font-bold">Iniciar Sesión</h1>
         </header>
         <form onSubmit={onSubmit}>
           <div className="mb-[16px]">

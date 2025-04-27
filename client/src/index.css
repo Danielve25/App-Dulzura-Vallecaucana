@@ -74,11 +74,13 @@
 
 * {
   font-family: "Red Hat Text", arial, sans-serif;
+  font-size: 17px;
 }
 
 .open-sans {
   font-family: "Open Sans";
   font-weight: 600;
+  font-size: 18px;
 }
 
 .Roboto {
@@ -181,6 +183,21 @@ a.active {
   /* Estilos aquí */
   .checkbtn {
     @apply mr-4;
+  }
+}
+
+@media (max-width: 314px) {
+  .chartheader {
+    flex-direction: column;
+  }
+  .trigger {
+    width: 100%;
+  }
+  .filtrerButton {
+    @apply flex-col;
+  }
+  .filtrerSelect {
+    @apply w-full my-2;
   }
 }
 
