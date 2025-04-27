@@ -83,14 +83,14 @@ function ChartComponent({
 
   return (
     <Card className={className}>
-      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
-        <div className="grid flex-1 gap-1 text-center sm:text-left">
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row chartheader">
+        <div className="grid flex-1 gap-1 text-center sm:text-left ">
           <CardTitle>{chartTitle}</CardTitle>
           <CardDescription>{chartDescription}</CardDescription>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger
-            className="w-[160px] rounded-lg sm:ml-auto border-black"
+            className="w-[160px] rounded-lg sm:ml-auto border-black trigger"
             aria-label="Select a value"
           >
             <SelectValue placeholder="Last 3 months" />

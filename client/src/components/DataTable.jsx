@@ -153,7 +153,7 @@ export function DataTable({ data }) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 filtrerButton">
         <Input
           placeholder="Filter Pending..."
           value={table.getColumn("Pending")?.getFilterValue() ?? ""}
@@ -163,12 +163,15 @@ export function DataTable({ data }) {
           className="max-w-sm border-slate-400 "
         />
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger
+            asChild
+            className="filtrerSelect bg-white border-slate-400 hover:bg-slate-400"
+          >
             <Button variant="outline" className="ml-auto">
               Columns <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="bg-white">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
