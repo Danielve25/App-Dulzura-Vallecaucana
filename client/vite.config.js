@@ -53,7 +53,12 @@ export default defineConfig({
       output: {
         manualChunks: {
           // Divide las dependencias grandes en chunks separados
-          react: ["react", "react-dom", "react-router"],
+          react: [
+            "react",
+            "react-dom",
+            "react-router",
+            "@tanstack/react-table",
+          ],
           radix: [
             "@radix-ui/react-select",
             "@radix-ui/react-label",
