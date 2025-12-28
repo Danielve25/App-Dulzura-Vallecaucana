@@ -17,3 +17,6 @@ export const obteinLunchByOrderID = (orderId) => {
 };
 
 export const getAllLunchsRequest = () => axios.get("/admin/lunchs");
+
+export const cobrar = ({ message }) =>
+  axios.post("/send-whatsapp-message", message);

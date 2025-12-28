@@ -30,6 +30,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { cobrar } from "@/api/lunch";
+
 export const columns = [
   {
     id: "select",
@@ -76,7 +78,7 @@ export const columns = [
   },
   {
     accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    header: () => <div className="text-left">Amount</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
 
@@ -86,7 +88,15 @@ export const columns = [
         currency: "USD",
       }).format(amount);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="text-left font-medium">{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: "PhoneNumberReal",
+    header: () => <div className="text-left">numero de telefono</div>,
+    cell: ({ row }) => {
+      const PhoneNumberReal = parseFloat(row.getValue("PhoneNumberReal"));
+      return <div className="text-left">{PhoneNumberReal}</div>;
     },
   },
 
@@ -109,11 +119,19 @@ export const columns = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              Copy payment ID
+              copiar nombre
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                console.log({
+                  to: payment.PhoneNumberReal,
+                  body: `hola te informamos que tienes un saldo pendiente de ${payment.amount} por ${payment.Pending} almuerzos pendientes`,
+                })
+              }
+            >
+              Cobrar
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

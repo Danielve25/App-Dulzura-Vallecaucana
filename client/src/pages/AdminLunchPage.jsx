@@ -10,6 +10,7 @@ import {
 import SelloImagen from "../components/icos/CanceladoSello";
 import ChartComponent from "@/components/ChartComponent";
 import { DataTable } from "@/components/DataTable";
+import { Phone } from "lucide-react";
 
 function AdminLunchPage() {
   const chartConfig = {
@@ -31,6 +32,7 @@ function AdminLunchPage() {
       }
       const grouped = lunches.data.reduce((acc, lunch) => {
         const studentName = lunch.user?.NameStudent;
+        const PhoneNumberReal = lunch.user?.PhoneNumberReal;
         if (!studentName) return acc;
         if (!acc[studentName]) acc[studentName] = [];
         acc[studentName].push(lunch);
@@ -78,10 +80,13 @@ function AdminLunchPage() {
         );
 
         const pendingPayments = lunchs.filter((lunch) => !lunch.pay).length;
+        const phoneNumberReal = lunchs[0]?.user.PhoneNumberReal || ""; // Asumiendo que PhoneNumberReal está en cada lunch
+
         return {
           id: studentName,
           amount: totalAmount,
           Pending: pendingPayments,
+          PhoneNumberReal: phoneNumberReal, // Se agrega el PhoneNumberReal
         };
       });
       setDataTable(dataTable);
@@ -90,6 +95,7 @@ function AdminLunchPage() {
     }
   };
   console.log(JSON.stringify(dataTable, null, 2));
+  console.log("gropuped lunch", groupedLunchs);
 
   console.log(chartData);
 

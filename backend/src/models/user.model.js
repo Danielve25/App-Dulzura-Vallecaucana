@@ -12,6 +12,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    PhoneNumberReal: {
+      type: String,
+      required: true,
+    },
     grade: {
       type: String,
       required: true,

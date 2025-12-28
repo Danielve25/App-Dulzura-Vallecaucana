@@ -2,10 +2,10 @@ import React, { useEffect, useState, lazy, useRef, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { useLunch } from "../context/LunchContext";
 import { Temporal } from "temporal-polyfill";
-import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Loader from "@/components/icos/Loader";
+import ExcelJS from "exceljs"; // Importar ExcelJS
 import {
   Table,
   TableHeader,
@@ -61,27 +61,42 @@ const ListDay = () => {
     fetchTodayLunchs();
   }, []);
 
-  const downloadExcel = () => {
-    const data = todayLunchs.map((lunch, index) => ({
-      "#": index + 1,
-      "Nombre del Estudiante": lunch.user.NameStudent,
-      [DayToday]: [
-        lunch.userneedscomplete && "C, ",
-        lunch.userneedstray && "B, ",
-        lunch.EspecialStray && "BE",
-        lunch.userneedsextrajuice && "J, ",
-        lunch.portionOfProtein && "P, ",
-        lunch.portionOfSalad && "PE",
-      ]
-        .filter(Boolean)
-        .join(", "),
-    }));
+  const downloadExcel = async () => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Pedidos del Día");
 
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Pedidos del Día");
+    worksheet.columns = [
+      { header: "#", key: "index", width: 5 },
+      { header: "Nombre del Estudiante", key: "name", width: 30 },
+      { header: DayToday, key: "needs", width: 30 },
+    ];
 
-    XLSX.writeFile(workbook, `Pedidos_${DayToday}.xlsx`);
+    todayLunchs.forEach((lunch, index) => {
+      worksheet.addRow({
+        index: index + 1,
+        name: lunch.user.NameStudent,
+        needs: [
+          lunch.userneedscomplete && "C",
+          lunch.userneedstray && "B",
+          lunch.EspecialStray && "BE",
+          lunch.userneedsextrajuice && "J",
+          lunch.portionOfProtein && "P",
+          lunch.portionOfSalad && "PE",
+        ]
+          .filter(Boolean)
+          .join(", "),
+      });
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `Pedidos_${DayToday}.xlsx`;
+    link.click();
   };
 
   const generatePDF = () => {
@@ -108,34 +123,32 @@ const ListDay = () => {
       body: rows,
       startY: 20,
       styles: {
-        fontSize: 10, // Tamaño de fuente
-        cellPadding: 6, // Espaciado dentro de las celdas
-        halign: "center", // Alineación horizontal de texto
-        valign: "middle", // Alineación vertical de texto
-        lineColor: [0, 0, 0], // Color de las líneas de la tabla (bordes)
-        lineWidth: 0.01, // Grosor de las líneas
+        fontSize: 10,
+        cellPadding: 6,
+        halign: "center",
+        valign: "middle",
+        lineColor: [0, 0, 0],
+        lineWidth: 0.01,
       },
       headStyles: {
-        fillColor: [255, 255, 255], // Color de fondo de la cabecera
-        textColor: [0, 0, 0], // Color de texto en la cabecera
-        fontStyle: "bold", // Estilo de fuente en la cabecera
-        lineWidth: 0.5, // Grosor de las líneas de la cabecera
-        lineColor: [0, 0, 0], // Color de las líneas en la cabecera
+        fillColor: [255, 255, 255],
+        textColor: [0, 0, 0],
+        fontStyle: "bold",
+        lineWidth: 0.5,
+        lineColor: [0, 0, 0],
       },
       bodyStyles: {
-        lineWidth: 0.5, // Grosor de las líneas de las filas
-        lineColor: [0, 0, 0], // Color de las líneas de las filas
+        lineWidth: 0.5,
+        lineColor: [0, 0, 0],
       },
       alternateRowStyles: {
-        fillColor: [255, 255, 255], // Color de fondo de filas alternas
+        fillColor: [255, 255, 255],
       },
-      margin: { top: 30 }, // Márgenes alrededor de la tabla
+      margin: { top: 30 },
     });
 
-    // Convertir el PDF a base64
     const pdfOutput = doc.output("datauristring");
 
-    // Establecer la URL del PDF en el estado
     setPdfUrl(pdfOutput);
   };
 

@@ -26,7 +26,7 @@ router.post(
 
 router.delete("/lunch/:id", authRequired, deleteTask);
 
-router.put("/lunch/:id", authRequired, updateTask);
+router.put("/lunch/:id", authRequired, adminRequired, updateTask);
 
 // Ruta para que el administrador obtenga todas las tareas
 router.get("/admin/lunchs", authRequired, adminRequired, getAllTasks);
