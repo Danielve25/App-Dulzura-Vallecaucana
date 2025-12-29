@@ -12,6 +12,9 @@ const LunchPage = () => {
     getLunchs(); // Solo una solicitud para obtener los almuerzos (y menú si está incluido en la respuesta)
   }, []);
 
+  const totalPendiente = lunchs
+    .filter((l) => !l.pay)
+    .reduce((acc, l) => acc + Number(l.userNeedsPay || 0), 0);
   // Si no hay almuerzos, mostrar mensaje
   if (!lunchs || lunchs.length === 0)
     return (
@@ -26,7 +29,10 @@ const LunchPage = () => {
     <main className="w-full p-4">
       <Menu />
       <header>
-        <h2 className="text-2xl font-bold mb-4">Pedido de Almuerzo</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          Pedido de Almuerzo{" "}
+          <p className="font-bold mt-4">saldo pendiente: {totalPendiente}</p>
+        </h2>
       </header>
       <section className="grid grid-cols-1 gap-4">
         {lunchs.map((lunch) => (
