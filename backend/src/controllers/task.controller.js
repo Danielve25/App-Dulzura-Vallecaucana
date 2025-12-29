@@ -24,6 +24,7 @@ export const createTask = async (req, res) => {
     pay,
     userneedscomplete,
     orderId,
+    onlysoup,
     userneedstray,
     portionOfProtein,
     portionOfSalad,
@@ -38,6 +39,7 @@ export const createTask = async (req, res) => {
   if (userneedscomplete) userNeedsPay += 16000;
   if (userneedstray) userNeedsPay += 15000;
   if (userneedsextrajuice) userNeedsPay += 1000;
+  if (onlysoup) userNeedsPay += 5000;
 
   const newTask = new Task({
     title,
@@ -50,6 +52,7 @@ export const createTask = async (req, res) => {
     portionOfProtein,
     portionOfSalad,
     pay,
+    onlysoup,
     userNeedsPay, // Guardar el valor calculado
     statePayment,
 
