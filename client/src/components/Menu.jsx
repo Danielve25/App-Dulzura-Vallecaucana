@@ -37,7 +37,7 @@ const Menu = () => {
 
   if (menu.length === 0) {
     return (
-      <section className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
+      <section className="flex h-[30vh] items-center justify-center w-full">
         <h1 className="text-2xl font-bold">NO HAY MENÚ DISPONIBLE</h1>
       </section>
     );
