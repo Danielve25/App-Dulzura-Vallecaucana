@@ -5,7 +5,6 @@ import { AuthProvider } from "./context/AuthContext";
 import { LunchProvider } from "./context/LunchContext";
 import NavBar from "./components/NavBar";
 
-const ProfilePage = import("./pages/ProfilePage");
 const ProtectedRoute = lazy(() => import("./ProtectedRoute"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -28,7 +27,6 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/lunch" element={<LunchPage />} />
               <Route path="/lunch/new" element={<LunchFormPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
               <Route path="/admin" element={<AdminLunchPage />} />
               <Route path="/admin/listDay" element={<ListDay />} />
               <Route path="/admin/create/menu" element={<CreateNewMenu />} />
