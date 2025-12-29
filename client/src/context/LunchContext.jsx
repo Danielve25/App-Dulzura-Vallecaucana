@@ -4,6 +4,7 @@ import {
   getLunchsRequest,
   updateLunchRequest,
   getAllLunchsRequest,
+  createLunchAdminRequest,
 } from "../api/lunch";
 import { PayLunch, verifyPayment } from "../api/payment";
 import { LunchContext, useLunch as baseUseLunch } from "../utils/lunchUtils";
@@ -13,6 +14,14 @@ export const useLunch = () => baseUseLunch(useContext(LunchContext));
 export function LunchProvider({ children }) {
   const [lunchs, setLunch] = useState([]);
 
+  const CreateLunchAdmin = async (lunch) => {
+    try {
+      const res = await createLunchAdminRequest(lunch);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getLunchs = async () => {
     const res = await getLunchsRequest();
     try {
@@ -87,6 +96,7 @@ export function LunchProvider({ children }) {
         putLunch,
         verifyPaymentNequi,
         getAllLunchs,
+        CreateLunchAdmin,
       }}
     >
       {children}

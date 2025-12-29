@@ -13,7 +13,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
-const LunchFormPage = () => {
+const LunchPayForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const {
     register,
@@ -218,4 +218,4 @@ const LunchFormPage = () => {
   );
 };
 
-export default LunchFormPage;
+export default LunchPayForm;

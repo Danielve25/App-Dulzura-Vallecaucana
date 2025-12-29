@@ -14,6 +14,7 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
+import Modal from "@/components/Modal";
 
 const PrintIcon = lazy(() =>
   import("lucide-react").then((module) => ({ default: module.Printer }))
@@ -25,6 +26,9 @@ const DownloadIcon = lazy(() =>
 
 const EyeIcon = lazy(() =>
   import("lucide-react").then((module) => ({ default: module.Eye }))
+);
+const CirclePlus = lazy(() =>
+  import("lucide-react").then((module) => ({ default: module.CirclePlus }))
 );
 
 const ListDay = () => {
@@ -242,11 +246,18 @@ const ListDay = () => {
 
           <Button
             onClick={handlePrint}
-            className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-110 transition-all hover:!bg-blue-600"
+            className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-110 transition-all hover:!bg-blue-700"
           >
             <PrintIcon className="" />
             Imprimir Tabla
           </Button>
+          <Modal
+            className="px-4 py-2 flex bg-orange-600 text-white rounded hover:scale-110 transition-all hover:!bg-orange-700"
+            text="Añadir pedido"
+          >
+            <CirclePlus className="" />
+            Añadir pedido
+          </Modal>
         </div>
 
         {pdfUrl && (
