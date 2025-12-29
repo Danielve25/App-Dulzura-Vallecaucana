@@ -73,7 +73,6 @@ export default defineConfig({
           ],
           utils: ["clsx", "tailwind-merge", "class-variance-authority"],
           pdf: ["jspdf", "jspdf-autotable"],
-          xlsx: ["xlsx"],
           axios: ["axios"],
         },
       },
