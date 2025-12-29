@@ -33,10 +33,10 @@ export const createTask = async (req, res) => {
 
   // Calcular el valor de userNeedsPay
   let userNeedsPay = 0;
-  if (portionOfProtein) userNeedsPay += 6000;
+  if (portionOfProtein) userNeedsPay += 8000;
   if (portionOfSalad) userNeedsPay += 3000;
-  if (userneedscomplete) userNeedsPay += 14000;
-  if (userneedstray) userNeedsPay += 13000;
+  if (userneedscomplete) userNeedsPay += 16000;
+  if (userneedstray) userNeedsPay += 15000;
   if (userneedsextrajuice) userNeedsPay += 1000;
 
   const newTask = new Task({
