@@ -230,7 +230,7 @@ const ListDay = () => {
         <div className="flex flex-col max-[442px]:flex-col min-[443px]:flex-row gap-4 mt-4 w-full">
           <Button
             onClick={downloadExcel}
-            className="px-4 py-2 flex bg-[#008000] text-white rounded hover:scale-110 transition-all hover:!bg-[#008000]"
+            className="px-4 py-2 flex bg-[#008000] text-white rounded hover:scale-110 transition-all hover:bg-[#008000]!"
           >
             <DownloadIcon className="" />
             Descargar Excel
@@ -238,7 +238,7 @@ const ListDay = () => {
 
           <Button
             onClick={generatePDF}
-            className="px-4 py-2 flex bg-[#dc2626] text-white rounded hover:scale-110 transition-all hover:!bg-[#dc2626]"
+            className="px-4 py-2 flex bg-[#dc2626] text-white rounded hover:scale-110 transition-all hover:bg-[#dc2626]!"
           >
             <EyeIcon className="" />
             Ver PDF
@@ -246,13 +246,13 @@ const ListDay = () => {
 
           <Button
             onClick={handlePrint}
-            className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-110 transition-all hover:!bg-blue-700"
+            className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-110 transition-all hover:bg-blue-700!"
           >
             <PrintIcon className="" />
             Imprimir Tabla
           </Button>
           <Modal
-            className="px-4 py-2 flex bg-orange-600 text-white rounded hover:scale-110 transition-all hover:!bg-orange-700"
+            className="px-4 py-2 flex bg-orange-600 text-white rounded hover:scale-110 transition-all hover:bg-orange-700!"
             text="Añadir pedido"
           >
             <CirclePlus className="" />

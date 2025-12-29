@@ -46,7 +46,7 @@ const Menu = () => {
   return (
     <section>
       <article
-        className="bg-[#E9E9E9] p-5 rounded-md outline-1 outline-black justify-self-center max-w-[400px]"
+        className="bg-[#E9E9E9] p-5 rounded-md outline-1 outline-black justify-self-center max-w-100"
         key={menu[0].id}
       >
         <h1 className="text-2xl font-bold">Menú del Día</h1>

@@ -78,7 +78,7 @@ const LunchPayForm = ({ setIsOpen }) => {
   });
 
   return (
-    <div className="fixed inset-0 backdrop-blur-[4px] flex justify-center items-center z-10">
+    <div className="fixed inset-0 backdrop-blur-xs flex justify-center items-center z-10">
       <section className="relative max-w-md w-full bg-[#E9E9E9] py-8 px-8 rounded-md">
         <X
           onClick={() => setIsOpen(false)}

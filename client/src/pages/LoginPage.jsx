@@ -39,10 +39,10 @@ function LoginPage() {
           </div>
         ))}
         <header>
-          <h1 className="!text-2xl font-bold">Iniciar Sesión</h1>
+          <h1 className="text-2xl! font-bold">Iniciar Sesión</h1>
         </header>
         <form onSubmit={onSubmit}>
-          <div className="mb-[16px]">
+          <div className="mb-4">
             <Label htmlFor="NameStudent" className="label text-[14px] Roboto">
               Nombre
             </Label>
@@ -52,7 +52,7 @@ function LoginPage() {
               type="text"
               placeholder="Nombre"
               {...register("NameStudent", { required: true })}
-              className="w-full bg-white text-black h-14 mt-2 rounded-2xl px-4 text-[16px] !border-0 Roboto"
+              className="w-full bg-white text-black h-14 mt-2 rounded-2xl px-4 text-[16px] border-0! Roboto"
             />
             {errors.NameStudent && (
               <p className="text-red-500 text-[14px]">El nombre es requerido</p>
@@ -74,7 +74,7 @@ function LoginPage() {
               onInput={(e) => {
                 e.target.value = e.target.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
               }}
-              className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] !border-0 Roboto"
+              className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] border-0! Roboto"
             />
             {errors.PhoneNumber && (
               <p className="text-red-500 text-[14px]">

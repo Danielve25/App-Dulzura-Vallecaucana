@@ -19,7 +19,7 @@ function NavBar() {
         <Menu />
       </label>
       {/* Site logo */}
-      <button className="btnLogo bg-white rounded-t-lg  p-1 ml-3 mt-[9px] hover:scale-110 transition-all duration-[0.3s] ease-[ease] delay-[0s] open-sans">
+      <button className="btnLogo bg-white rounded-t-lg  p-1 ml-3 mt-2.25 hover:scale-110 transition-all duration-300 ease-[ease] delay-[0s] open-sans">
         <Link to="/">
           <Logo />
         </Link>

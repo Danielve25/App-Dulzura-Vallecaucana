@@ -60,7 +60,7 @@ function RegisterPage() {
             </div>
           ))}
 
-          <h1 className="!text-2xl font-bold mb-4">register</h1>
+          <h1 className="text-2xl! font-bold mb-4">register</h1>
 
           <form
             onSubmit={(e) => {
@@ -68,7 +68,7 @@ function RegisterPage() {
               onSubmit(e);
             }}
           >
-            <div className="mb-[16px]">
+            <div className="mb-4">
               <Label htmlFor="NameStudent" className="label Roboto">
                 Nombre
               </Label>
@@ -76,7 +76,7 @@ function RegisterPage() {
                 id="NameStudent"
                 placeholder="Nombre"
                 {...register("NameStudent", { required: true })}
-                className="w-full bg-white text-black h-14 rounded-2xl px-4 text-[16px] !border-0 Roboto"
+                className="w-full bg-white text-black h-14 rounded-2xl px-4 text-[16px] border-0! Roboto"
               />
               {formErrors.NameStudent && (
                 <p className="text-red-500 text-[15px]">Nombre es requerido</p>
@@ -101,7 +101,7 @@ function RegisterPage() {
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/\D/g, "");
                 }}
-                className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] !border-0 Roboto"
+                className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] border-0! Roboto"
               />
               {formErrors.PhoneNumber && (
                 <p className="text-red-500 text-[15px]">
@@ -115,13 +115,13 @@ function RegisterPage() {
               <Label htmlFor="Grade" className="label Roboto">
                 Grado
               </Label>
-              <section className="flex max-h-[400px] gap-2 Roboto">
+              <section className="flex max-h-100 gap-2 Roboto">
                 <Select
                   value={grade}
                   onValueChange={(value) => setValue("Grade", value)}
                   {...register("Grade", { required: true })}
                 >
-                  <SelectTrigger className="w-6/12 bg-white px-4 rounded-2xl text-[16px] data-[size=default]:h-14 !border-0 Roboto">
+                  <SelectTrigger className="w-6/12 bg-white px-4 rounded-2xl text-[16px] data-[size=default]:h-14 border-0! Roboto">
                     <SelectValue placeholder="Grado" />
                   </SelectTrigger>
                   <SelectContent className="bg-white ">
