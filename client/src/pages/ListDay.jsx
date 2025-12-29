@@ -67,6 +67,7 @@ const ListDay = () => {
 
     worksheet.columns = [
       { header: "#", key: "index", width: 5 },
+      { header: "Grado", key: "grade", width: 15 },
       { header: "Nombre del Estudiante", key: "name", width: 30 },
       { header: DayToday, key: "needs", width: 30 },
     ];
@@ -74,7 +75,7 @@ const ListDay = () => {
     todayLunchs.forEach((lunch, index) => {
       worksheet.addRow({
         index: index + 1,
-        name: lunch.user.NameStudent,
+        name: ` ${lunch.user.grade} ${lunch.user.NameStudent}`,
         needs: [
           lunch.userneedscomplete && "C",
           lunch.userneedstray && "B",
@@ -106,7 +107,7 @@ const ListDay = () => {
 
     const rows = todayLunchs.map((lunch, index) => [
       index + 1,
-      lunch.user.NameStudent,
+      `${lunch.user.grade} ${lunch.user.NameStudent}`,
       [
         lunch.userneedscomplete && "C, ",
         lunch.userneedstray && "B, ",
@@ -126,7 +127,7 @@ const ListDay = () => {
       startY: 20,
       styles: {
         fontSize: 10,
-        cellPadding: 6,
+        cellPadding: 1,
         halign: "center",
         valign: "middle",
         lineColor: [0, 0, 0],
@@ -204,7 +205,9 @@ const ListDay = () => {
               {todayLunchs.map((lunch, index) => (
                 <TableRow key={lunch._id}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{lunch.user.NameStudent}</TableCell>
+                  <TableCell>
+                    {lunch.user.grade} {lunch.user.NameStudent}
+                  </TableCell>
                   <TableCell>
                     {lunch.userneedscomplete && "C, "}
                     {lunch.userneedstray && "B, "}
