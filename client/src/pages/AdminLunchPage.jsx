@@ -164,6 +164,7 @@ function AdminLunchPage() {
                         {lunch.portionOfProtein && <p>✓ Porción Proteína</p>}
                         {lunch.portionOfSalad && <p>✓ Porción Ensalada</p>}
                         {lunch.EspecialStray && <p>✓ Bandeja Especial</p>}
+                        {lunch.onlysoup && <p>✓ Solo Sopa</p>}
                       </div>
 
                       <div className="mt-2 text-sm">
