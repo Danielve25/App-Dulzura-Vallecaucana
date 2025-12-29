@@ -60,13 +60,6 @@ const LunchPage = () => {
                 </strong>
               </p>
             )}
-            {lunch.EspecialStray && (
-              <p className="rounded-xl ">
-                <strong>
-                  Bandeja Especial: {lunch.EspecialStray ? "Sí" : null}
-                </strong>
-              </p>
-            )}
             {lunch.portionOfProtein && (
               <p className="rounded-xl ">
                 <strong>

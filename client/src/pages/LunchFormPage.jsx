@@ -25,7 +25,6 @@ const LunchFormPage = () => {
     defaultValues: {
       userneedscomplete: false,
       userneedstray: false,
-      EspecialStray: false,
       userneedsextrajuice: false,
       portionOfProtein: false,
       portionOfSalad: false,
@@ -49,7 +48,7 @@ const LunchFormPage = () => {
     const formattedData = {
       userneedscomplete: data.userneedscomplete,
       userneedstray: data.userneedstray,
-      EspecialStray: data.EspecialStray,
+
       userneedsextrajuice: data.userneedsextrajuice,
       portionOfProtein: data.portionOfProtein,
       portionOfSalad: data.portionOfSalad,
@@ -59,7 +58,6 @@ const LunchFormPage = () => {
     if (
       !formattedData.userneedscomplete &&
       !formattedData.userneedstray &&
-      !formattedData.EspecialStray &&
       !formattedData.userneedsextrajuice &&
       !formattedData.portionOfProtein &&
       !formattedData.portionOfSalad
@@ -68,13 +66,9 @@ const LunchFormPage = () => {
       return;
     }
 
-    if (
-      (formattedData.userneedscomplete && formattedData.userneedstray) ||
-      (formattedData.EspecialStray &&
-        (formattedData.userneedscomplete || formattedData.userneedstray))
-    ) {
+    if (formattedData.userneedscomplete && formattedData.userneedstray) {
       alert(
-        "No puede seleccionar combinaciones no permitidas: Almuerzo completo y Bandeja, o Bandeja especial junto con Almuerzo completo o Bandeja"
+        "No puede seleccionar combinaciones no permitidas: Almuerzo completo y Bandeja"
       );
       return;
     }
@@ -141,14 +135,6 @@ const LunchFormPage = () => {
                 </AccordionItem>
               </Accordion>
               <Separator />
-
-              <Label className="flex items-center my-3">
-                <Checkbox
-                  checked={watch("EspecialStray")}
-                  onCheckedChange={(val) => setValue("EspecialStray", val)}
-                />
-                <span className="ml-2">Bandeja especial</span>
-              </Label>
 
               <Separator />
               <Accordion type="single" collapsible>
