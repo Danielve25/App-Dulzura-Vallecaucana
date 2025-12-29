@@ -15,13 +15,7 @@ import { Button } from "@/components/ui/button";
 
 const LunchPayForm = () => {
   const [submitted, setSubmitted] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    watch,
-  } = useForm({
+  const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       userneedscomplete: false,
       userneedstray: false,

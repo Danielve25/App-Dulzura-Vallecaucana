@@ -53,7 +53,7 @@ function ChartComponent({
   // Renderizamos las áreas de acuerdo a las claves de los datos (por ejemplo, desktop, mobile, etc.)
   const renderAreas = () => {
     return Object.keys(chartConfig).map((key) => {
-      const { color, label } = chartConfig[key];
+      const { color } = chartConfig[key];
       return (
         <Area
           dot={true}

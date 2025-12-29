@@ -30,8 +30,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { cobrar } from "@/api/lunch";
-
 export const columns = [
   {
     id: "select",
