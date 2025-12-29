@@ -82,6 +82,7 @@ const ListDay = () => {
           lunch.userneedsextrajuice && "J",
           lunch.portionOfProtein && "P",
           lunch.portionOfSalad && "PE",
+          lunch.onlysoup && "S",
         ]
           .filter(Boolean)
           .join(", "),
@@ -113,6 +114,7 @@ const ListDay = () => {
         lunch.userneedsextrajuice && "J, ",
         lunch.portionOfProtein && "P, ",
         lunch.portionOfSalad && "PE",
+        lunch.onlysoup && "S",
       ]
         .filter(Boolean)
         .join(", "),
@@ -210,6 +212,7 @@ const ListDay = () => {
                     {lunch.userneedsextrajuice && "J, "}
                     {lunch.portionOfProtein && "P, "}
                     {lunch.portionOfSalad && "PE"}
+                    {lunch.onlysoup && "S"}
                   </TableCell>
                 </TableRow>
               ))}
