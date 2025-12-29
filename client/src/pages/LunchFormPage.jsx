@@ -28,6 +28,7 @@ const LunchFormPage = () => {
       userneedsextrajuice: false,
       portionOfProtein: false,
       portionOfSalad: false,
+      onlysoup: false,
     },
   });
 
@@ -48,10 +49,10 @@ const LunchFormPage = () => {
     const formattedData = {
       userneedscomplete: data.userneedscomplete,
       userneedstray: data.userneedstray,
-
       userneedsextrajuice: data.userneedsextrajuice,
       portionOfProtein: data.portionOfProtein,
       portionOfSalad: data.portionOfSalad,
+      onlysoup: data.onlysoup,
       date: today.toISOString(),
     };
 
@@ -60,17 +61,27 @@ const LunchFormPage = () => {
       !formattedData.userneedstray &&
       !formattedData.userneedsextrajuice &&
       !formattedData.portionOfProtein &&
-      !formattedData.portionOfSalad
+      !formattedData.portionOfSalad &&
+      !formattedData.onlysoup
     ) {
       alert("Debe seleccionar al menos una opción");
       return;
     }
 
-    if (formattedData.userneedscomplete && formattedData.userneedstray) {
-      alert(
-        "No puede seleccionar combinaciones no permitidas: Almuerzo completo y Bandeja"
-      );
-      return;
+    if (
+      formattedData.userneedscomplete ||
+      formattedData.userneedstray ||
+      formattedData.onlysoup
+    ) {
+      const count =
+        Number(formattedData.userneedscomplete) +
+        Number(formattedData.userneedstray) +
+        Number(formattedData.onlysoup);
+
+      if (count > 1) {
+        alert("No puede seleccionar más de una opción principal");
+        return;
+      }
     }
 
     createLunch(formattedData);
@@ -136,13 +147,19 @@ const LunchFormPage = () => {
               </Accordion>
               <Separator />
 
+              <Label className="flex items-center my-3">
+                <Checkbox
+                  checked={watch("onlysoup")}
+                  onCheckedChange={(val) => setValue("onlysoup", val)}
+                />
+                <span className="ml-2">solo sopa</span>
+              </Label>
+
               <Separator />
               <Accordion type="single" collapsible>
-                <AccordionItem value="item-3">
+                <AccordionItem value="item-2">
                   <AccordionTrigger>Detalles</AccordionTrigger>
-                  <AccordionContent>
-                    Bandeja normal con una carne y media
-                  </AccordionContent>
+                  <AccordionContent>solo sopa, cuesta 5.000</AccordionContent>
                 </AccordionItem>
               </Accordion>
               <Separator />

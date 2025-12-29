@@ -78,7 +78,7 @@ const ListDay = () => {
         needs: [
           lunch.userneedscomplete && "C",
           lunch.userneedstray && "B",
-          lunch.EspecialStray && "BE",
+          lunch.onlysoup && "S",
           lunch.userneedsextrajuice && "J",
           lunch.portionOfProtein && "P",
           lunch.portionOfSalad && "PE",

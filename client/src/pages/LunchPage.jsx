@@ -60,6 +60,11 @@ const LunchPage = () => {
                 </strong>
               </p>
             )}
+            {lunch.onlysoup && (
+              <p className="rounded-xl ">
+                <strong>Porción de Sopa: {lunch.onlysoup ? "Sí" : null}</strong>
+              </p>
+            )}
             {lunch.portionOfProtein && (
               <p className="rounded-xl ">
                 <strong>
