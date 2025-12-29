@@ -8,6 +8,7 @@ import {
   deleteTask,
   getAllTasks,
   getTaskByOrderId,
+  createLunchByAdmin, // Agrega esta importación
 } from "../controllers/task.controller.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { createTaskSchema } from "../schemas/task.schema.js";
@@ -32,5 +33,7 @@ router.put("/lunch/:id", authRequired, adminRequired, updateTask);
 router.get("/admin/lunchs", authRequired, adminRequired, getAllTasks);
 
 router.get("/lunch/order/:orderId", authRequired, getTaskByOrderId);
+
+router.post("/admin/lunch", authRequired, adminRequired, createLunchByAdmin);
 
 export default router;

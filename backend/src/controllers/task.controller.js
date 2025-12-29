@@ -62,6 +62,81 @@ export const createTask = async (req, res) => {
   res.json(savedTask);
 };
 
+export const createLunchByAdmin = async (req, res) => {
+  const {
+    title,
+    userneedscomplete,
+    userneedstray,
+    userneedsextrajuice,
+    portionOfProtein,
+    portionOfSalad,
+    userNeedsPay,
+    date,
+    pay,
+    onlysoup,
+    user, // Puede ser ID o objeto con datos del usuario
+    statePayment,
+  } = req.body;
+
+  // Calcular userNeedsPay si no se proporciona
+  let calculatedUserNeedsPay = userNeedsPay || 0;
+  if (!userNeedsPay) {
+    if (portionOfProtein) calculatedUserNeedsPay += 8000;
+    if (portionOfSalad) calculatedUserNeedsPay += 3000;
+    if (userneedscomplete) calculatedUserNeedsPay += 16000;
+    if (userneedstray) calculatedUserNeedsPay += 15000;
+    if (userneedsextrajuice) calculatedUserNeedsPay += 1000;
+    if (onlysoup) calculatedUserNeedsPay += 5000;
+  }
+
+  let userId = req.user.id; // Por defecto, el admin
+
+  // Si user es un objeto, buscar o crear un nuevo usuario
+  if (typeof user === "object" && user !== null) {
+    if (!user.NameStudent || !user.grade) {
+      return res.status(400).json({
+        message:
+          "NameStudent y grade son requeridos para asignar o crear un usuario",
+      });
+    }
+    let existingUser = await User.findOne({ NameStudent: user.NameStudent });
+    if (existingUser) {
+      userId = existingUser._id;
+    } else {
+      const newUser = new User({
+        NameStudent: user.NameStudent,
+        PhoneNumber: user.PhoneNumber || "",
+        PhoneNumberReal: user.PhoneNumberReal || "",
+        grade: user.grade,
+        isAdmin: user.isAdmin || false,
+      });
+      const savedUser = await newUser.save();
+      userId = savedUser._id;
+    }
+  } else if (user) {
+    // Si es un string (ID), usarlo
+    userId = user;
+  }
+
+  const newTask = new Task({
+    title: title || "Almuerzo",
+    userneedscomplete: userneedscomplete || false,
+    userneedstray: userneedstray || false,
+    userneedsextrajuice: userneedsextrajuice || false,
+    portionOfProtein: portionOfProtein || false,
+    portionOfSalad: portionOfSalad || false,
+    userNeedsPay: calculatedUserNeedsPay,
+    date: date || new Date(),
+    pay: pay || false,
+    onlysoup: onlysoup || false,
+    user: userId,
+    statePayment: statePayment || "",
+  });
+
+  const savedTask = await newTask.save();
+  res.json(savedTask);
+};
+
 export const getTask = async (req, res) => {
   // lógica para obtener una tarea por ID
   const task = await Task.findById(req.params.id).populate("user");
