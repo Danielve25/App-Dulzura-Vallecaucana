@@ -46,6 +46,11 @@ const taskSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    onlysoup: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     orderId: {
       type: String,
       required: false,
