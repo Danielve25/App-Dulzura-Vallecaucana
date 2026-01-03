@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import Task from "../models/task.model.js"; // Agregar import
 import bcrypt from "bcryptjs";
 import CreateAccessToken from "../libs/jwt.js";
 import jwt from "jsonwebtoken";
@@ -28,11 +29,18 @@ export const register = async (req, res) => {
     });
 
     const userSaved = await NewUser.save();
+
+    // Asignar almuerzos pendientes con nameClient coincidente
+    await Task.updateMany(
+      { nameClient: upperCaseName, user: null },
+      { user: userSaved._id, nameClient: null } // Asignar user y limpiar nameClient
+    );
+
     const token = await CreateAccessToken({ id: userSaved._id });
 
     res.cookie("token", token);
     res.json({
-      message: "Usuario creado",
+      message: "Usuario creado y almuerzos pendientes asignados",
       _id: userSaved._id,
       NameStudent: userSaved.NameStudent,
       grade: userSaved.grade,
@@ -123,4 +131,13 @@ export const verifyToken = async (req, res) => {
       PhoneNumber: userFound.PhoneNumber,
     });
   });
+};
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

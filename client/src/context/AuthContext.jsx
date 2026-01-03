@@ -1,5 +1,10 @@
 import { useState, useContext, useEffect } from "react";
-import { registerRequest, loginRequest, verityTokenRequest } from "../api/auth";
+import {
+  registerRequest,
+  loginRequest,
+  verityTokenRequest,
+  getUsersRequest,
+} from "../api/auth";
 import Cookies from "js-cookie";
 import { AuthContext } from "../utils/authUtils";
 
@@ -50,6 +55,16 @@ const AuthProvider = ({ children }) => {
     Cookies.remove("token");
     setIsAuthenticated(false);
     setUser(null);
+  };
+
+  const getUsers = async () => {
+    try {
+      const res = await getUsersRequest();
+      return res.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
 
   useEffect(() => {
@@ -105,6 +120,7 @@ const AuthProvider = ({ children }) => {
         user,
         isAuthenticated,
         errors,
+        getUsers,
       }}
     >
       {children}

@@ -8,7 +8,8 @@ import {
   deleteTask,
   getAllTasks,
   getTaskByOrderId,
-  createLunchByAdmin, // Agrega esta importación
+  createLunchByAdmin,
+  assignPendingLunches, // Agrega esta línea aquí
 } from "../controllers/task.controller.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { createTaskSchema } from "../schemas/task.schema.js";
@@ -35,5 +36,12 @@ router.get("/admin/lunchs", authRequired, adminRequired, getAllTasks);
 router.get("/lunch/order/:orderId", authRequired, getTaskByOrderId);
 
 router.post("/admin/lunch", authRequired, adminRequired, createLunchByAdmin);
+
+router.put(
+  "/admin/assign-pending",
+  authRequired,
+  adminRequired,
+  assignPendingLunches
+);
 
 export default router;

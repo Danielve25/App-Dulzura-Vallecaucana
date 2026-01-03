@@ -58,7 +58,11 @@ const taskSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: false, // Cambiado a false para permitir almuerzos pendientes sin usuario
+    },
+    nameClient: {
+      type: String,
+      required: false, // Nuevo campo para agrupar almuerzos pendientes por nombre de cliente
     },
     statePayment: {
       type: String,

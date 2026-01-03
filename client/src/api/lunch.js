@@ -22,3 +22,6 @@ export const getAllLunchsRequest = () => axios.get("/admin/lunchs");
 
 export const cobrar = ({ message }) =>
   axios.post("/send-whatsapp-message", message);
+
+export const assignPendingLunchesRequest = (data) =>
+  axios.put("/admin/assign-pending", data);

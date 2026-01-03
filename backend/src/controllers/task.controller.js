@@ -74,7 +74,8 @@ export const createLunchByAdmin = async (req, res) => {
     date,
     pay,
     onlysoup,
-    user, // Puede ser ID o objeto con datos del usuario
+    user, // Puede ser ID, objeto o null
+    nameClient, // Nuevo campo para almuerzos pendientes
     statePayment,
   } = req.body;
 
@@ -89,7 +90,8 @@ export const createLunchByAdmin = async (req, res) => {
     if (onlysoup) calculatedUserNeedsPay += 5000;
   }
 
-  let userId = req.user.id; // Por defecto, el admin
+  let userId = null; // Por defecto null para almuerzos pendientes
+  let clientName = nameClient || null;
 
   // Si user es un objeto, buscar o crear un nuevo usuario
   if (typeof user === "object" && user !== null) {
@@ -102,6 +104,7 @@ export const createLunchByAdmin = async (req, res) => {
     let existingUser = await User.findOne({ NameStudent: user.NameStudent });
     if (existingUser) {
       userId = existingUser._id;
+      clientName = null; // Si hay usuario, no usar nameClient
     } else {
       const newUser = new User({
         NameStudent: user.NameStudent,
@@ -112,10 +115,21 @@ export const createLunchByAdmin = async (req, res) => {
       });
       const savedUser = await newUser.save();
       userId = savedUser._id;
+      clientName = null;
     }
   } else if (user) {
     // Si es un string (ID), usarlo
     userId = user;
+    clientName = null;
+  } else if (nameClient) {
+    // Si no hay user pero hay nameClient, es un almuerzo pendiente
+    userId = null;
+    clientName = nameClient.toUpperCase(); // Asegurar mayúsculas como en NameStudent
+  } else {
+    return res.status(400).json({
+      message:
+        "Debe proporcionar un usuario existente, datos para crear uno, o un nameClient para almuerzo pendiente",
+    });
   }
 
   const newTask = new Task({
@@ -130,6 +144,7 @@ export const createLunchByAdmin = async (req, res) => {
     pay: pay || false,
     onlysoup: onlysoup || false,
     user: userId,
+    nameClient: clientName,
     statePayment: statePayment || "",
   });
 
@@ -167,4 +182,18 @@ export const updateTask = async (req, res) => {
   });
   if (!task) return res.status(404).json({ message: "Task not found" });
   res.json(task);
+};
+
+export const assignPendingLunches = async (req, res) => {
+  const { userId, nameClient } = req.body;
+
+  try {
+    await Task.updateMany(
+      { nameClient: nameClient.toUpperCase(), user: null },
+      { user: userId, nameClient: null }
+    );
+    res.json({ message: "Almuerzos pendientes asignados al usuario" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

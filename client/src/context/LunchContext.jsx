@@ -5,6 +5,7 @@ import {
   updateLunchRequest,
   getAllLunchsRequest,
   createLunchAdminRequest,
+  assignPendingLunchesRequest, // <- Agrega esta línea aquí
 } from "../api/lunch";
 import { PayLunch, verifyPayment } from "../api/payment";
 import { LunchContext, useLunch as baseUseLunch } from "../utils/lunchUtils";
@@ -77,6 +78,16 @@ export function LunchProvider({ children }) {
     }
   };
 
+  const assignPendingLunches = async (data) => {
+    try {
+      const res = await assignPendingLunchesRequest(data);
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   // const obteinByOrderID = async () => {
   //   try {
   //     const res = await obteinLunchByOrderID();
@@ -97,6 +108,7 @@ export function LunchProvider({ children }) {
         verifyPaymentNequi,
         getAllLunchs,
         CreateLunchAdmin,
+        assignPendingLunches, // <- Agrega esta línea aquí
       }}
     >
       {children}
