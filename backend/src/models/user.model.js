@@ -29,4 +29,17 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+userSchema.pre("save", async function (next) {
+  if (this.isAdmin) {
+    const existingAdmin = await this.constructor.findOne({ isAdmin: true });
+    if (existingAdmin && existingAdmin._id.toString() !== this._id.toString()) {
+      return next(
+        new Error("Solo puede existir un administrador en el sistema")
+      );
+    }
+  }
+  next();
+});
+
 export default mongoose.model("User", userSchema);

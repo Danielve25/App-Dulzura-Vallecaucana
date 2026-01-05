@@ -8,7 +8,7 @@ import { EnvConfig } from "../config.js";
 const config = EnvConfig();
 
 export const register = async (req, res) => {
-  const { NameStudent, PhoneNumber, isAdmin, grade } = req.body;
+  const { NameStudent, PhoneNumber, grade } = req.body;
 
   try {
     const upperCaseName = NameStudent.toUpperCase();
@@ -25,7 +25,7 @@ export const register = async (req, res) => {
       grade: grade,
       PhoneNumber: phoneNumberhash,
       PhoneNumberReal: PhoneNumber,
-      isAdmin: isAdmin || false, // Asegurarse de que isAdmin sea false si no se proporciona
+      isAdmin: false, // Siempre false para registro público
     });
 
     const userSaved = await NewUser.save();
