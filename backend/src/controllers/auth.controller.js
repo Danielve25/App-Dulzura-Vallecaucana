@@ -7,6 +7,12 @@ import { EnvConfig } from "../config.js";
 
 const config = EnvConfig();
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+};
+
 export const register = async (req, res) => {
   const { NameStudent, PhoneNumber, grade } = req.body;
 
@@ -25,7 +31,7 @@ export const register = async (req, res) => {
       grade: grade,
       PhoneNumber: phoneNumberhash,
       PhoneNumberReal: PhoneNumber,
-      isAdmin: false, // Siempre false para registro público
+      isAdmin: false,
     });
 
     const userSaved = await NewUser.save();
@@ -33,12 +39,12 @@ export const register = async (req, res) => {
     // Asignar almuerzos pendientes con nameClient coincidente
     await Task.updateMany(
       { nameClient: upperCaseName, user: null },
-      { user: userSaved._id, nameClient: null } // Asignar user y limpiar nameClient
+      { user: userSaved._id, nameClient: null }, // Asignar user y limpiar nameClient
     );
 
     const token = await CreateAccessToken({ id: userSaved._id });
 
-    res.cookie("token", token);
+    res.cookie("token", token, cookieOptions);
     res.json({
       message: "Usuario creado y almuerzos pendientes asignados",
       _id: userSaved._id,
@@ -76,7 +82,7 @@ export const login = async (req, res) => {
 
     const token = await CreateAccessToken({ id: userFound._id });
 
-    res.cookie("token", token);
+    res.cookie("token", token, cookieOptions);
     res.json({
       message: "iniciaste sesion",
       _id: userFound._id,
@@ -95,6 +101,7 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
   res.cookie("token", "", {
+    ...cookieOptions,
     expires: new Date(0),
   });
   return res.sendStatus(200);
@@ -115,7 +122,7 @@ export const profile = async (req, res) => {
 };
 
 export const verifyToken = async (req, res) => {
-  const { token } = req.cookie;
+  const { token } = req.cookies;
 
   if (!token) return res.status(401).json({ message: "no autorizado" });
 

@@ -6,7 +6,7 @@ import { connectDB } from "./db.js";
 
 connectDB()
   .then(() => {
-    app.listen(config.PORT, () => {
+    app.listen(config.PORT || 3000, () => {
       console.log(`server en http://localhost:${config.PORT}`);
     });
   })

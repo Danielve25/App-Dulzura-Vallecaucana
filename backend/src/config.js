@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 const {
+  FRONTEND_URL = "",
   SECRET_KEY = "",
   PORT = "3000",
   MONGO_URI = "",
@@ -14,6 +15,7 @@ const {
   PAYU_API_URL = "",
 } = process.env;
 export const EnvConfig = () => ({
+  FRONTEND_URL: FRONTEND_URL,
   TOKEN_SECRET: SECRET_KEY,
   PORT: PORT,
   MONGO_URI: MONGO_URI,
