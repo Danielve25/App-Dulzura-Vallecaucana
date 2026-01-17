@@ -1,4 +1,5 @@
 import { Router } from "express";
+import rateLimit from "express-rate-limit";
 import {
   login,
   register,
@@ -11,10 +12,17 @@ import { registerSchema, loginSchema } from "../schemas/auth.schema.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { adminRequired, authRequired } from "../middlewares/validateToken.js";
 const router = Router();
+const authLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minuto
+  max: 10, // máximo 10 intentos por IP cada minuto
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: "Demasiados intentos. Intenta de nuevo en 1 minuto.",
+});
 
-router.post("/register", validateSchema(registerSchema), register);
+router.post("/register", validateSchema(registerSchema), authLimiter, register);
 
-router.post("/login", validateSchema(loginSchema), login);
+router.post("/login", validateSchema(loginSchema), authLimiter, login);
 
 router.post("/logout", logout);
 
