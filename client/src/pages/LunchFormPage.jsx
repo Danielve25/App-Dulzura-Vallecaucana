@@ -114,7 +114,7 @@ const LunchPayForm = () => {
                   checked={watch("userneedscomplete")}
                   onCheckedChange={(val) => setValue("userneedscomplete", val)}
                 />
-                <span className="ml-2">Almuerzo completo cuesta 14.000</span>
+                <span className="ml-2">Almuerzo completo cuesta 16.000</span>
               </Label>
 
               <Separator />
@@ -124,7 +124,7 @@ const LunchPayForm = () => {
                   checked={watch("userneedstray")}
                   onCheckedChange={(val) => setValue("userneedstray", val)}
                 />
-                <span className="ml-2">Bandeja cuesta 13.000</span>
+                <span className="ml-2">Bandeja cuesta 15.000</span>
               </Label>
 
               <Separator />
