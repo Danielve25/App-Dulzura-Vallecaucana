@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Navigate } from "react-router";
 
 const LunchPayForm = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -80,6 +81,10 @@ const LunchPayForm = () => {
 
     createLunch(formattedData);
     setSubmitted(true);
+    alert("Almuerzo solicitado con éxito");
+    setTimeout(() => {
+      Navigate("/lunch");
+    }, 1000);
   });
 
   useEffect(() => {
