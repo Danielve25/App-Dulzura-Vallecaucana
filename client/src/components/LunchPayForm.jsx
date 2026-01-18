@@ -71,7 +71,6 @@ const LunchPayForm = ({ setIsOpen }) => {
     try {
       await CreateLunchAdmin(payload);
       setIsOpen(false);
-      window.location.reload();
     } finally {
       setIsProcessing(false);
     }
