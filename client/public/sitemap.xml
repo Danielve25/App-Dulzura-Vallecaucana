@@ -3,4 +3,10 @@
   <url>
     <loc>https://dulzura-vallecaucana-production.up.railway.app/</loc>
   </url>
+  <url>
+    <loc>https://dulzura-vallecaucana-production.up.railway.app/login</loc>
+  </url>
+  <url>
+    <loc>https://dulzura-vallecaucana-production.up.railway.app/register</loc>
+  </url>
 </urlset>
