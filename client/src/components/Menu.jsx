@@ -8,6 +8,9 @@ const isValidDate = (date) => {
 };
 
 const Menu = () => {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+
   const [menu, setMenu] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -16,24 +19,24 @@ const Menu = () => {
       try {
         const res = await getMenu();
 
-        const validMenus = res.data.filter((item) => isValidDate(item.date));
-        const mostRecentMenu = validMenus.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
-        )[0];
+        const menus = res.data
+          .filter((item) => isValidDate(item.date))
+          .filter((item) => new Date(item.date) >= hoy)
+          .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-        setMenu(mostRecentMenu ? [mostRecentMenu] : []);
-        setIsLoading(false);
+        setMenu(menus);
       } catch (error) {
         console.error("Error al obtener el menú:", error.message);
         setMenu([]);
+      } finally {
+        setIsLoading(false);
       }
     };
+
     fetchMenu();
   }, []);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  if (isLoading) return <Loader />;
 
   if (menu.length === 0) {
     return (
@@ -44,18 +47,20 @@ const Menu = () => {
   }
 
   return (
-    <section>
-      <article
-        className="bg-[#E9E9E9] p-5 rounded-md outline-1 outline-black justify-self-center max-w-100"
-        key={menu[0].id}
-      >
-        <h1 className="text-2xl font-bold">Menú del Día</h1>
-        <h2 className="text-lg">
-          Menú Del Día - {new Date(menu[0].date).toLocaleDateString()}
-        </h2>
-        <p className="mt-2">Descripción del almuerzo:</p>
-        <p>{menu[0].Descripcion}</p>
-      </article>
+    <section className="flex flex-wrap justify-center items-center gap-4 w-full mb-4 m-3">
+      {menu.map((item) => (
+        <article
+          key={item._id}
+          className="bg-[#E9E9E9] p-5 rounded-md outline-1 outline-black max-w-100 "
+        >
+          <h1 className="text-2xl font-bold">Menú del Día</h1>
+          <h2 className="text-lg">
+            {new Date(item.date).toLocaleDateString()}
+          </h2>
+          <p className="mt-2">Descripción del almuerzo:</p>
+          <p>{item.Descripcion}</p>
+        </article>
+      ))}
     </section>
   );
 };

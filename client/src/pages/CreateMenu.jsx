@@ -5,10 +5,15 @@ import Loader from "@/components/icos/Loader";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Temporal } from "temporal-polyfill";
 
 const CirclePlus = lazy(() =>
-  import("lucide-react").then((module) => ({ default: module.CirclePlus }))
+  import("lucide-react").then((module) => ({ default: module.CirclePlus })),
 );
+
+const ayer = Temporal.Now.plainDateISO();
+
+const minDate = ayer.toString();
 
 const CreateNewMenu = () => {
   const {
@@ -18,9 +23,21 @@ const CreateNewMenu = () => {
   } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
+    const hoy = Temporal.Now.plainDateISO();
+    const seleccionada = Temporal.PlainDate.from(data.date);
+
+    let today;
+
+    if (Temporal.PlainDate.compare(hoy, seleccionada) === 0) {
+      today = new Date();
+    } else {
+      today = new Date(data.date);
+    }
     const formatedData = {
       Descripcion: data.Descripcion.toUpperCase(),
+      date: today.toISOString(),
     };
+    console.log(formatedData);
 
     try {
       const res = await createMenu(formatedData);
@@ -56,6 +73,17 @@ const CreateNewMenu = () => {
                 La descripcion es requerida
               </p>
             )}
+            <section className="my-3">
+              <Label htmlFor="date">Fecha:</Label>
+              <input
+                {...register("date", { required: true })}
+                type="date"
+                id="date"
+                name="date"
+                min={minDate}
+              />
+            </section>
+
             <Button
               type="submit"
               className="w-full cursor-pointer flex justify-center items-center h-14 rounded-2xl bg-[#008000] text-[#ffffff] font-[1000] text-[17px] hover:scale-110 transition-all duration-[0.3s] ease-[ease] delay-[0s]"
