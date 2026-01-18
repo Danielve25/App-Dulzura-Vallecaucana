@@ -2,10 +2,15 @@ import { Link, useLocation } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import Menu from "./icos/Menu";
 import Logo from "./icos/logo";
-
+import { useEffect } from "react";
 function NavBar() {
   const location = useLocation();
   const { isAuthenticated, logout, user } = useAuth();
+  useEffect(() => {
+    const check = document.getElementById("check");
+    if (check) check.checked = false;
+  }, [location.pathname]);
+
   console.log(user);
   return (
     <nav className="open-sans z-10">
