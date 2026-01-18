@@ -86,7 +86,7 @@ const ListDay = () => {
           lunch.onlysoup && "S",
           lunch.userneedsextrajuice && "J",
           lunch.portionOfProtein && "P",
-          lunch.portionOfSalad && "PE",
+          lunch.portionOfSalad && "E",
           lunch.onlysoup && "S",
         ]
           .filter(Boolean)
