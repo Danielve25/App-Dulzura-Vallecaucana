@@ -71,6 +71,7 @@ const LunchPayForm = ({ setIsOpen }) => {
     try {
       await CreateLunchAdmin(payload);
       setIsOpen(false);
+      alert("Almuerzo creado con éxito");
     } finally {
       setIsProcessing(false);
     }
