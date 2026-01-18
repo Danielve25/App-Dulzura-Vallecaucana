@@ -12,9 +12,10 @@ import {
 } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Navigate } from "react-router";
+import { useNavigate } from "react-router";
 
 const LunchPayForm = () => {
+  const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
   const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
@@ -83,7 +84,7 @@ const LunchPayForm = () => {
     setSubmitted(true);
     alert("Almuerzo solicitado con éxito");
     setTimeout(() => {
-      Navigate("/lunch");
+      navigate("/lunch");
     }, 1000);
   });
 
@@ -113,18 +114,9 @@ const LunchPayForm = () => {
                   checked={watch("userneedscomplete")}
                   onCheckedChange={(val) => setValue("userneedscomplete", val)}
                 />
-                <span className="ml-2">Almuerzo completo</span>
+                <span className="ml-2">Almuerzo completo cuesta 14.000</span>
               </Label>
 
-              <Separator />
-              <Accordion type="single" collapsible>
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>Detalles</AccordionTrigger>
-                  <AccordionContent>
-                    Almuerzo con sopa, cuesta 14.000
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
               <Separator />
 
               <Label className="flex items-center my-3">
@@ -132,18 +124,9 @@ const LunchPayForm = () => {
                   checked={watch("userneedstray")}
                   onCheckedChange={(val) => setValue("userneedstray", val)}
                 />
-                <span className="ml-2">Bandeja</span>
+                <span className="ml-2">Bandeja cuesta 13.000</span>
               </Label>
 
-              <Separator />
-              <Accordion type="single" collapsible>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>Detalles</AccordionTrigger>
-                  <AccordionContent>
-                    Un almuerzo sin sopa, cuesta 13.000
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
               <Separator />
 
               <Label className="flex items-center my-3">
@@ -151,16 +134,9 @@ const LunchPayForm = () => {
                   checked={watch("onlysoup")}
                   onCheckedChange={(val) => setValue("onlysoup", val)}
                 />
-                <span className="ml-2">solo sopa</span>
+                <span className="ml-2">solo sopa cuesta 5.000</span>
               </Label>
 
-              <Separator />
-              <Accordion type="single" collapsible>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>Detalles</AccordionTrigger>
-                  <AccordionContent>solo sopa, cuesta 5.000</AccordionContent>
-                </AccordionItem>
-              </Accordion>
               <Separator />
 
               <Label className="flex items-center my-3">
@@ -170,7 +146,7 @@ const LunchPayForm = () => {
                     setValue("userneedsextrajuice", val)
                   }
                 />
-                <span className="ml-2">Jugo adicional</span>
+                <span className="ml-2">Jugo adicional cuesta 1.000</span>
               </Label>
 
               <Label className="flex items-center my-3">
@@ -178,7 +154,7 @@ const LunchPayForm = () => {
                   checked={watch("portionOfProtein")}
                   onCheckedChange={(val) => setValue("portionOfProtein", val)}
                 />
-                <span className="ml-2">Porción de Proteína</span>
+                <span className="ml-2">Porción de Proteína cuesta 8.000</span>
               </Label>
 
               <Label className="flex items-center my-3">
@@ -186,7 +162,7 @@ const LunchPayForm = () => {
                   checked={watch("portionOfSalad")}
                   onCheckedChange={(val) => setValue("portionOfSalad", val)}
                 />
-                <span className="ml-2">Porción de Ensalada</span>
+                <span className="ml-2">Porción de Ensalada cuesta 3.000</span>
               </Label>
             </div>
 
