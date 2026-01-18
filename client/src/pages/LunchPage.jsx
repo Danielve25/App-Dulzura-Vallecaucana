@@ -3,6 +3,7 @@ import { useLunch } from "../context/LunchContext";
 import "@github/relative-time-element";
 
 import Menu from "../components/Menu";
+const NequiCard = lazy(() => import("../components/NequiCard"));
 const SelloImagen = lazy(() => import("../components/icos/CanceladoSello"));
 
 const LunchPage = () => {
@@ -19,6 +20,8 @@ const LunchPage = () => {
   if (!lunchs || lunchs.length === 0)
     return (
       <main className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
+        <NequiCard />
+        <Menu />
         <h1>NO TIENES PEDIDOS</h1>
       </main>
     );
@@ -27,6 +30,7 @@ const LunchPage = () => {
 
   return (
     <main className="w-full p-4">
+      <NequiCard />
       <Menu />
       <header>
         <h2 className="text-2xl font-bold mb-4">
