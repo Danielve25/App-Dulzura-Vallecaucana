@@ -18,7 +18,7 @@ function StudentLunchesAccordion({
       {Object.entries(groupedLunchs).map(([studentName, lunchs]) => {
         const totalAmount = lunchs.reduce(
           (sum, lunch) => (!lunch.pay ? sum + lunch.userNeedsPay : sum),
-          0
+          0,
         );
         const pendingPayments = lunchs.filter((lunch) => !lunch.pay).length;
 
@@ -39,7 +39,10 @@ function StudentLunchesAccordion({
                 >
                   {lunch.pay && <SelloImagen />}
                   <p className="text-gray-600">
-                    {new Date(lunch.date).toLocaleDateString()}
+                    dia de pedido: {lunch.date.split("T")[0]}
+                  </p>
+                  <p className="text-gray-600">
+                    fecha de creacion : {lunch.createdAt.split("T")[0]}
                   </p>
 
                   <div className="mt-2 space-y-1">

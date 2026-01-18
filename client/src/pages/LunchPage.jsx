@@ -49,6 +49,9 @@ const LunchPage = () => {
             <p className="text-gray-600">
               <relative-time datetime={lunch.date}></relative-time>
             </p>
+            <p className="text-gray-600">
+              fecha de creacion : {lunch.createdAt.split("T")[0]}
+            </p>
             <p className="mt-2">{lunch.description}</p>
             {lunch.userneedscomplete && (
               <p className="rounded-xl ">
