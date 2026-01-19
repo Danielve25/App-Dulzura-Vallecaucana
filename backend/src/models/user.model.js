@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { required } from "zod/v4-mini";
 
 const userSchema = new mongoose.Schema(
   {
@@ -20,6 +21,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    outstandingbalance: {
+      required: false,
+      type: Number,
+      default: 0,
+    },
+
     isAdmin: {
       type: Boolean,
       default: false,
@@ -27,7 +34,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 userSchema.pre("save", async function (next) {
@@ -35,7 +42,7 @@ userSchema.pre("save", async function (next) {
     const existingAdmin = await this.constructor.findOne({ isAdmin: true });
     if (existingAdmin && existingAdmin._id.toString() !== this._id.toString()) {
       return next(
-        new Error("Solo puede existir un administrador en el sistema")
+        new Error("Solo puede existir un administrador en el sistema"),
       );
     }
   }

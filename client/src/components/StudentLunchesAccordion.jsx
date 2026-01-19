@@ -16,10 +16,12 @@ function StudentLunchesAccordion({
   return (
     <Accordion type="multiple" className="w-full">
       {Object.entries(groupedLunchs).map(([studentName, lunchs]) => {
-        const totalAmount = lunchs.reduce(
-          (sum, lunch) => (!lunch.pay ? sum + lunch.userNeedsPay : sum),
-          0,
-        );
+        const outstandingbalance = lunchs[0]?.user?.outstandingbalance ?? 0;
+        const totalAmount =
+          lunchs.reduce(
+            (sum, lunch) => (!lunch.pay ? sum + lunch.userNeedsPay : sum),
+            0,
+          ) + outstandingbalance;
         const pendingPayments = lunchs.filter((lunch) => !lunch.pay).length;
 
         return (

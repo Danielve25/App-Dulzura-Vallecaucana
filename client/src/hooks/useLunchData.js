@@ -39,7 +39,7 @@ function useLunchData() {
         ([date, count]) => ({
           date,
           Almuerzos: count,
-        })
+        }),
       );
 
       const updatedData = chartFormattedData.map((item) => {
@@ -66,7 +66,7 @@ function useLunchData() {
       const dataTable = Object.entries(grouped).map(([studentName, lunchs]) => {
         const totalAmount = lunchs.reduce(
           (sum, lunch) => (!lunch.pay ? sum + lunch.userNeedsPay : sum),
-          0
+          0,
         );
 
         const pendingPayments = lunchs.filter((lunch) => !lunch.pay).length;
@@ -77,6 +77,7 @@ function useLunchData() {
           amount: totalAmount,
           Pending: pendingPayments,
           PhoneNumberReal: phoneNumberReal,
+          _id: lunchs[0]?.user?._id,
         };
       });
       setDataTable(dataTable);

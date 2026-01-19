@@ -29,6 +29,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { UpdateOutstandingbalance } from "@/api/auth";
 
 export const columns = [
   {
@@ -103,32 +104,48 @@ export const columns = [
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row.original;
+      const [balance, setBalance] = React.useState("");
 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              copiar nombre
+              Copiar nombre
             </DropdownMenuItem>
+
             <DropdownMenuSeparator />
+
+            <input
+              type="number"
+              placeholder="Saldo pendiente"
+              value={balance}
+              onChange={(e) => setBalance(e.target.value)}
+              className="border px-2 py-1 w-full"
+            />
+
             <DropdownMenuItem
-              onClick={() =>
-                console.log({
-                  to: payment.PhoneNumberReal,
-                  body: `hola te informamos que tienes un saldo pendiente de ${payment.amount} por ${payment.Pending} almuerzos pendientes`,
-                })
-              }
+              onClick={async () => {
+                try {
+                  await UpdateOutstandingbalance(payment._id, {
+                    outstandingbalance: Number(balance),
+                  });
+                  alert("Saldo actualizado");
+                } catch (error) {
+                  console.error(error);
+                }
+              }}
             >
-              Cobrar
+              Guardar saldo
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -220,7 +237,7 @@ export function DataTable({ data }) {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -240,7 +257,7 @@ export function DataTable({ data }) {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

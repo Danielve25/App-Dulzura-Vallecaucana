@@ -148,3 +148,24 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const UpdateOutstandingbalance = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { outstandingbalance } = req.body;
+
+    const userFound = await User.findById(id);
+    if (!userFound)
+      return res.status(400).json({ message: "Usuario no encontrado" });
+
+    userFound.outstandingbalance = outstandingbalance;
+    await userFound.save();
+
+    res.json({
+      message: "Saldo pendiente actualizado",
+      outstandingbalance: userFound.outstandingbalance,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

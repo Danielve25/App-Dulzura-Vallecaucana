@@ -7,6 +7,7 @@ import {
   profile,
   verifyToken,
   getAllUsers,
+  UpdateOutstandingbalance,
 } from "../controllers/auth.controller.js";
 import { registerSchema, loginSchema } from "../schemas/auth.schema.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
@@ -31,5 +32,11 @@ router.get("/profile", verifyToken);
 router.get("/verify", authRequired, profile);
 
 router.get("/users", authRequired, adminRequired, getAllUsers);
+
+router.patch(
+  "/users/:id/outstandingbalance",
+  authRequired,
+  UpdateOutstandingbalance,
+);
 
 export default router;
