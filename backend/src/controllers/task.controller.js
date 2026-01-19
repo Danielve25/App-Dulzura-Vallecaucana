@@ -162,7 +162,7 @@ export const getTask = async (req, res) => {
 export const getTaskByOrderId = async (req, res) => {
   // lógica para obtener una tarea por orderId
   const task = await Task.findOne({ orderId: req.params.orderId }).populate(
-    "user"
+    "user",
   );
   if (!task) return res.status(404).json({ message: "Task not found" });
   return res.json(task);
@@ -190,9 +190,21 @@ export const assignPendingLunches = async (req, res) => {
   try {
     await Task.updateMany(
       { nameClient: nameClient.toUpperCase(), user: null },
-      { user: userId, nameClient: null }
+      { user: userId, nameClient: null },
     );
     res.json({ message: "Almuerzos pendientes asignados al usuario" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const deleteLunchById = async (req, res) => {
+  try {
+    const lunchId = req.params.id;
+    const deletedLunch = await Task.findByIdAndDelete(lunchId);
+    if (!deletedLunch) {
+      return res.status(404).json({ message: "Almuerzo no encontrado" });
+    }
+    res.json({ message: "Almuerzo eliminado correctamente" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

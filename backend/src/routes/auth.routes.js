@@ -36,6 +36,7 @@ router.get("/users", authRequired, adminRequired, getAllUsers);
 router.patch(
   "/users/:id/outstandingbalance",
   authRequired,
+  adminRequired,
   UpdateOutstandingbalance,
 );
 

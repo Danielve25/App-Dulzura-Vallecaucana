@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import SelloImagen from "./icos/CanceladoSello";
+import { deleteLunchAdminRequest } from "@/api/lunch";
 
 function StudentLunchesAccordion({
   groupedLunchs,
@@ -69,27 +70,44 @@ function StudentLunchesAccordion({
                   </div>
 
                   {!lunch.pay && (
-                    <button
-                      onClick={async () => {
-                        setLoadingPay(lunch._id);
-                        try {
-                          await putLunch({ pay: true }, lunch._id);
-                          await loadLunchs();
-                        } catch (error) {
-                          console.log(error);
-                        } finally {
-                          setLoadingPay(null);
-                        }
-                      }}
-                      className="w-full my-4 px-4 py-2 bg-[#008000] text-white rounded transition-transform duration-300 hover:scale-110 disabled:bg-[#338000] disabled:cursor-not-allowed"
-                      disabled={loadingPay === lunch._id}
-                    >
-                      {loadingPay === lunch._id ? (
-                        <span className="loader"></span>
-                      ) : (
-                        "Pagar Almuerzo"
-                      )}
-                    </button>
+                    <>
+                      <button
+                        onClick={async () => {
+                          setLoadingPay(lunch._id);
+                          try {
+                            await putLunch({ pay: true }, lunch._id);
+                            await loadLunchs();
+                          } catch (error) {
+                            console.log(error);
+                          } finally {
+                            setLoadingPay(null);
+                          }
+                        }}
+                        className="w-full my-4 px-4 py-2 bg-[#008000] text-white rounded transition-transform duration-300 hover:scale-110 disabled:bg-[#338000] disabled:cursor-not-allowed"
+                        disabled={loadingPay === lunch._id}
+                      >
+                        {loadingPay === lunch._id ? (
+                          <span className="loader"></span>
+                        ) : (
+                          "Pagar Almuerzo"
+                        )}
+                      </button>
+                      <button
+                        className="w-full my-4 px-4 py-2 bg-[#008000] text-white rounded transition-transform duration-300 hover:scale-110 disabled:bg-[#338000] disabled:cursor-not-allowed"
+                        onClick={async () => {
+                          try {
+                            await deleteLunchAdminRequest(lunch._id);
+                            await loadLunchs();
+                            alert("Almuerzo eliminado");
+                          } catch (error) {
+                            console.error(error);
+                            alert("Error al eliminar almuerzo");
+                          }
+                        }}
+                      >
+                        borrar
+                      </button>
+                    </>
                   )}
                 </article>
               ))}

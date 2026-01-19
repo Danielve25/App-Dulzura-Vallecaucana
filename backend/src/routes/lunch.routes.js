@@ -23,7 +23,7 @@ router.post(
   "/lunch",
   authRequired,
   validateSchema(createTaskSchema),
-  createTask
+  createTask,
 );
 
 router.delete("/lunch/:id", authRequired, deleteTask);
@@ -41,7 +41,8 @@ router.put(
   "/admin/assign-pending",
   authRequired,
   adminRequired,
-  assignPendingLunches
+  assignPendingLunches,
 );
+router.delete("/admin/lunch/:id", authRequired, adminRequired, deleteTask);
 
 export default router;

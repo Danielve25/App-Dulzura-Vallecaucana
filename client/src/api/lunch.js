@@ -25,3 +25,6 @@ export const cobrar = ({ message }) =>
 
 export const assignPendingLunchesRequest = (data) =>
   axios.put("/admin/assign-pending", data);
+
+export const deleteLunchAdminRequest = (id) =>
+  axios.delete(`/admin/lunch/${id}`);
