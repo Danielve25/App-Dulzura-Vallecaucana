@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
 import { useLunch } from "../context/LunchContext";
 import Loader from "@/components/icos/Loader";
 import ChartComponent from "@/components/ChartComponent";
@@ -7,7 +7,11 @@ import CreatePendingLunchForm from "@/components/CreatePendingLunchForm";
 import StudentLunchesAccordion from "@/components/StudentLunchesAccordion";
 import PendingLunchesAccordion from "@/components/PendingLunchesAccordion";
 import useLunchData from "../hooks/useLunchData";
-
+import { Separator } from "@/components/ui/separator";
+import Modal from "@/components/Modal";
+const CirclePlus = lazy(() =>
+  import("lucide-react").then((module) => ({ default: module.CirclePlus })),
+);
 function AdminLunchPage() {
   const chartConfig = {
     Almuerzos: { label: "Almuerzos", color: "#6495ED" },
@@ -83,22 +87,34 @@ function AdminLunchPage() {
           chartDescription="Monstrando todos los almuerzos pedidos"
         />
         <DataTable data={dataTable} />
+        <h1 className="text-3xl! font-bold mb-4  text-red-500">
+          ALMUERZOS PENDIENTES:
+        </h1>
+        <Modal
+          className="px-4 py-2 flex bg-orange-600 text-white rounded hover:scale-110 transition-all hover:bg-orange-700!"
+          text="Añadir pedido"
+          onSubmit={onSubmitPending}
+          submitted={submitted}
+        >
+          <CirclePlus className="" />
+          Añadir pedido
+        </Modal>
+        <PendingLunchesAccordion
+          pendingLunches={pendingLunches}
+          users={users}
+          setSelectedUser={setSelectedUser}
+          handleAssign={handleAssign}
+        />
+        <h1 className="text-3xl! font-bold mt-8 mb-4 center-text text-red-500">
+          Almuerzos por Estudiante:
+        </h1>
+        <Separator className="" />
         <StudentLunchesAccordion
           groupedLunchs={groupedLunchs}
           putLunch={putLunch}
           loadLunchs={loadLunchs}
           loadingPay={loadingPay}
           setLoadingPay={setLoadingPay}
-        />
-        <CreatePendingLunchForm
-          onSubmit={onSubmitPending}
-          submitted={submitted}
-        />
-        <PendingLunchesAccordion
-          pendingLunches={pendingLunches}
-          users={users}
-          setSelectedUser={setSelectedUser}
-          handleAssign={handleAssign}
         />
       </Suspense>
     </div>
