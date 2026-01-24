@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Accordion,
@@ -12,7 +13,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-function CreatePendingLunchForm({ onSubmit, submitted }) {
+function CreatePendingLunchForm({ onSubmit, submitted, setIsOpen }) {
   const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       nameClient: "",
@@ -81,10 +82,15 @@ function CreatePendingLunchForm({ onSubmit, submitted }) {
   });
 
   return (
-    <div className="mb-4 max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
+    <div className="relative mb-4 max-w-md w-full bg-[#E9E9E9] px-6 p-10 rounded-md">
+      <X
+        onClick={() => setIsOpen(false)}
+        className="absolute top-3 right-3 cursor-pointer"
+      />
       <header>
         <h1 className="text-2xl font-bold">Crear Almuerzo Pendiente</h1>
       </header>
+
       <form onSubmit={onSubmitForm}>
         <div className="mt-4">
           <Label className="label">Nombre del Cliente</Label>

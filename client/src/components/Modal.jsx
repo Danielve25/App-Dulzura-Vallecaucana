@@ -2,9 +2,16 @@ import React, { lazy } from "react";
 import { useState } from "react";
 import { Button } from "./ui/button";
 
-const LunchPayForm = lazy(() => import("./LunchPayForm"));
+const CreatePendingLunchForm = lazy(() => import("./CreatePendingLunchForm"));
 
-const Modal = ({ id_task, payAmount, disabled, children, className }) => {
+const Modal = ({
+  id_task,
+  disabled,
+  children,
+  className,
+  onSubmit,
+  submitted,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
@@ -16,12 +23,15 @@ const Modal = ({ id_task, payAmount, disabled, children, className }) => {
         {children}
       </Button>
       {isOpen && (
-        <LunchPayForm
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          id_task={id_task}
-          payAmount={payAmount}
-        />
+        <div className="fixed inset-0 backdrop-blur-xs flex justify-center items-center z-10">
+          <CreatePendingLunchForm
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            id_task={id_task}
+            onSubmit={onSubmit}
+            submitted={submitted}
+          />
+        </div>
       )}
     </>
   );

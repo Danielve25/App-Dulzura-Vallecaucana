@@ -15,6 +15,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import Modal from "@/components/Modal";
+import useLunchData from "@/hooks/useLunchData";
 
 const PrintIcon = lazy(() =>
   import("lucide-react").then((module) => ({ default: module.Printer }))
@@ -37,7 +38,18 @@ const ListDay = () => {
   const [DayToday, setdayToday] = useState(null);
   const [pdfUrl, setPdfUrl] = useState(null);
   const tableRef = useRef();
-
+  const { loadLunchs } = useLunchData();
+  const { CreateLunchAdmin } = useLunch();
+  const [submitted, setSubmitted] = useState(false);
+  const onSubmitPending = async (formattedData) => {
+    try {
+      await CreateLunchAdmin(formattedData);
+      setSubmitted(true);
+      loadLunchs();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     const fetchTodayLunchs = async () => {
       try {
@@ -254,6 +266,8 @@ const ListDay = () => {
           <Modal
             className="px-4 py-2 flex bg-orange-600 text-white rounded hover:scale-110 transition-all hover:bg-orange-700!"
             text="Añadir pedido"
+            onSubmit={onSubmitPending}
+            submitted={submitted}
           >
             <CirclePlus className="" />
             Añadir pedido
