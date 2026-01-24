@@ -18,18 +18,18 @@ import Modal from "@/components/Modal";
 import useLunchData from "@/hooks/useLunchData";
 
 const PrintIcon = lazy(() =>
-  import("lucide-react").then((module) => ({ default: module.Printer }))
+  import("lucide-react").then((module) => ({ default: module.Printer })),
 );
 
 const DownloadIcon = lazy(() =>
-  import("lucide-react").then((module) => ({ default: module.Download }))
+  import("lucide-react").then((module) => ({ default: module.Download })),
 );
 
 const EyeIcon = lazy(() =>
-  import("lucide-react").then((module) => ({ default: module.Eye }))
+  import("lucide-react").then((module) => ({ default: module.Eye })),
 );
 const CirclePlus = lazy(() =>
-  import("lucide-react").then((module) => ({ default: module.CirclePlus }))
+  import("lucide-react").then((module) => ({ default: module.CirclePlus })),
 );
 
 const ListDay = () => {
@@ -56,7 +56,7 @@ const ListDay = () => {
         const response = await getAllLunchs();
         const today = new Date().toISOString().split("T")[0];
         const filteredLunchs = response.data.filter(
-          (lunch) => lunch.date.split("T")[0] === today
+          (lunch) => lunch.date.split("T")[0] === today,
         );
         setTodayLunchs(filteredLunchs);
       } catch (error) {
@@ -222,7 +222,9 @@ const ListDay = () => {
                 <TableRow key={lunch._id}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>
-                    {lunch.user.grade} {lunch.user.NameStudent}
+                    {lunch.user?.grade
+                      ? `${lunch.user.grade} ${lunch.user.NameStudent}`
+                      : lunch.nameClient}
                   </TableCell>
                   <TableCell>
                     {lunch.userneedscomplete && "C, "}
