@@ -70,7 +70,7 @@ function RegisterPage() {
           >
             <div className="mb-4">
               <Label htmlFor="NameStudent" className="label Roboto">
-                Nombre
+                Nombre del estudiante
               </Label>
               <Input
                 id="NameStudent"
@@ -79,6 +79,20 @@ function RegisterPage() {
                 className="w-full bg-white text-black h-14 rounded-2xl px-4 text-[16px] border-0! Roboto"
               />
               {formErrors.NameStudent && (
+                <p className="text-red-500 text-[15px]">Nombre es requerido</p>
+              )}
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="NameStudent" className="label Roboto">
+                Nombre del acudiente
+              </Label>
+              <Input
+                id="fatherName"
+                placeholder="Nombre"
+                {...register("fatherName", { required: true })}
+                className="w-full bg-white text-black h-14 rounded-2xl px-4 text-[16px] border-0! Roboto"
+              />
+              {formErrors.fatherName && (
                 <p className="text-red-500 text-[15px]">Nombre es requerido</p>
               )}
             </div>

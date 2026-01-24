@@ -15,6 +15,7 @@ export const registerSchema = z
     grade: z.string({
       required_error: "grado es requerido",
     }),
+    fatherName: z.string(),
   })
   .strict();
 

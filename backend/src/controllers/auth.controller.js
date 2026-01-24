@@ -14,7 +14,7 @@ const cookieOptions = {
 };
 
 export const register = async (req, res) => {
-  const { NameStudent, PhoneNumber, grade } = req.body;
+  const { NameStudent, PhoneNumber, grade, fatherName } = req.body;
 
   try {
     const upperCaseName = NameStudent.toUpperCase();
@@ -27,6 +27,7 @@ export const register = async (req, res) => {
     const phoneNumberhash = await bcrypt.hash(PhoneNumber, 10);
 
     const NewUser = new User({
+      fatherName: fatherName,
       NameStudent: upperCaseName,
       grade: grade,
       PhoneNumber: phoneNumberhash,
@@ -47,8 +48,10 @@ export const register = async (req, res) => {
     res.cookie("token", token, cookieOptions);
     res.json({
       message: "Usuario creado y almuerzos pendientes asignados",
+
       _id: userSaved._id,
       NameStudent: userSaved.NameStudent,
+      fatherName: userSaved.fatherName,
       grade: userSaved.grade,
       PhoneNumber: userSaved.PhoneNumber,
       isAdmin: userSaved.isAdmin,
@@ -88,6 +91,7 @@ export const login = async (req, res) => {
       _id: userFound._id,
       grade: userFound.grade,
       NameStudent: userFound.NameStudent,
+      fatherName: userFound.fatherName,
       PhoneNumber: userFound.PhoneNumber,
       creastedAt: userFound.createdAt,
       updatedAt: userFound.updatedAt,
@@ -115,6 +119,7 @@ export const profile = async (req, res) => {
   return res.json({
     id: userFound._id,
     NameStudent: userFound.NameStudent,
+    fatherName: userFound.fatherName,
     creastedAt: userFound.createdAt,
     updatedAt: userFound.updatedAt,
     isAdmin: userFound.isAdmin,
@@ -135,6 +140,7 @@ export const verifyToken = async (req, res) => {
     return res.json({
       id: userFound._id,
       NameStudent: userFound.NameStudent,
+      fatherName: userFound.fatherName,
       PhoneNumber: userFound.PhoneNumber,
     });
   });

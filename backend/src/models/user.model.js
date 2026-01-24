@@ -3,6 +3,10 @@ import { required } from "zod/v4-mini";
 
 const userSchema = new mongoose.Schema(
   {
+    fatherName: {
+      type: String,
+      required: true,
+    },
     NameStudent: {
       type: String,
       required: true,

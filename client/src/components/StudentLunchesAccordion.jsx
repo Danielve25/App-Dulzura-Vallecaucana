@@ -18,6 +18,7 @@ function StudentLunchesAccordion({
     <Accordion type="multiple" className="w-full">
       {Object.entries(groupedLunchs).map(([studentName, lunchs]) => {
         const outstandingbalance = lunchs[0]?.user?.outstandingbalance ?? 0;
+        const fatherName = lunchs[0]?.user?.fatherName || "no padre asignado";
         const totalAmount =
           lunchs.reduce(
             (sum, lunch) => (!lunch.pay ? sum + lunch.userNeedsPay : sum),
@@ -28,7 +29,10 @@ function StudentLunchesAccordion({
         return (
           <AccordionItem value={studentName} key={studentName}>
             <AccordionTrigger className="text-left text-xl font-medium px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 flex-col items-start">
-              <span className="font-bold">{studentName}</span>
+              <span className="text-sm text-gray-600">Padre: {fatherName}</span>
+              <span className="font-bold">
+                nombre del estudiante: {studentName}
+              </span>
               <span className="text-sm font-normal text-gray-700">
                 Total A Pagar: ${totalAmount} - Pendientes: {pendingPayments}
               </span>
