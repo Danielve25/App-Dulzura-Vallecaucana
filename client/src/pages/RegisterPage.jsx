@@ -82,49 +82,6 @@ function RegisterPage() {
                 <p className="text-red-500 text-[15px]">Nombre es requerido</p>
               )}
             </div>
-            <div className="mb-4">
-              <Label htmlFor="NameStudent" className="label Roboto">
-                Nombre del acudiente
-              </Label>
-              <Input
-                id="fatherName"
-                placeholder="Nombre"
-                {...register("fatherName", { required: true })}
-                className="w-full bg-white text-black h-14 rounded-2xl px-4 text-[16px] border-0! Roboto"
-              />
-              {formErrors.fatherName && (
-                <p className="text-red-500 text-[15px]">Nombre es requerido</p>
-              )}
-            </div>
-
-            <div className="mt-4">
-              <Label htmlFor="PhoneNumber" className="label Roboto">
-                Numero de teléfono
-              </Label>
-              <Input
-                type="text"
-                id="PhoneNumber"
-                placeholder="Phone Number"
-                {...register("PhoneNumber", {
-                  required: true,
-                  pattern: /^[0-9]*$/,
-                  validate: (value) =>
-                    value.length >= 6 ||
-                    "El número debe tener al menos 6 dígitos",
-                })}
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/\D/g, "");
-                }}
-                className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] border-0! Roboto"
-              />
-              {formErrors.PhoneNumber && (
-                <p className="text-red-500 text-[15px]">
-                  {formErrors.PhoneNumber.message ||
-                    "Número de teléfono es requerido"}
-                </p>
-              )}
-            </div>
-
             <section className="mt-4">
               <Label htmlFor="Grade" className="label Roboto">
                 Grado
@@ -187,6 +144,48 @@ function RegisterPage() {
                 <p className="text-red-500 text-[15px]">Grado es requerido</p>
               )}
             </section>
+            <div className="mb-4">
+              <Label htmlFor="fatherName" className="label Roboto">
+                Nombre del acudiente
+              </Label>
+              <Input
+                id="fatherName"
+                placeholder="Nombre"
+                {...register("fatherName", { required: true })}
+                className="w-full bg-white text-black h-14 rounded-2xl px-4 text-[16px] border-0! Roboto"
+              />
+              {formErrors.fatherName && (
+                <p className="text-red-500 text-[15px]">Nombre es requerido</p>
+              )}
+            </div>
+
+            <div className="mt-4">
+              <Label htmlFor="PhoneNumber" className="label Roboto">
+                Telefono del acudiente
+              </Label>
+              <Input
+                type="text"
+                id="PhoneNumber"
+                placeholder="Phone Number"
+                {...register("PhoneNumber", {
+                  required: true,
+                  pattern: /^[0-9]*$/,
+                  validate: (value) =>
+                    value.length >= 6 ||
+                    "El número debe tener al menos 6 dígitos",
+                })}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/\D/g, "");
+                }}
+                className="w-full h-14 bg-white text-black px-4 rounded-2xl text-[16px] border-0! Roboto"
+              />
+              {formErrors.PhoneNumber && (
+                <p className="text-red-500 text-[15px]">
+                  {formErrors.PhoneNumber.message ||
+                    "Número de teléfono es requerido"}
+                </p>
+              )}
+            </div>
 
             <Button
               type="submit"
