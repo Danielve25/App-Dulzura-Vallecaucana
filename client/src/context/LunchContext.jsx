@@ -33,12 +33,7 @@ export function LunchProvider({ children }) {
   };
 
   const createLunch = async (lunch) => {
-    try {
-      const res = await createLunchRequest(lunch);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
+    return await createLunchRequest(lunch);
   };
 
   const payLunch = async (lunchPayment) => {

@@ -48,6 +48,7 @@ const ListDay = () => {
       loadLunchs();
     } catch (error) {
       console.error(error);
+      alert("Error al crear el pedido pendiente");
     }
   };
   useEffect(() => {

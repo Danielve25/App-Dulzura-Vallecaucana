@@ -12,8 +12,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useState } from "react";
+import Loader from "./icos/Loader";
 
-function CreatePendingLunchForm({ onSubmit, submitted, setIsOpen }) {
+function CreatePendingLunchForm({ onSubmit, setIsOpen }) {
   const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       nameClient: "",
@@ -27,8 +29,9 @@ function CreatePendingLunchForm({ onSubmit, submitted, setIsOpen }) {
       date: Temporal.Now.plainDateISO().toString(),
     },
   });
-
-  const onSubmitForm = handleSubmit((data) => {
+  const [showAlert, setShowAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const onSubmitForm = handleSubmit(async (data) => {
     const hoy = Temporal.Now.plainDateISO();
     const seleccionada = Temporal.PlainDate.from(data.date);
 
@@ -82,7 +85,16 @@ function CreatePendingLunchForm({ onSubmit, submitted, setIsOpen }) {
       }
     }
 
-    onSubmit(formattedData);
+    try {
+      setLoading(true);
+      await onSubmit(formattedData); // 👈 promesa
+      setShowAlert(true);
+    } catch (error) {
+      console.error(error);
+      alert("Error al enviar el pedido");
+    } finally {
+      setLoading(false);
+    }
   });
 
   return (
@@ -212,14 +224,25 @@ function CreatePendingLunchForm({ onSubmit, submitted, setIsOpen }) {
           </section>
         </div>
 
-        <Button className="cursor-pointer w-full h-14 rounded-2xl bg-[#008000] font-[1000] text-[16px]">
-          Crear Pendiente
+        <Button
+          disabled={loading}
+          className="cursor-pointer w-full h-14 rounded-2xl bg-[#008000] font-[1000] text-[16px] flex items-center justify-center"
+        >
+          {loading ? <Loader /> : "Crear Pendiente"}
         </Button>
       </form>
 
-      {submitted && (
-        <div className="mt-4 p-4 bg-green-100 text-green-700 rounded-md">
-          Almuerzo pendiente creado
+      {showAlert && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-2xl text-center text-2xl font-bold">
+            🍽️ Pedido enviado con éxito
+            <button
+              className="block mt-6 px-6 py-2 bg-green-600 text-white rounded-xl"
+              onClick={() => setShowAlert(false)}
+            >
+              OK
+            </button>
+          </div>
         </div>
       )}
     </div>
