@@ -77,6 +77,7 @@ export const createLunchByAdmin = async (req, res) => {
     user, // Puede ser ID, objeto o null
     nameClient, // Nuevo campo para almuerzos pendientes
     statePayment,
+    teacher,
   } = req.body;
 
   // Calcular userNeedsPay si no se proporciona
@@ -88,6 +89,7 @@ export const createLunchByAdmin = async (req, res) => {
     if (userneedstray) calculatedUserNeedsPay += 15000;
     if (userneedsextrajuice) calculatedUserNeedsPay += 1000;
     if (onlysoup) calculatedUserNeedsPay += 5000;
+    if (teacher) calculatedUserNeedsPay += 13000;
   }
 
   let userId = null; // Por defecto null para almuerzos pendientes
@@ -146,6 +148,7 @@ export const createLunchByAdmin = async (req, res) => {
     user: userId,
     nameClient: clientName,
     statePayment: statePayment || "",
+    teacher: teacher || false,
   });
 
   const savedTask = await newTask.save();
@@ -208,4 +211,4 @@ export const deleteLunchById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+}; // Puede ser ID, objeto o null

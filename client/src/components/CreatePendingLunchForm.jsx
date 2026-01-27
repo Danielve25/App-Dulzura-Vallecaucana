@@ -23,6 +23,7 @@ function CreatePendingLunchForm({ onSubmit, submitted, setIsOpen }) {
       portionOfProtein: false,
       portionOfSalad: false,
       onlysoup: false,
+      teacher: false,
       date: Temporal.Now.plainDateISO().toString(),
     },
   });
@@ -47,6 +48,7 @@ function CreatePendingLunchForm({ onSubmit, submitted, setIsOpen }) {
       portionOfProtein: data.portionOfProtein,
       portionOfSalad: data.portionOfSalad,
       onlysoup: data.onlysoup,
+      teacher: data.teacher,
       date: today.toISOString(),
     };
 
@@ -56,7 +58,8 @@ function CreatePendingLunchForm({ onSubmit, submitted, setIsOpen }) {
       !formattedData.userneedsextrajuice &&
       !formattedData.portionOfProtein &&
       !formattedData.portionOfSalad &&
-      !formattedData.onlysoup
+      !formattedData.onlysoup &&
+      !formattedData.teacher
     ) {
       alert("Debe seleccionar al menos una opción");
       return;
@@ -70,7 +73,8 @@ function CreatePendingLunchForm({ onSubmit, submitted, setIsOpen }) {
       const count =
         Number(formattedData.userneedscomplete) +
         Number(formattedData.userneedstray) +
-        Number(formattedData.onlysoup);
+        Number(formattedData.onlysoup) +
+        Number(formattedData.teacher);
 
       if (count > 1) {
         alert("No puede seleccionar más de una opción principal");
@@ -154,6 +158,22 @@ function CreatePendingLunchForm({ onSubmit, submitted, setIsOpen }) {
                 <AccordionContent>solo sopa, cuesta 5.000</AccordionContent>
               </AccordionItem>
             </Accordion>
+            <Label className="flex items-center my-3">
+              <Checkbox
+                checked={watch("teacher")}
+                onCheckedChange={(val) => setValue("teacher", val)}
+              />
+              <span className="ml-2">PROFE</span>
+            </Label>
+
+            <Separator />
+            <Accordion type="single" collapsible>
+              <AccordionItem value="item-1">
+                <AccordionTrigger>Detalles</AccordionTrigger>
+                <AccordionContent>Profe cuesta 13.000</AccordionContent>
+              </AccordionItem>
+            </Accordion>
+            <Separator />
             <Separator />
 
             <Label className="flex items-center my-3">

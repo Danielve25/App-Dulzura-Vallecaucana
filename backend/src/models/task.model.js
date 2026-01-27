@@ -55,6 +55,10 @@ const taskSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    teacher: {
+      type: Boolean,
+      required: false,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -72,7 +76,7 @@ const taskSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default mongoose.model("Task", taskSchema);

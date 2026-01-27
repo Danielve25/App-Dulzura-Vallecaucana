@@ -234,6 +234,7 @@ const ListDay = () => {
                     {lunch.portionOfProtein && "P, "}
                     {lunch.portionOfSalad && "PE"}
                     {lunch.onlysoup && "S"}
+                    {lunch.teacher && "P"}
                   </TableCell>
                 </TableRow>
               ))}
