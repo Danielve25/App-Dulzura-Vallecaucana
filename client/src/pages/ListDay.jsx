@@ -5,7 +5,7 @@ import { Temporal } from "temporal-polyfill";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Loader from "@/components/icos/Loader";
-import ExcelJS from "exceljs"; // Importar ExcelJS
+import ExcelJS from "exceljs";
 import {
   Table,
   TableHeader,
@@ -33,37 +33,31 @@ const CirclePlus = lazy(() =>
 );
 
 const ListDay = () => {
-  const { getAllLunchs } = useLunch();
+  const { getAllLunchs, CreateLunchAdmin } = useLunch();
+  const { loadLunchs } = useLunchData();
   const [todayLunchs, setTodayLunchs] = useState([]);
   const [DayToday, setdayToday] = useState(null);
   const [pdfUrl, setPdfUrl] = useState(null);
-  const tableRef = useRef();
-  const { loadLunchs } = useLunchData();
-  const { CreateLunchAdmin } = useLunch();
   const [submitted, setSubmitted] = useState(false);
-  const onSubmitPending = async (formattedData) => {
+  const tableRef = useRef();
+
+  // 1. Definimos la función de carga/refetch fuera del useEffect
+  const fetchTodayLunchs = async () => {
     try {
-      await CreateLunchAdmin(formattedData);
-      setSubmitted(true);
-      loadLunchs();
+      const response = await getAllLunchs();
+      const today = new Date().toISOString().split("T")[0];
+      const filteredLunchs = response.data.filter(
+        (lunch) => lunch.date.split("T")[0] === today,
+      );
+      setTodayLunchs(filteredLunchs);
     } catch (error) {
-      console.error(error);
-      alert("Error al crear el pedido pendiente");
+      console.error("Error al obtener los almuerzos del día:", error);
     }
   };
+
+  // 2. Carga inicial de datos y formato de fecha
   useEffect(() => {
-    const fetchTodayLunchs = async () => {
-      try {
-        const response = await getAllLunchs();
-        const today = new Date().toISOString().split("T")[0];
-        const filteredLunchs = response.data.filter(
-          (lunch) => lunch.date.split("T")[0] === today,
-        );
-        setTodayLunchs(filteredLunchs);
-      } catch (error) {
-        console.error("Error al obtener los almuerzos del día:", error);
-      }
-    };
+    fetchTodayLunchs();
 
     const todayFormatted = Temporal.Now.zonedDateTimeISO()
       .toLocaleString("es-ES", {
@@ -74,9 +68,28 @@ const ListDay = () => {
       .replace(/\s/g, "-")
       .toLowerCase();
     setdayToday(todayFormatted);
-
-    fetchTodayLunchs();
   }, []);
+
+  // 3. Función que se dispara al crear un pedido desde el Modal
+  const onSubmitPending = async (formattedData) => {
+    try {
+      await CreateLunchAdmin(formattedData);
+      setSubmitted(true);
+
+      // Hacemos el REFECTH inmediato para actualizar la tabla
+      await fetchTodayLunchs();
+
+      // Opcional: Actualizar el hook global si es necesario
+      loadLunchs();
+
+      // Resetear el estado de envío para permitir nuevos pedidos
+      setTimeout(() => setSubmitted(false), 1500);
+    } catch (error) {
+      console.error(error);
+      alert("Error al crear el pedido pendiente");
+      setSubmitted(false);
+    }
+  };
 
   const downloadExcel = async () => {
     const workbook = new ExcelJS.Workbook();
@@ -202,8 +215,17 @@ const ListDay = () => {
 
   if (todayLunchs.length === 0) {
     return (
-      <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full">
+      <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full flex-col gap-4">
         <h1 className="text-2xl font-bold">NO HAY PEDIDOS PARA HOY</h1>
+        <Modal
+          className="px-6 py-3 flex bg-orange-600 text-white rounded hover:bg-orange-700 transition-colors"
+          text="Añadir primer pedido"
+          onSubmit={onSubmitPending}
+          submitted={submitted}
+        >
+          <CirclePlus className="mr-2" />
+          Añadir pedido
+        </Modal>
       </div>
     );
   }
@@ -224,7 +246,7 @@ const ListDay = () => {
             </TableHeader>
             <TableBody>
               {todayLunchs.map((lunch, index) => (
-                <TableRow key={lunch._id}>
+                <TableRow key={lunch._id || index}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>
                     {lunch.user?.grade
@@ -232,14 +254,18 @@ const ListDay = () => {
                       : lunch.nameClient}
                   </TableCell>
                   <TableCell>
-                    {lunch.userneedscomplete && "C, "}
-                    {lunch.userneedstray && "B, "}
-                    {lunch.EspecialStray && "BE"}
-                    {lunch.userneedsextrajuice && "J, "}
-                    {lunch.portionOfProtein && "P, "}
-                    {lunch.portionOfSalad && "PE"}
-                    {lunch.onlysoup && "S"}
-                    {lunch.teacher && "P"}
+                    {[
+                      lunch.userneedscomplete && "C",
+                      lunch.userneedstray && "B",
+                      lunch.EspecialStray && "BE",
+                      lunch.userneedsextrajuice && "J",
+                      lunch.portionOfProtein && "P",
+                      lunch.portionOfSalad && "PE",
+                      lunch.onlysoup && "S",
+                      lunch.teacher && "P",
+                    ]
+                      .filter(Boolean)
+                      .join(", ")}
                   </TableCell>
                 </TableRow>
               ))}
@@ -250,34 +276,35 @@ const ListDay = () => {
         <div className="flex flex-col max-[442px]:flex-col min-[443px]:flex-row gap-4 mt-4 w-full">
           <Button
             onClick={downloadExcel}
-            className="px-4 py-2 flex bg-[#008000] text-white rounded hover:scale-110 transition-all hover:bg-[#008000]!"
+            className="px-4 py-2 flex bg-[#008000] text-white rounded hover:scale-105 transition-all hover:bg-[#008000]!"
           >
-            <DownloadIcon className="" />
+            <DownloadIcon className="mr-2" />
             Descargar Excel
           </Button>
 
           <Button
             onClick={generatePDF}
-            className="px-4 py-2 flex bg-[#dc2626] text-white rounded hover:scale-110 transition-all hover:bg-[#dc2626]!"
+            className="px-4 py-2 flex bg-[#dc2626] text-white rounded hover:scale-105 transition-all hover:bg-[#dc2626]!"
           >
-            <EyeIcon className="" />
+            <EyeIcon className="mr-2" />
             Ver PDF
           </Button>
 
           <Button
             onClick={handlePrint}
-            className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-110 transition-all hover:bg-blue-700!"
+            className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-105 transition-all hover:bg-blue-700!"
           >
-            <PrintIcon className="" />
+            <PrintIcon className="mr-2" />
             Imprimir Tabla
           </Button>
+
           <Modal
-            className="px-4 py-2 flex bg-orange-600 text-white rounded hover:scale-110 transition-all hover:bg-orange-700!"
+            className="px-4 py-2 flex bg-orange-600 text-white rounded hover:scale-105 transition-all hover:bg-orange-700!"
             text="Añadir pedido"
             onSubmit={onSubmitPending}
             submitted={submitted}
           >
-            <CirclePlus className="" />
+            <CirclePlus className="mr-2" />
             Añadir pedido
           </Modal>
         </div>
