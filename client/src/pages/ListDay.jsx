@@ -81,9 +81,11 @@ const ListDay = () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Pedidos del Día");
 
+    const hasGrade = todayLunchs.some((lunch) => lunch.user?.grade);
+
     worksheet.columns = [
       { header: "#", key: "index", width: 5 },
-      { header: "Grado", key: "grade", width: 15 },
+      ...(hasGrade ? [{ header: "Grado", key: "grade", width: 15 }] : []),
       { header: "Nombre del Estudiante", key: "name", width: 30 },
       { header: DayToday, key: "needs", width: 30 },
     ];
@@ -91,7 +93,8 @@ const ListDay = () => {
     todayLunchs.forEach((lunch, index) => {
       worksheet.addRow({
         index: index + 1,
-        name: ` ${lunch.user.grade} ${lunch.user.NameStudent}`,
+        ...(hasGrade && { grade: lunch.user?.grade || "" }),
+        name: lunch.user?.NameStudent || lunch.nameClient,
         needs: [
           lunch.userneedscomplete && "C",
           lunch.userneedstray && "B",
@@ -99,7 +102,7 @@ const ListDay = () => {
           lunch.userneedsextrajuice && "J",
           lunch.portionOfProtein && "P",
           lunch.portionOfSalad && "E",
-          lunch.onlysoup && "S",
+          lunch.teacher && "P",
         ]
           .filter(Boolean)
           .join(", "),
@@ -123,15 +126,18 @@ const ListDay = () => {
 
     const rows = todayLunchs.map((lunch, index) => [
       index + 1,
-      `${lunch.user.grade} ${lunch.user.NameStudent}`,
+      lunch.user?.grade
+        ? `${lunch.user.grade} ${lunch.user.NameStudent}`
+        : lunch.user?.NameStudent || lunch.nameClient,
       [
-        lunch.userneedscomplete && "C, ",
-        lunch.userneedstray && "B, ",
+        lunch.userneedscomplete && "C",
+        lunch.userneedstray && "B",
         lunch.EspecialStray && "BE",
-        lunch.userneedsextrajuice && "J, ",
-        lunch.portionOfProtein && "P, ",
+        lunch.userneedsextrajuice && "J",
+        lunch.portionOfProtein && "P",
         lunch.portionOfSalad && "PE",
         lunch.onlysoup && "S",
+        lunch.teacher && "P",
       ]
         .filter(Boolean)
         .join(", "),
@@ -166,9 +172,7 @@ const ListDay = () => {
       margin: { top: 30 },
     });
 
-    const pdfOutput = doc.output("datauristring");
-
-    setPdfUrl(pdfOutput);
+    setPdfUrl(doc.output("datauristring"));
   };
 
   const handlePrint = () => {
