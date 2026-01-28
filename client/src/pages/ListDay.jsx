@@ -302,7 +302,7 @@ const ListDay = () => {
                           lunch.portionOfProtein && "P",
                           lunch.portionOfSalad && "PE",
                           lunch.onlysoup && "S",
-                          lunch.teacher && "T",
+                          lunch.teacher && "P",
                         ]
                           .filter(Boolean)
                           .join(", ")}
