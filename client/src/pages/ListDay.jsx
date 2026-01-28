@@ -36,64 +36,73 @@ const ListDay = () => {
   const { getAllLunchs, CreateLunchAdmin } = useLunch();
   const { loadLunchs } = useLunchData();
   const [todayLunchs, setTodayLunchs] = useState([]);
-  const [DayToday, setdayToday] = useState(null);
+  const [DayToday, setdayToday] = useState("");
   const [pdfUrl, setPdfUrl] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  
+  // Estado para la fecha seleccionada (formato YYYY-MM-DD para el input date)
+  const [selectedDate, setSelectedDate] = useState(
+    Temporal.Now.plainDateISO().toString()
+  );
+  
   const tableRef = useRef();
 
-  // 1. Definimos la función de carga/refetch fuera del useEffect
-  const fetchTodayLunchs = async () => {
+  // Función principal para obtener datos filtrados por fecha
+  const fetchLunchsByDate = async (dateToFilter) => {
     try {
       const response = await getAllLunchs();
-      const today = new Date().toISOString().split("T")[0];
+      
+      // Filtrar por la fecha seleccionada
       const filteredLunchs = response.data.filter(
-        (lunch) => lunch.date.split("T")[0] === today,
+        (lunch) => lunch.date.split("T")[0] === dateToFilter,
       );
+      
       setTodayLunchs(filteredLunchs);
+
+      // Formatear la fecha para mostrar en el encabezado de la tabla
+      const formatted = Temporal.PlainDate.from(dateToFilter)
+        .toLocaleString("es-ES", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        })
+        .replace(/\s/g, "-")
+        .toLowerCase();
+      setdayToday(formatted);
     } catch (error) {
-      console.error("Error al obtener los almuerzos del día:", error);
+      console.error("Error al obtener los almuerzos:", error);
     }
   };
 
-  // 2. Carga inicial de datos y formato de fecha
+  // Cada vez que cambie la fecha en el input, volvemos a pedir los datos
   useEffect(() => {
-    fetchTodayLunchs();
+    fetchLunchsByDate(selectedDate);
+  }, [selectedDate]);
 
-    const todayFormatted = Temporal.Now.zonedDateTimeISO()
-      .toLocaleString("es-ES", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
-      })
-      .replace(/\s/g, "-")
-      .toLowerCase();
-    setdayToday(todayFormatted);
-  }, []);
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
+  };
 
-  // 3. Función que se dispara al crear un pedido desde el Modal
   const onSubmitPending = async (formattedData) => {
     try {
       await CreateLunchAdmin(formattedData);
       setSubmitted(true);
-
-      // Hacemos el REFECTH inmediato para actualizar la tabla
-      await fetchTodayLunchs();
-
-      // Opcional: Actualizar el hook global si es necesario
+      
+      // Refetch basado en la fecha que estamos visualizando
+      await fetchLunchsByDate(selectedDate);
       loadLunchs();
 
-      // Resetear el estado de envío para permitir nuevos pedidos
       setTimeout(() => setSubmitted(false), 1500);
     } catch (error) {
       console.error(error);
-      alert("Error al crear el pedido pendiente");
+      alert("Error al crear el pedido");
       setSubmitted(false);
     }
   };
 
   const downloadExcel = async () => {
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Pedidos del Día");
+    const worksheet = workbook.addWorksheet("Pedidos");
 
     const hasGrade = todayLunchs.some((lunch) => lunch.user?.grade);
 
@@ -130,13 +139,13 @@ const ListDay = () => {
 
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `Pedidos_${DayToday}.xlsx`;
+    link.download = `Pedidos_${selectedDate}.xlsx`;
     link.click();
   };
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    doc.text("Pedidos del Día", 14, 10);
+    doc.text(`Pedidos del día: ${selectedDate}`, 14, 10);
 
     const rows = todayLunchs.map((lunch, index) => [
       index + 1,
@@ -161,29 +170,8 @@ const ListDay = () => {
       head: [["#", "Nombre del Estudiante", DayToday]],
       body: rows,
       startY: 20,
-      styles: {
-        fontSize: 10,
-        cellPadding: 1,
-        halign: "center",
-        valign: "middle",
-        lineColor: [0, 0, 0],
-        lineWidth: 0.01,
-      },
-      headStyles: {
-        fillColor: [255, 255, 255],
-        textColor: [0, 0, 0],
-        fontStyle: "bold",
-        lineWidth: 0.5,
-        lineColor: [0, 0, 0],
-      },
-      bodyStyles: {
-        lineWidth: 0.5,
-        lineColor: [0, 0, 0],
-      },
-      alternateRowStyles: {
-        fillColor: [255, 255, 255],
-      },
-      margin: { top: 30 },
+      styles: { fontSize: 10, halign: "center" },
+      headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.1 },
     });
 
     setPdfUrl(doc.output("datauristring"));
@@ -195,14 +183,16 @@ const ListDay = () => {
     printWindow.document.write(`
       <html>
         <head>
-          <title>Imprimir Pedidos</title>
+          <title>Imprimir Pedidos ${selectedDate}</title>
           <style>
-            table { width: 100%; border-collapse: collapse; }
-            th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #000; padding: 8px; text-align: center; font-family: sans-serif; }
             th { background-color: #f3f3f3; }
+            h2 { font-family: sans-serif; text-align: center; }
           </style>
         </head>
         <body>
+          <h2>Pedidos del Día: ${selectedDate}</h2>
           ${printContent.innerHTML}
         </body>
       </html>
@@ -213,111 +203,131 @@ const ListDay = () => {
     printWindow.close();
   };
 
-  if (todayLunchs.length === 0) {
-    return (
-      <div className="flex h-[calc(100vh-100px)] items-center justify-center w-full flex-col gap-4">
-        <h1 className="text-2xl font-bold">NO HAY PEDIDOS PARA HOY</h1>
-        <Modal
-          className="px-6 py-3 flex bg-orange-600 text-white rounded hover:bg-orange-700 transition-colors"
-          text="Añadir primer pedido"
-          onSubmit={onSubmitPending}
-          submitted={submitted}
-        >
-          <CirclePlus className="mr-2" />
-          Añadir pedido
-        </Modal>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full p-8">
       <Suspense fallback={<Loader />}>
-        <h2 className="text-2xl font-bold mb-4">Pedidos del Día</h2>
-
-        <div ref={tableRef}>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>#</TableHead>
-                <TableHead>Nombre del Estudiante</TableHead>
-                <TableHead>{DayToday}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {todayLunchs.map((lunch, index) => (
-                <TableRow key={lunch._id || index}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>
-                    {lunch.user?.grade
-                      ? `${lunch.user.grade} ${lunch.user.NameStudent}`
-                      : lunch.nameClient}
-                  </TableCell>
-                  <TableCell>
-                    {[
-                      lunch.userneedscomplete && "C",
-                      lunch.userneedstray && "B",
-                      lunch.EspecialStray && "BE",
-                      lunch.userneedsextrajuice && "J",
-                      lunch.portionOfProtein && "P",
-                      lunch.portionOfSalad && "PE",
-                      lunch.onlysoup && "S",
-                      lunch.teacher && "P",
-                    ]
-                      .filter(Boolean)
-                      .join(", ")}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+        {/* Header con Filtro */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-white p-4 rounded-xl shadow-sm border">
+          <h2 className="text-2xl font-bold text-gray-800">Control de Almuerzos</h2>
+          
+          <div className="flex items-center gap-3">
+            <label htmlFor="date-filter" className="text-sm font-semibold text-gray-600">
+              Ver fecha:
+            </label>
+            <input
+              type="date"
+              id="date-filter"
+              value={selectedDate}
+              onChange={handleDateChange}
+              className="px-3 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 outline-none transition-all"
+            />
+          </div>
         </div>
 
-        <div className="flex flex-col max-[442px]:flex-col min-[443px]:flex-row gap-4 mt-4 w-full">
-          <Button
-            onClick={downloadExcel}
-            className="px-4 py-2 flex bg-[#008000] text-white rounded hover:scale-105 transition-all hover:bg-[#008000]!"
-          >
-            <DownloadIcon className="mr-2" />
-            Descargar Excel
-          </Button>
+        {todayLunchs.length === 0 ? (
+          <div className="flex h-[300px] items-center justify-center w-full flex-col gap-4 border-2 border-dashed rounded-2xl bg-gray-50">
+            <p className="text-xl font-medium text-gray-500">No se encontraron pedidos para esta fecha</p>
+            <Modal
+              className="px-6 py-3 flex bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors shadow-lg"
+              text="Registrar primer pedido"
+              onSubmit={onSubmitPending}
+              submitted={submitted}
+            >
+              <CirclePlus className="mr-2" />
+              Añadir pedido
+            </Modal>
+          </div>
+        ) : (
+          <>
+            <div ref={tableRef} className="bg-white rounded-lg border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50">
+                    <TableHead className="w-16">#</TableHead>
+                    <TableHead>Nombre del Estudiante / Cliente</TableHead>
+                    <TableHead className="text-center uppercase font-bold">{DayToday}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {todayLunchs.map((lunch, index) => (
+                    <TableRow key={lunch._id || index}>
+                      <TableCell className="font-medium">{index + 1}</TableCell>
+                      <TableCell>
+                        {lunch.user?.grade
+                          ? `${lunch.user.grade} - ${lunch.user.NameStudent}`
+                          : lunch.nameClient}
+                      </TableCell>
+                      <TableCell className="text-center font-bold text-orange-700">
+                        {[
+                          lunch.userneedscomplete && "C",
+                          lunch.userneedstray && "B",
+                          lunch.EspecialStray && "BE",
+                          lunch.userneedsextrajuice && "J",
+                          lunch.portionOfProtein && "P",
+                          lunch.portionOfSalad && "PE",
+                          lunch.onlysoup && "S",
+                          lunch.teacher && "T",
+                        ]
+                          .filter(Boolean)
+                          .join(", ")}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
 
-          <Button
-            onClick={generatePDF}
-            className="px-4 py-2 flex bg-[#dc2626] text-white rounded hover:scale-105 transition-all hover:bg-[#dc2626]!"
-          >
-            <EyeIcon className="mr-2" />
-            Ver PDF
-          </Button>
+            {/* Acciones */}
+            <div className="flex flex-wrap gap-4 mt-6">
+              <Button
+                onClick={downloadExcel}
+                className="flex-1 min-w-[150px] bg-[#008000] text-white hover:bg-[#006400]"
+              >
+                <DownloadIcon className="mr-2 h-4 w-4" />
+                Excel
+              </Button>
 
-          <Button
-            onClick={handlePrint}
-            className="px-4 py-2 flex bg-blue-600 text-white rounded hover:scale-105 transition-all hover:bg-blue-700!"
-          >
-            <PrintIcon className="mr-2" />
-            Imprimir Tabla
-          </Button>
+              <Button
+                onClick={generatePDF}
+                className="flex-1 min-w-[150px] bg-[#dc2626] text-white hover:bg-[#b91c1c]"
+              >
+                <EyeIcon className="mr-2 h-4 w-4" />
+                Ver PDF
+              </Button>
 
-          <Modal
-            className="px-4 py-2 flex bg-orange-600 text-white rounded hover:scale-105 transition-all hover:bg-orange-700!"
-            text="Añadir pedido"
-            onSubmit={onSubmitPending}
-            submitted={submitted}
-          >
-            <CirclePlus className="mr-2" />
-            Añadir pedido
-          </Modal>
-        </div>
+              <Button
+                onClick={handlePrint}
+                className="flex-1 min-w-[150px] bg-blue-600 text-white hover:bg-blue-700"
+              >
+                <PrintIcon className="mr-2 h-4 w-4" />
+                Imprimir
+              </Button>
+
+              <Modal
+                className="flex-1 min-w-[150px] bg-orange-600 text-white rounded-md hover:bg-orange-700 flex items-center justify-center"
+                text="Añadir pedido"
+                onSubmit={onSubmitPending}
+                submitted={submitted}
+              >
+                <CirclePlus className="mr-2 h-4 w-4" />
+                Añadir Pedido
+              </Modal>
+            </div>
+          </>
+        )}
 
         {pdfUrl && (
-          <div className="mt-8">
-            <h3 className="text-xl font-bold mb-4">Vista Previa del PDF:</h3>
+          <div className="mt-8 p-4 bg-slate-800 rounded-lg shadow-inner">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-white font-bold">Vista Previa Documento</h3>
+              <Button size="sm" variant="destructive" onClick={() => setPdfUrl(null)}>Cerrar</Button>
+            </div>
             <iframe
               src={pdfUrl}
               width="100%"
-              height="500px"
-              style={{ border: "none" }}
-              title="Vista Previa PDF"
+              height="600px"
+              className="rounded border-none bg-white"
+              title="Preview"
             ></iframe>
           </div>
         )}
