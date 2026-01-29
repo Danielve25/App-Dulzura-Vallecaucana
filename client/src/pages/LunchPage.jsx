@@ -35,7 +35,10 @@ const LunchPage = () => {
       <header>
         <h2 className="text-2xl font-bold mb-4">
           Pedido de Almuerzo{" "}
-          <p className="font-bold mt-4">saldo pendiente: {totalPendiente}</p>
+          <p className="font-bold mt-4">
+            saldo anterior: ${lunchs[0]?.user?.outstandingbalance || 0}{" "}
+            pendiente: {totalPendiente}
+          </p>
         </h2>
       </header>
       <section className="grid grid-cols-1 gap-4">

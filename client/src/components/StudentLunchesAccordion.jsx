@@ -34,7 +34,8 @@ function StudentLunchesAccordion({
                 nombre del estudiante: {studentName}
               </span>
               <span className="text-sm font-normal text-gray-700">
-                Total A Pagar: ${totalAmount} - Pendientes: {pendingPayments}
+                saldo pendiente: ${outstandingbalance} - Total A Pagar: $
+                {totalAmount} - Pendientes: {pendingPayments}
               </span>
             </AccordionTrigger>
 
