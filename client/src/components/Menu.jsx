@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getMenu } from "../api/menu";
+import { getMenuToday } from "../api/menu";
 import Loader from "@/components/icos/Loader";
-
-const isValidDate = (date) => {
-  const d = new Date(date);
-  return d instanceof Date && !isNaN(d);
-};
 
 const Menu = () => {
   const hoy = new Date();
@@ -17,14 +12,8 @@ const Menu = () => {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const res = await getMenu();
-
-        const menus = res.data
-          .filter((item) => isValidDate(item.date))
-          .filter((item) => new Date(item.date) >= hoy)
-          .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-        setMenu(menus);
+        const res = await getMenuToday();
+        setMenu(res.data);
       } catch (error) {
         console.error("Error al obtener el menú:", error.message);
         setMenu([]);
