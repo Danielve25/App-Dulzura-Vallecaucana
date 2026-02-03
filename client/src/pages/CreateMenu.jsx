@@ -23,19 +23,12 @@ const CreateNewMenu = () => {
   } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
-    const hoy = Temporal.Now.plainDateISO();
-    const seleccionada = Temporal.PlainDate.from(data.date);
+    const date = new Date(data.date);
+    date.setHours(0, 0, 0, 0);
 
-    let today;
-
-    if (Temporal.PlainDate.compare(hoy, seleccionada) === 0) {
-      today = new Date();
-    } else {
-      today = new Date(data.date);
-    }
     const formatedData = {
       Descripcion: data.Descripcion.toUpperCase(),
-      date: today.toISOString(),
+      date: date.toISOString(),
     };
     console.log(formatedData);
 

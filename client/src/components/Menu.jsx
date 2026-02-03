@@ -55,7 +55,7 @@ const Menu = () => {
         >
           <h1 className="text-2xl font-bold">Menú del Día</h1>
           <h2 className="text-lg">
-            {new Date(item.date).toLocaleDateString()}
+            {new Date(item.date).toISOString().split("T")[0]}
           </h2>
           <p className="mt-2">Descripción del almuerzo:</p>
           <p>{item.Descripcion}</p>
