@@ -245,7 +245,7 @@ const ListDay = () => {
         </div>
 
         {todayLunchs.length === 0 ? (
-          <div className="flex h-[300px] items-center justify-center w-full flex-col gap-4 border-2 border-dashed rounded-2xl bg-gray-50">
+          <div className="flex h-75 items-center justify-center w-full flex-col gap-4 border-2 border-dashed rounded-2xl bg-gray-50">
             <p className="text-xl font-medium text-gray-500">
               No hay pedidos para esta fecha
             </p>
