@@ -5,12 +5,13 @@ import { AuthProvider } from "./context/AuthContext";
 import { LunchProvider } from "./context/LunchContext";
 import NavBar from "./components/NavBar";
 
+const ListDayWebSockets = lazy(() => import("./pages/ListDayWebSockets"));
 const ProtectedRoute = lazy(() => import("./ProtectedRoute"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const LunchFormPage = lazy(() => import("./pages/LunchFormPage"));
 const LunchPage = lazy(() => import("./pages/LunchPage"));
-const ListDay = lazy(() => import("./pages/ListDay"));
+const ListDay = lazy(() => import("./pages/ListDays"));
 const CreateNewMenu = lazy(() => import("./pages/CreateMenu"));
 const AdminLunchPage = lazy(() => import("./pages/AdminLunchPage"));
 
@@ -28,7 +29,8 @@ function App() {
               <Route path="/lunch" element={<LunchPage />} />
               <Route path="/lunch/new" element={<LunchFormPage />} />
               <Route path="/admin" element={<AdminLunchPage />} />
-              <Route path="/admin/listDay" element={<ListDay />} />
+              <Route path="/admin/listDays" element={<ListDay />} />
+              <Route path="/admin/listDay" element={<ListDayWebSockets />} />
               <Route path="/admin/create/menu" element={<CreateNewMenu />} />
             </Route>
           </Routes>

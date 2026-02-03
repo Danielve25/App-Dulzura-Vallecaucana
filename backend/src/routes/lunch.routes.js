@@ -9,7 +9,8 @@ import {
   getAllTasks,
   getTaskByOrderId,
   createLunchByAdmin,
-  assignPendingLunches, // Agrega esta línea aquí
+  assignPendingLunches,
+  getAllTasksRealtime, // Agrega esta línea aquí
 } from "../controllers/task.controller.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { createTaskSchema } from "../schemas/task.schema.js";
@@ -32,6 +33,12 @@ router.put("/lunch/:id", authRequired, adminRequired, updateTask);
 
 // Ruta para que el administrador obtenga todas las tareas
 router.get("/admin/lunchs", authRequired, adminRequired, getAllTasks);
+router.get(
+  "/admin/lunchs/realtime",
+  authRequired,
+  adminRequired,
+  getAllTasksRealtime,
+);
 
 router.get("/lunch/order/:orderId", authRequired, getTaskByOrderId);
 

@@ -9,7 +9,18 @@ export const getTasks = async (req, res) => {
   res.json(tasks);
 };
 
+const notifyAdmins = async (req) => {
+  const io = req.app.get("socketio");
+  // Obtenemos todas las tareas para enviarlas en tiempo real
+  const tasks = await Task.find().populate("user");
+  io.emit("admin:updateTasks", tasks);
+};
 export const getAllTasks = async (req, res) => {
+  // lógica para obtener todas las tareas para el administrador
+  const tasks = await Task.find().populate("user");
+  res.json(tasks);
+};
+export const getAllTasksRealtime = async (req, res) => {
   // lógica para obtener todas las tareas para el administrador
   const tasks = await Task.find().populate("user");
   res.json(tasks);
@@ -59,6 +70,7 @@ export const createTask = async (req, res) => {
     user: req.user.id,
   });
   const savedTask = await newTask.save();
+  await notifyAdmins(req);
   res.json(savedTask);
 };
 
@@ -152,6 +164,7 @@ export const createLunchByAdmin = async (req, res) => {
   });
 
   const savedTask = await newTask.save();
+  await notifyAdmins(req);
   res.json(savedTask);
 };
 
@@ -175,6 +188,7 @@ export const deleteTask = async (req, res) => {
   // lógica para eliminar una tarea por ID
   const task = await Task.findByIdAndDelete(req.params.id);
   if (!task) return res.status(404).json({ message: "Task not found" });
+  await notifyAdmins(req);
   return res.sendStatus(204);
 };
 
@@ -184,6 +198,9 @@ export const updateTask = async (req, res) => {
     new: true,
   });
   if (!task) return res.status(404).json({ message: "Task not found" });
+  if (task) {
+    await notifyAdmins(req);
+  }
   res.json(task);
 };
 
@@ -195,6 +212,7 @@ export const assignPendingLunches = async (req, res) => {
       { nameClient: nameClient.toUpperCase(), user: null },
       { user: userId, nameClient: null },
     );
+    await notifyAdmins(req);
     res.json({ message: "Almuerzos pendientes asignados al usuario" });
   } catch (error) {
     res.status(500).json({ message: error.message });
