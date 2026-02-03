@@ -7,6 +7,9 @@ import {
 } from "@/components/ui/accordion";
 import SelloImagen from "./icos/CanceladoSello";
 import { deleteLunchAdminRequest } from "@/api/lunch";
+import { Button } from "./ui/button";
+import { UpdateOutstandingbalance } from "@/api/auth";
+import Loader from "./icos/Loader";
 
 function StudentLunchesAccordion({
   groupedLunchs,
@@ -17,6 +20,8 @@ function StudentLunchesAccordion({
 }) {
   // 2. Estado para el término de búsqueda
   const [searchTerm, setSearchTerm] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // 3. Filtrar los estudiantes basados en el nombre
   const filteredEntries = Object.entries(groupedLunchs).filter(
@@ -72,86 +77,131 @@ function StudentLunchesAccordion({
                   </span>
                 </AccordionTrigger>
 
-                <AccordionContent className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-white">
-                  {lunchs.map((lunch) => (
-                    <article
-                      key={lunch._id}
-                      className="p-4 border rounded-lg shadow-sm relative bg-gray-50"
+                <AccordionContent className="">
+                  {outstandingbalance > 0 && (
+                    <Button
+                      disabled={loading}
+                      onClick={async () => {
+                        const userId = lunchs[0]?.user?._id;
+
+                        if (!userId) {
+                          return alert("No se encontró el ID del usuario");
+                        }
+
+                        try {
+                          // 2. Usamos el ID en lugar del nombre (que suele ser lo que esperan las APIs)
+                          setLoading(true);
+                          await UpdateOutstandingbalance(userId, 0);
+                          await loadLunchs();
+                          setSubmitted(true);
+                        } catch (error) {
+                          console.log(error);
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
                     >
-                      {lunch.pay && <SelloImagen />}
-                      <p className="text-gray-600 text-xs">
-                        ID: {lunch._id.slice(-6)}
-                      </p>
-                      <p className="text-gray-600">
-                        Pedido: {lunch.date.split("T")[0]}
-                      </p>
+                      {loading ? <Loader /> : "Pagar saldo anterior"}
+                    </Button>
+                  )}
 
-                      <div className="mt-2 space-y-1 text-sm">
-                        {lunch.userneedscomplete && <p>✓ Almuerzo completo</p>}
-                        {lunch.userneedstray && <p>✓ Bandeja</p>}
-                        {lunch.userneedsextrajuice && <p>✓ Jugo extra</p>}
-                        {lunch.portionOfProtein && <p>✓ Porción Proteína</p>}
-                        {lunch.portionOfSalad && <p>✓ Porción Ensalada</p>}
-                        {lunch.EspecialStray && <p>✓ Bandeja Especial</p>}
-                        {lunch.onlysoup && <p>✓ Solo Sopa</p>}
-                      </div>
-
-                      <div className="mt-2 text-sm">
-                        <p
-                          className={`font-bold ${lunch.pay ? "text-green-600" : "text-red-600"}`}
+                  {submitted && (
+                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                      <div className="bg-white p-8 rounded-2xl text-center text-2xl font-bold">
+                        🍽️ Pedido enviado con éxito
+                        <button
+                          className="block mt-6 px-6 py-2 bg-green-600 text-white rounded-xl"
+                          onClick={() => setSubmitted(false)}
                         >
-                          {lunch.pay ? "PAGADO" : "PENDIENTE"}
-                        </p>
-                        <p className="font-bold">
-                          Total: ${lunch.userNeedsPay}
-                        </p>
+                          OK
+                        </button>
                       </div>
+                    </div>
+                  )}
 
-                      {!lunch.pay && (
-                        <div className="flex flex-col gap-2 mt-4">
-                          <button
-                            onClick={async () => {
-                              setLoadingPay(lunch._id);
-                              try {
-                                await putLunch({ pay: true }, lunch._id);
-                                await loadLunchs();
-                              } catch (error) {
-                                console.log(error);
-                              } finally {
-                                setLoadingPay(null);
-                              }
-                            }}
-                            className="w-full px-4 py-2 bg-green-700 text-white rounded hover:bg-green-800 disabled:opacity-50"
-                            disabled={loadingPay === lunch._id}
+                  <article className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-white">
+                    {lunchs.map((lunch) => (
+                      <article
+                        key={lunch._id}
+                        className="p-4 border rounded-lg shadow-sm relative bg-gray-50"
+                      >
+                        {lunch.pay && <SelloImagen />}
+                        <p className="text-gray-600 text-xs">
+                          ID: {lunch._id.slice(-6)}
+                        </p>
+                        <p className="text-gray-600">
+                          Pedido: {lunch.date.split("T")[0]}
+                        </p>
+
+                        <div className="mt-2 space-y-1 text-sm">
+                          {lunch.userneedscomplete && (
+                            <p>✓ Almuerzo completo</p>
+                          )}
+                          {lunch.userneedstray && <p>✓ Bandeja</p>}
+                          {lunch.userneedsextrajuice && <p>✓ Jugo extra</p>}
+                          {lunch.portionOfProtein && <p>✓ Porción Proteína</p>}
+                          {lunch.portionOfSalad && <p>✓ Porción Ensalada</p>}
+                          {lunch.EspecialStray && <p>✓ Bandeja Especial</p>}
+                          {lunch.onlysoup && <p>✓ Solo Sopa</p>}
+                        </div>
+
+                        <div className="mt-2 text-sm">
+                          <p
+                            className={`font-bold ${lunch.pay ? "text-green-600" : "text-red-600"}`}
                           >
-                            {loadingPay === lunch._id
-                              ? "Procesando..."
-                              : "Pagar"}
-                          </button>
-                          <button
-                            className="w-full px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                            onClick={async () => {
-                              if (
-                                confirm(
-                                  "¿Seguro que deseas eliminar este almuerzo?",
-                                )
-                              ) {
+                            {lunch.pay ? "PAGADO" : "PENDIENTE"}
+                          </p>
+                          <p className="font-bold">
+                            Total: ${lunch.userNeedsPay}
+                          </p>
+                        </div>
+
+                        {!lunch.pay && (
+                          <div className="flex flex-col gap-2 mt-4">
+                            <button
+                              onClick={async () => {
+                                setLoadingPay(lunch._id);
                                 try {
-                                  await deleteLunchAdminRequest(lunch._id);
+                                  await putLunch({ pay: true }, lunch._id);
                                   await loadLunchs();
                                 } catch (error) {
-                                  console.error(error);
-                                  alert("Error al eliminar");
+                                  console.log(error);
+                                } finally {
+                                  setLoadingPay(null);
                                 }
-                              }
-                            }}
-                          >
-                            Borrar
-                          </button>
-                        </div>
-                      )}
-                    </article>
-                  ))}
+                              }}
+                              className="w-full px-4 py-2 bg-green-700 text-white rounded hover:bg-green-800 disabled:opacity-50"
+                              disabled={loadingPay === lunch._id}
+                            >
+                              {loadingPay === lunch._id
+                                ? "Procesando..."
+                                : "Pagar"}
+                            </button>
+                            <button
+                              className="w-full px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                              onClick={async () => {
+                                if (
+                                  confirm(
+                                    "¿Seguro que deseas eliminar este almuerzo?",
+                                  )
+                                ) {
+                                  try {
+                                    await deleteLunchAdminRequest(lunch._id);
+                                    await loadLunchs();
+                                  } catch (error) {
+                                    console.error(error);
+                                    alert("Error al eliminar");
+                                  }
+                                }
+                              }}
+                            >
+                              Borrar
+                            </button>
+                          </div>
+                        )}
+                      </article>
+                    ))}
+                  </article>
                 </AccordionContent>
               </AccordionItem>
             );
