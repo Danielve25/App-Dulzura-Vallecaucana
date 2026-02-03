@@ -4,6 +4,7 @@ import {
   loginRequest,
   verityTokenRequest,
   getUsersRequest,
+  logoutRequest,
 } from "../api/auth";
 import Cookies from "js-cookie";
 import { AuthContext } from "../utils/authUtils";
@@ -52,6 +53,13 @@ const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    try {
+      // Llamar al endpoint para que el servidor borre la cookie HttpOnly
+      logoutRequest();
+    } catch (error) {
+      console.log("logout error:", error);
+    }
+    // También limpiar estado del cliente
     Cookies.remove("token");
     setIsAuthenticated(false);
     setUser(null);
@@ -78,33 +86,24 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     async function checkLogin() {
-      const cookies = Cookies.get();
+      try {
+        const res = await verityTokenRequest();
+        console.log(res);
+        if (!res.data) {
+          setIsAuthenticated(false);
+          setUser(null);
+          setLoading(false);
+          return;
+        }
 
-      if (!cookies.token) {
+        setIsAuthenticated(true);
+        setUser(res.data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
         setIsAuthenticated(false);
         setLoading(false);
-        return setUser(null);
-      }
-
-      if (cookies.token) {
-        try {
-          const res = await verityTokenRequest(cookies.token);
-          console.log(res);
-          if (!res.data) {
-            setIsAuthenticated(false);
-            setLoading(false);
-            return;
-          }
-
-          setIsAuthenticated(true);
-          setUser(res.data);
-          setLoading(false);
-        } catch (error) {
-          console.log(error);
-          setIsAuthenticated(false);
-          setLoading(false);
-          setUser(null);
-        }
+        setUser(null);
       }
     }
     checkLogin();
