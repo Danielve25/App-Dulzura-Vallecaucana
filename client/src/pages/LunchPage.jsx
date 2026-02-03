@@ -50,7 +50,8 @@ const LunchPage = () => {
             {lunch.pay && <SelloImagen />}
             <h1 className="text-xl font-bold">{lunch.title}</h1>
             <p className="text-gray-600">
-              <relative-time datetime={lunch.date}></relative-time>
+              fecha de entrega de el almuerzo:
+              <span> {new Date(lunch.date).toISOString().split("T")[0]}</span>
             </p>
             <p className="text-gray-600">
               fecha de creacion : {lunch.createdAt.split("T")[0]}
