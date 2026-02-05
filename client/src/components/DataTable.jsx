@@ -83,7 +83,7 @@ export const columns = (onRefresh) => [
     accessorKey: "amount",
     header: () => <div className="text-left">Amount</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
+      const amount = parseFloat(row.getValue("amount")) || 0;
 
       // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("en-US", {
@@ -98,8 +98,12 @@ export const columns = (onRefresh) => [
     accessorKey: "PhoneNumberReal",
     header: () => <div className="text-left">numero de telefono</div>,
     cell: ({ row }) => {
-      const PhoneNumberReal = parseFloat(row.getValue("PhoneNumberReal"));
-      return <div className="text-left">{PhoneNumberReal}</div>;
+      const PhoneNumberReal = row.getValue("PhoneNumberReal");
+      return (
+        <div className="text-left">
+          {PhoneNumberReal ? PhoneNumberReal : "N/A"}
+        </div>
+      );
     },
   },
 
@@ -281,7 +285,7 @@ export function DataTable({ data, onRefresh }) {
             ) : (
               <TableRow className="border-slate-400">
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={table.getAllColumns().length}
                   className="h-24 text-center"
                 >
                   No results.
