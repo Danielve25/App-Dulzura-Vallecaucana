@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/table";
 import { UpdateOutstandingbalance } from "@/api/auth";
 
-export const columns = [
+export const columns = (onRefresh) => [
   {
     id: "select",
     header: ({ table }) => (
@@ -144,6 +144,9 @@ export const columns = [
                     outstandingbalance: Number(balance),
                   });
                   alert("Saldo actualizado");
+                  if (onRefresh) {
+                    await onRefresh();
+                  }
                 } catch (error) {
                   console.error(error);
                 }
@@ -158,7 +161,7 @@ export const columns = [
   },
 ];
 
-export function DataTable({ data }) {
+export function DataTable({ data, onRefresh }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -166,7 +169,7 @@ export function DataTable({ data }) {
 
   const table = useReactTable({
     data,
-    columns,
+    columns: columns(onRefresh),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

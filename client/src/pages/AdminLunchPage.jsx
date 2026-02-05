@@ -86,7 +86,7 @@ function AdminLunchPage() {
           chartTitle="Almuerzos Pedidos"
           chartDescription="Monstrando todos los almuerzos pedidos"
         />
-        <DataTable data={dataTable} />
+        <DataTable data={dataTable} onRefresh={loadLunchs} />
         <h1 className="text-3xl! font-bold mb-4  text-red-500">
           ALMUERZOS PENDIENTES:
         </h1>
