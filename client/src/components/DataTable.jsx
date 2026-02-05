@@ -71,6 +71,10 @@ export const columns = [
         </Button>
       );
     },
+    filterFn: (row, columnId, filterValue) =>
+      String(row.getValue(columnId))
+        .toLowerCase()
+        .includes(String(filterValue).toLowerCase()),
     cell: ({ row }) => (
       <div className="lowercase">{row.getValue("Pending")}</div>
     ),
@@ -187,6 +191,14 @@ export function DataTable({ data }) {
   return (
     <div className="w-full">
       <div className="flex items-center py-4 filtrerButton">
+        <Input
+          placeholder="Filter Name..."
+          value={table.getColumn("id")?.getFilterValue() ?? ""}
+          onChange={(event) =>
+            table.getColumn("id")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm border-slate-400 mr-2"
+        />
         <Input
           placeholder="Filter Pending..."
           value={table.getColumn("Pending")?.getFilterValue() ?? ""}
