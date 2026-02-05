@@ -61,18 +61,18 @@ function NavBar() {
                   >
                     Lista de dias anteriores
                   </Link>
-                  <li>
-                    <Link
-                      className={
-                        location.pathname === "/admin/listDay"
-                          ? "active  open-sans"
-                          : "hipervinculo  open-sans"
-                      }
-                      to="/admin/listDay"
-                    >
-                      Lista del dia
-                    </Link>
-                  </li>
+                </li>
+                <li>
+                  <Link
+                    className={
+                      location.pathname === "/admin/listDay"
+                        ? "active  open-sans"
+                        : "hipervinculo  open-sans"
+                    }
+                    to="/admin/listDay"
+                  >
+                    Lista del dia
+                  </Link>
                 </li>
                 <li>
                   <Link
