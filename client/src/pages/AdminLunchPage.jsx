@@ -37,13 +37,14 @@ function AdminLunchPage() {
     }
   }, [submitted]);
 
-  const handleAssign = async (nameClient) => {
-    if (!selectedUser) {
+  // now receives both the client name (key) and the user id
+  const handleAssign = async (nameClient, userId) => {
+    if (!userId) {
       alert("Selecciona un usuario");
       return;
     }
     try {
-      await assignPendingLunches({ userId: selectedUser, nameClient });
+      await assignPendingLunches({ userId, nameClient });
       alert("Almuerzos asignados");
       loadLunchs();
     } catch (error) {
@@ -103,6 +104,7 @@ function AdminLunchPage() {
           pendingLunches={pendingLunches}
           users={users}
           setSelectedUser={setSelectedUser}
+          selectedUser={selectedUser}
           handleAssign={handleAssign}
         />
         <h1 className="text-3xl! font-bold mt-8 mb-4 center-text text-red-500">

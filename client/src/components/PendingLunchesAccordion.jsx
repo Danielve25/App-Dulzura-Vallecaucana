@@ -19,6 +19,7 @@ function PendingLunchesAccordion({
   users,
   setSelectedUser,
   handleAssign,
+  selectedUser, // <-- receive current selection so we can forward it
 }) {
   return (
     <Accordion type="single" collapsible>
@@ -46,7 +47,11 @@ function PendingLunchesAccordion({
                   ))}
                 </SelectContent>
               </Select>
-              <Button onClick={() => handleAssign(clientName)} className="mt-2">
+              {/* pass both the client key and the selected user id */}
+              <Button
+                onClick={() => handleAssign(clientName, selectedUser)}
+                className="mt-2"
+              >
                 Asignar
               </Button>
             </div>
